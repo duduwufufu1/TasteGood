@@ -90,7 +90,7 @@
       </view>
     </view>
     <view class="word-cloud">
-      <text wx:for="{{wordCloud}}" wx:key="text" class="word {{item.hidden ? 'word-hidden' : ''}}" style="left:{{item.left}}rpx;top:{{item.top}}rpx;font-size:{{item.size}}rpx;color:{{item.color}};transform:rotate({{item.rotate}}deg);transition-delay:{{item.delay}}ms">{{item.text}}</text>
+      <text wx:for="{{wordCloud}}" wx:for-index="idx" wx:key="text" id="word-{{idx}}" class="word {{item.hidden ? 'word-hidden' : ''}}" style="left:{{item.left}}rpx;top:{{item.top}}rpx;font-size:{{item.size}}rpx;color:{{item.color}};transform:rotate({{item.rotate}}deg);transition-delay:{{item.delay}}ms">{{item.text}}</text>
     </view>
   </view>
 

@@ -29,6 +29,16 @@ Page({
           cityMap[city].photos.push(r.images[0]);
         }
       }
+      // 将云文件 ID 下载为本地临时路径，供 image 组件显示
+      const entries = Object.values(cityMap);
+      await Promise.all(entries.map(async (city) => {
+        if (city.photos.length > 0) {
+          const downloadRes = await Promise.all(
+            city.photos.map((fileID) => wx.cloud.downloadFile({ fileID }))
+          );
+          city.photos = downloadRes.map((r) => r.tempFilePath);
+        }
+      }));
       const cities = Object.values(cityMap).sort((a,b) => b.count - a.count);
       this.setData({
         cities,
