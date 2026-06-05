@@ -1,4 +1,4 @@
-﻿const db = wx.cloud.database();
+const db = wx.cloud.database();
 const recordRegion = require("../../utils/record-region");
  const chinaMap = require("../../utils/china-map-data");
  const auth = require("../../utils/auth");
@@ -771,4 +771,5 @@ Page({
     wx.navigateTo({ url: "/pages/detail/detail?id=" + e.currentTarget.dataset.id });
   }
 });
+
 

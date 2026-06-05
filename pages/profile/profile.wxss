@@ -1,4 +1,4 @@
-﻿/* === profile 冷色调主题 === */
+/* === profile 冷色调主题 === */
 page {
   --p-primary: #c84632;
   --p-bg: #eaf0ec;

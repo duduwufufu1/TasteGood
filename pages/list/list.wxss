@@ -1,4 +1,4 @@
-﻿.page{min-height:100vh;background:var(--bg);padding-bottom:24rpx}
+.page{min-height:100vh;background:var(--bg);padding-bottom:24rpx}
 .list-hero{padding:38rpx 28rpx 24rpx;background:var(--card-bg);border-bottom:1rpx solid #ead9c3}
 .eyebrow{display:block;font-size:20rpx;color:var(--accent);font-weight:800;letter-spacing:0;margin-bottom:8rpx}
 .hero-title{font-size:46rpx;font-weight:900;color:var(--text)}

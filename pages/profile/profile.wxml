@@ -1,4 +1,4 @@
-﻿<view class="page">
+<view class="page">
   <view class="profile-hero">
     <view class="hero-copy">
       <text class="eyebrow">FOOD ATLAS</text>
@@ -20,10 +20,10 @@
         <view class="login-desc">{{isLoggedIn ? '只展示你的美食记录' : '登录后按微信用户分离记录'}}</view>
       </view>
     </view>
-    <button wx:if="{{!isLoggedIn}}" class="login-btn" loading="{{loginLoading}}" bindtap="login">微信登录</button>
+    <button wx:if="{{!isLoggedIn}}" class="login-btn" loading="{{loginLoading}}" bindtap="handleLogin">微信登录</button>
     <view wx:else class="profile-actions">
-      <text class="edit-profile-btn" bindtap="editProfile">修改资料</text>
-      <text class="logout-btn" bindtap="logout">退出</text>
+      <text class="edit-profile-btn" bindtap="handleEditProfile">修改资料</text>
+      <text class="logout-btn" bindtap="handleLogout">退出</text>
     </view>
   </view>
 
@@ -63,7 +63,7 @@
           bindtouchcancel="onAtlasTouchEnd"
         ></canvas>
         <view wx:if="{{useVectorMap && !showLoginPanel}}" class="atlas-tools">
-          <view class="atlas-tool" bindtap="resetAtlasViewport">↺</view>
+          <view class="atlas-tool" bindtap="handleResetAtlasViewport">↺</view>
         </view>
 
         <block wx:if="{{!useVectorMap}}">
@@ -136,5 +136,6 @@
     <view wx:if="{{!recentRecords.length}}" class="recent-empty">还没有美食记录</view>
   </view>
 </view>
+
 
 

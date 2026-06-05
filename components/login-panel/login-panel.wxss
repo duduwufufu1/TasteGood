@@ -1,4 +1,4 @@
-﻿/* 沿用 profile.wxss 中的样式，稍后在 profile.json 中引用 */
+/* 沿用 profile.wxss 中的样式，稍后在 profile.json 中引用 */
 .login-mask {
   position: fixed;
   left: 0; right: 0; top: 0; bottom: 0;

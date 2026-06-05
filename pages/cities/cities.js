@@ -1,4 +1,4 @@
-﻿const db = wx.cloud.database();
+const db = wx.cloud.database();
 const app = getApp();
 const region = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");

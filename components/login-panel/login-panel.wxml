@@ -1,4 +1,4 @@
-﻿<view wx:if="{{visible}}" class="login-mask" bindtap="handleClose">
+<view wx:if="{{visible}}" class="login-mask" bindtap="handleClose">
   <view class="login-panel" catchtap="noop">
     <view class="panel-title">{{title}}</view>
     <view class="panel-desc">{{desc}}</view>

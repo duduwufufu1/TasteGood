@@ -1,4 +1,4 @@
-﻿Component({
+Component({
   properties: {
     rating: { type: Number, value: 0 },
     size: { type: String, value: "d" }

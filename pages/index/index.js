@@ -1,4 +1,4 @@
-﻿ const REGIONS = require("../../utils/regions");
+ const REGIONS = require("../../utils/regions");
  const { COLLECTION } = require("../../utils/constants");
  const recordRegion = require("../../utils/record-region");
  const userRecords = require("../../utils/user-records");

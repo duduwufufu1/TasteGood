@@ -1,4 +1,4 @@
-﻿.city-page{min-height:100vh;background:var(--bg);padding-bottom:34rpx}
+.city-page{min-height:100vh;background:var(--bg);padding-bottom:34rpx}
 .city-hero{margin:0 24rpx 22rpx;padding:42rpx 32rpx 34rpx;background:var(--text-dark);color:#fff;border-radius:0 0 18rpx 18rpx;box-shadow:0 20rpx 42rpx rgba(48,39,31,0.2)}
 .eyebrow{display:block;font-size:20rpx;color:#eab071;font-weight:700;letter-spacing:0;margin-bottom:14rpx}
 .hero-title{font-size:48rpx;font-weight:900;line-height:1.1}

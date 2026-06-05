@@ -1,4 +1,4 @@
-﻿<view class="page">
+<view class="page">
   <view class="photo-swiper">
     <swiper indicator-dots="{{images.length>1}}" autoplay="{{false}}" circular>
       <swiper-item wx:for="{{images}}" wx:key="*this"><image class="swiper-img" src="{{item}}" mode="aspectFill" lazy-load /></swiper-item>

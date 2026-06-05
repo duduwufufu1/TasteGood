@@ -1,4 +1,4 @@
-﻿/* size: d(etail) 34rpx | l(ist) 24rpx | a(dd-record) 52rpx */
+/* size: d(etail) 34rpx | l(ist) 24rpx | a(dd-record) 52rpx */
 .star-rating { display: flex; gap: 18rpx; }
 .star-rating--d .star-rating__star { font-size: 34rpx; color: #d4c0aa; margin-right: 4rpx; }
 .star-rating--l { gap: 0; }

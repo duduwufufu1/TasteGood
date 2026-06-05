@@ -1,4 +1,4 @@
-﻿const { COLLECTION, TAGS } = require("../../utils/constants");
+const { COLLECTION, TAGS } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
 const db = wx.cloud.database();

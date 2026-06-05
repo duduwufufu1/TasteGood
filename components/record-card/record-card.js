@@ -1,4 +1,4 @@
-﻿// record-card 组件 — 列表与地图中的美食记录卡片
+// record-card 组件 — 列表与地图中的美食记录卡片
 Component({
   properties: {
     name:     { type: String, value: "" },

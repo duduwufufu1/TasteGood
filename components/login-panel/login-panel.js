@@ -1,4 +1,4 @@
-﻿Component({
+Component({
   properties: {
     visible: { type: Boolean, value: false },
     title: { type: String, value: "完善微信资料" },

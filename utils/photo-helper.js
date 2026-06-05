@@ -1,4 +1,4 @@
-﻿/* === 照片图标处理工具（从 index.js 抽离） === */
+/* === 照片图标处理工具（从 index.js 抽离） === */
 const PHOTO_STACK_SIZE = 80;
 const PHOTO_STACK_DPR = 2;
 const PHOTO_STACK_CARDS = [

@@ -1,4 +1,4 @@
-﻿<view class="page">
+<view class="page">
   <view class="map-card">
     <map id="tasteMap" class="full-map"
       latitude="{{mapCenter.lat}}"
@@ -14,7 +14,7 @@
       enable-overlooking="{{false}}"
       enable-rotate="{{false}}"
     ></map>
-    <view class="map-reset" bindtap="handleGoCountry">鈫?/view>
+    <view class="map-reset" bindtap="handleGoCountry">鈫</view>
   </view>
 
   <view class="map-note">
@@ -35,7 +35,7 @@
         <view wx:for="{{pickerItems}}" wx:key="name" class="panel-item" bindtap="handleSelectCity"
           data-name="{{item.name}}" data-lat="{{item.center.lat}}" data-lng="{{item.center.lng}}">
           <text class="pi-name">{{item.name}}</text>
-          <text class="pi-count">{{item.count||0}} 鏉¤褰?/text>
+          <text class="pi-count">{{item.count||0}} 鏉¤褰</text>
         </view>
       </scroll-view>
     </view>
