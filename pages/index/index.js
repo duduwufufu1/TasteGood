@@ -142,35 +142,6 @@ Page({
           width: photos.length > 1 ? 68 : (photo ? 72 : 40),
           height: photos.length > 1 ? 68 : (photo ? 78 : 46),
           iconPath: DEFAULT_RECORD_MARKER,
-          callout: {
-            content: r.name + (r.address ? " · " + r.address : ""),
-            color: "#2f281f",
-            fontSize: 12,
-            borderRadius: 8,
-            bgColor: "#fffaf2",
-            padding: 8,
-            display: "BYCLICK"
-          }
-        });
-        if (photo) {
-          iconTasks.push(() => this.getProvinceRecordIconPath(photos, DEFAULT_RECORD_MARKER).then((iconPath) => {
-            marker.iconPath = iconPath;
-          }));
-        }
-      }
-    } else if (level === "city") {
-      // 城市：显示该城市内所有具体记录的上传图片。
-      const normalizedCity = recordRegion.normalizeCityName(city);
-      const cityRecords = allRecords.filter(r => recordRegion.inferRecordRegion(r).city === normalizedCity);
-      for (const r of cityRecords) {
-        const info = recordRegion.inferRecordRegion(r);
-        const photo = this.getRecordPhoto(r);
-        const marker = addMarker("record", { recordId: r._id || "" }, {
-          latitude: info.center.lat, longitude: info.center.lng,
-          title: r.name,
-          width: photo ? 72 : 40,
-          height: photo ? 78 : 46,
-          iconPath: DEFAULT_RECORD_MARKER,
           label: {
             content: r.name + (r.address ? " · " + r.address : ""),
             color: "#251f1a",
@@ -187,6 +158,27 @@ Page({
         });
         if (photo) {
           iconTasks.push(() => this.getFastRecordPhotoIconPath(photo, DEFAULT_RECORD_MARKER).then((iconPath) => {
+            marker.iconPath = iconPath;
+          }));
+        }
+      }
+    } else if (level === "city") {
+      // 城市：显示该城市内所有具体记录的上传图片。
+      const normalizedCity = recordRegion.normalizeCityName(city);
+      const cityRecords = allRecords.filter(r => recordRegion.inferRecordRegion(r).city === normalizedCity);
+      for (const r of cityRecords) {
+        const info = recordRegion.inferRecordRegion(r);
+        const photo = this.getRecordPhoto(r);
+        const marker = addMarker("record", { recordId: r._id || "" }, {
+          latitude: info.center.lat, longitude: info.center.lng,
+          title: r.name,
+          width: 70,
+          height: 80,
+          iconPath: DEFAULT_RECORD_MARKER,
+          anchor: { x: 0.5, y: 1 }
+        });
+        if (photo) {
+          iconTasks.push(() => this.getPhotoBubbleIconPath(photo, DEFAULT_RECORD_MARKER).then((iconPath) => {
             marker.iconPath = iconPath;
           }));
         }
