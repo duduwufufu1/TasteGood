@@ -1,4 +1,4 @@
-const { COLLECTION, TAGS } = require("../../utils/constants");
+﻿const { COLLECTION, TAGS } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
 const db = wx.cloud.database();
@@ -46,7 +46,7 @@ Page({
       const record = res.data || {};
       const owner = record.userId || record.openid || record._openid || "";
       if (owner !== user.openid) {
-        wx.showToast({ title: "无权编辑该记录", icon: "none" });
+        wx.showToast({ title: "鏃犳潈缂栬緫璇ヨ褰?, icon: "none" });
         setTimeout(() => wx.navigateBack(), 900);
         return;
       }
@@ -71,17 +71,17 @@ Page({
     } catch (e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "请先到我的页登录", icon: "none" });
+        wx.showToast({ title: "璇峰厛鍒版垜鐨勯〉鐧诲綍", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "记录加载失败", icon: "none" });
+      wx.showToast({ title: "璁板綍鍔犺浇澶辫触", icon: "none" });
       this.initDefaultLocation();
     }
   },
 
 
-  // 从地址文本中提取省份和城市信息，返回 { province?, city? } 或 null
+  // 浠庡湴鍧€鏂囨湰涓彁鍙栫渷浠藉拰鍩庡競淇℃伅锛岃繑鍥?{ province?, city? } 鎴?null
   getRegionFromText(text) {
     const value = String(text || "");
     if (!value) return null;
@@ -116,18 +116,18 @@ Page({
     });
   },
 
- onMapTap(e) {
+ handleMapTap(e) {
    const { latitude, longitude } = e.detail;
    const nearest = recordRegion.nearestRegion(latitude, longitude);
    this.setData({
      pickLat: latitude,
      pickLng: longitude,
-     address: "已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
+     address: "宸查€夋嫨浣嶇疆 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
      province: nearest?.province || this.data.province,
      city: nearest?.city || this.data.city,
      pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
    });
-   wx.showToast({ title: "位置已选定", icon: "none" });
+   wx.showToast({ title: "浣嶇疆宸查€夊畾", icon: "none" });
    this.reverseGeocode(latitude, longitude);
  },
 
@@ -136,7 +136,7 @@ Page({
   onCustomTagInput(e) { this.setData({ customTag: e.detail.value }); },
  onRatingChange(e) { this.setData({ rating: e.detail.rating }); },
 
-  searchLocation() {
+  handleSearchLocation() {
     wx.chooseLocation({
       latitude: this.data.pickLat,
       longitude: this.data.pickLng,
@@ -149,7 +149,7 @@ Page({
           pickLng: longitude,
           pickScale: 15,
           name: this.data.name || res.name || "",
-          address: res.address || res.name || ("已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
+          address: res.address || res.name || ("宸查€夋嫨浣嶇疆 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
           pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
         });
         if (!this.applyRegionFromText(res.address || "")) {
@@ -158,22 +158,22 @@ Page({
       },
       fail: (err) => {
         console.warn(err);
-        wx.showToast({ title: "未选择位置", icon: "none" });
+        wx.showToast({ title: "鏈€夋嫨浣嶇疆", icon: "none" });
       }
     });
   },
 
-  toggleTag(e) {
+  handleToggleTag(e) {
     const key = e.currentTarget.dataset.key;
     let sel = this.data.selectedTags;
     sel = sel.indexOf(key) !== -1 ? sel.filter(t => t !== key) : [...sel, key];
     this.setData({ selectedTags: sel }, () => this.refreshDisplayTags());
   },
 
-  addCustomTag() {
+  handleAddCustomTag() {
     const tag = this.data.customTag.trim().replace(/^#/, "");
-    if (!tag) { wx.showToast({ title: "请输入标签", icon: "none" }); return; }
-    if (tag.length > 8) { wx.showToast({ title: "标签最多8个字", icon: "none" }); return; }
+    if (!tag) { wx.showToast({ title: "璇疯緭鍏ユ爣绛?, icon: "none" }); return; }
+    if (tag.length > 8) { wx.showToast({ title: "鏍囩鏈€澶?涓瓧", icon: "none" }); return; }
     if (this.data.selectedTags.includes(tag)) {
       this.setData({ customTag: "" });
       return;
@@ -196,7 +196,7 @@ Page({
     this.setData({ displayTags });
   },
 
-  addPhoto() {
+  handleAddPhoto() {
     wx.chooseImage({
       count: 9 - this.data.photos.length,
       sizeType: ["compressed"],
@@ -207,15 +207,15 @@ Page({
     });
   },
 
-  removePhoto(e) {
+  handleRemovePhoto(e) {
     const idx = e.currentTarget.dataset.index;
     this.setData({ photos: this.data.photos.filter((_, i) => i !== idx) });
   },
 
-  async submit() {
+  async handleSubmit() {
     const { id, isEdit, name, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
-    if (!name) { wx.showToast({ title: "请输入店铺名称", icon: "none" }); return; }
-    if (rating === 0) { wx.showToast({ title: "请评分", icon: "none" }); return; }
+    if (!name) { wx.showToast({ title: "璇疯緭鍏ュ簵閾哄悕绉?, icon: "none" }); return; }
+    if (rating === 0) { wx.showToast({ title: "璇疯瘎鍒?, icon: "none" }); return; }
 
     this.setData({ submitting: true });
 
@@ -257,18 +257,19 @@ Page({
         });
       }
 
-      wx.showToast({ title: isEdit ? "修改成功" : "保存成功" });
+      wx.showToast({ title: isEdit ? "淇敼鎴愬姛" : "淇濆瓨鎴愬姛" });
       setTimeout(() => wx.navigateBack(), 1500);
     } catch(e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "请先到我的页登录", icon: "none" });
+        wx.showToast({ title: "璇峰厛鍒版垜鐨勯〉鐧诲綍", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "保存失败", icon: "none" });
+      wx.showToast({ title: "淇濆瓨澶辫触", icon: "none" });
     } finally {
       this.setData({ submitting: false });
     }
   }
 });
+

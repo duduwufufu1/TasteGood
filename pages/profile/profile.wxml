@@ -13,7 +13,7 @@
 
   <view class="login-card">
     <view class="login-user">
-      <image wx:if="{{isLoggedIn && user.avatarUrl}}" class="login-avatar" src="{{user.avatarUrl}}" mode="aspectFill" />
+      <image wx:if="{{isLoggedIn && user.avatarUrl}}" class="login-avatar" src="{{user.avatarUrl}}" mode="aspectFill" lazy-load />
       <view wx:else class="login-avatar avatar-fallback">味</view>
       <view class="login-copy">
         <view class="login-name">{{isLoggedIn ? user.nickName : '未登录'}}</view>
@@ -72,7 +72,7 @@
             wx:key="city"
             class="city-block {{item.statusClass}} {{item.heatClass}}"
             style="left:{{item.left}}rpx;top:{{item.top}}rpx;width:{{item.width}}rpx;height:{{item.height}}rpx;border-radius:{{item.radius}};transform:rotate({{item.rotate}}deg) skewX({{item.skew}}deg);"
-            bindtap="showCityTaste"
+            bindtap="handleShowCityTaste"
             data-city="{{item.city}}"
             data-count="{{item.count}}"
           >
@@ -126,7 +126,7 @@
       </view>
     </view>
     <view wx:for="{{recentRecords}}" wx:key="_id" class="recent-item" bindtap="handleGoDetail" data-id="{{item._id}}">
-      <image wx:if="{{item.images && item.images[0]}}" class="recent-img" src="{{item.images[0]}}" mode="aspectFill" />
+      <image wx:if="{{item.images && item.images[0]}}" class="recent-img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
       <view wx:else class="recent-img recent-fallback">味</view>
       <view class="recent-info">
         <view class="recent-name">{{item.name}}</view>
@@ -136,3 +136,5 @@
     <view wx:if="{{!recentRecords.length}}" class="recent-empty">还没有美食记录</view>
   </view>
 </view>
+
+

@@ -1,21 +1,22 @@
-<view class="page city-page">
+﻿<view class="page city-page">
   <view class="city-hero">
     <text class="eyebrow">FOOD PASSPORT</text>
-    <view class="hero-title">我的美食城市</view>
-    <text class="hero-copy">每座城市，收好一枚味觉印章</text>
+    <view class="hero-title">鎴戠殑缇庨鍩庡競</view>
+    <text class="hero-copy">姣忓骇鍩庡競锛屾敹濂戒竴鏋氬懗瑙夊嵃绔?/text>
   </view>
   <view class="city-grid">
-    <view wx:for="{{cities}}" wx:key="city" class="city-card" bindtap="goToCity" data-city="{{item.city}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}">
+    <view wx:for="{{cities}}" wx:key="city" class="city-card" bindtap="handleGoToCity" data-city="{{item.city}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}">
       <view class="stamp-ring">
         <text class="city-initial">{{item.city}}</text>
       </view>
       <view class="city-name">{{item.city}}</view>
-      <view class="city-count">{{item.count}} 家店铺</view>
+      <view class="city-count">{{item.count}} 瀹跺簵閾?/view>
     </view>
   </view>
   <view wx:if="{{cities.length===0}}" class="empty-state">
-    <text class="empty-title">还没有城市印章</text>
-    <text class="empty-copy">先记录第一家喜欢的店铺</text>
-    <button class="start-btn" bindtap="goAddRecord">开始记录</button>
+    <text class="empty-title">杩樻病鏈夊煄甯傚嵃绔?/text>
+    <text class="empty-copy">鍏堣褰曠涓€瀹跺枩娆㈢殑搴楅摵</text>
+    <button class="start-btn" bindtap="handleGoAddRecord">寮€濮嬭褰?/button>
   </view>
 </view>
+

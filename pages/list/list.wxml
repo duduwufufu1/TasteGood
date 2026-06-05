@@ -21,7 +21,7 @@
       city="{{item.city}}"
       address="{{item.address}}"
       photo="{{item.images[0]}}"
-      bind:tap="goDetail"
+      bind:tap="handleGoDetail"
     />
     <view wx:if="{{!loading && !records.length}}" class="empty-list">
       <text class="empty-title">还没有记录</text>
@@ -30,3 +30,4 @@
     <view wx:if="{{loading}}" class="loading">加载中…</view>
   </scroll-view>
 </view>
+

@@ -260,7 +260,7 @@ Page({
   },
 
   // 璺緞鏍忥細杩斿洖鍏ㄥ浗
-  goCountry() {
+  handleGoCountry() {
     this.setMapLevel({
       level: "country", province: "", city: "",
       mapCenter: { lat: 35.86, lng: 104.19 }, mapScale: 4
@@ -268,7 +268,7 @@ Page({
   },
 
   // 璺緞鏍忥細杩斿洖鐪佷唤
-  goProvince() {
+  handleGoProvince() {
     const prov = REGIONS.provinces.find(p => p.name === this.data.province);
     if (prov) {
       this.setMapLevel({
@@ -279,7 +279,7 @@ Page({
   },
 
   // 鏄剧ず鍩庡競閫夋嫨寮圭獥
-  showCityPicker() {
+  handleShowCityPicker() {
     const { province, allRecords } = this.data;
     const prov = REGIONS.provinces.find(p => p.name === province);
     if (!prov) return;
@@ -297,10 +297,10 @@ Page({
     this.setData({ showPicker: true, pickerItems: items });
   },
 
-  hidePicker() { this.setData({ showPicker: false }); },
+  handleHidePicker() { this.setData({ showPicker: false }); },
 
   // 閫夋嫨鍩庡競
-  selectCity(e) {
+  handleSelectCity(e) {
     const { name, lat, lng } = e.currentTarget.dataset;
     this.setMapLevel({
       level: "city", city: name,
@@ -333,14 +333,15 @@ Page({
   syncLevelByScale(scale) {
     const currentLevel = this.data.level;
     if (scale <= 5.5 && currentLevel !== "country") {
-      this.goCountry();
+      this.handleGoCountry();
       return;
     }
     if (scale <= 8.5 && currentLevel === "city") {
-      this.goProvince();
+      this.handleGoProvince();
     }
   },
 
-  goAddRecord() { wx.navigateTo({ url: "/pages/add-record/add-record" }); }
+  handleGoAddRecord() { wx.navigateTo({ url: "/pages/add-record/add-record" }); }
 });
+
 

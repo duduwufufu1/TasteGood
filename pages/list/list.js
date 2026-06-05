@@ -80,3 +80,4 @@ Page({
   handleToggleSort() { this.setData({ sortAsc: !this.data.sortAsc, records: [], loadedAll: false, querySkip: 0 }); this.loadRecords(); },
   handleGoDetail(e) { wx.navigateTo({ url: "/pages/detail/detail?id=" + e.detail.id }); }
 });
+
