@@ -139,8 +139,8 @@ Page({
         const marker = addMarker("record", { recordId: r._id || "" }, {
           latitude: info.center.lat, longitude: info.center.lng,
           title: r.name,
-          width: photos.length > 1 ? 68 : (photo ? 56 : 40),
-          height: photos.length > 1 ? 68 : (photo ? 62 : 46),
+          width: photos.length > 1 ? 68 : (photo ? 72 : 40),
+          height: photos.length > 1 ? 68 : (photo ? 78 : 46),
           iconPath: DEFAULT_RECORD_MARKER,
           callout: {
             content: r.name + (r.address ? " · " + r.address : ""),
@@ -168,17 +168,21 @@ Page({
         const marker = addMarker("record", { recordId: r._id || "" }, {
           latitude: info.center.lat, longitude: info.center.lng,
           title: r.name,
-          width: photo ? 56 : 40,
-          height: photo ? 62 : 46,
+          width: photo ? 72 : 40,
+          height: photo ? 78 : 46,
           iconPath: DEFAULT_RECORD_MARKER,
-          callout: {
+          label: {
             content: r.name + (r.address ? " · " + r.address : ""),
-            color: "#2f281f",
-            fontSize: 12,
-            borderRadius: 8,
+            color: "#251f1a",
+            fontSize: 11,
             bgColor: "#fffaf2",
-            padding: 8,
-            display: "ALWAYS"
+            padding: 6,
+            borderRadius: 6,
+            borderColor: "rgba(75,54,34,0.15)",
+            borderWidth: 1,
+            textAlign: "center",
+            anchorX: 0,
+            anchorY: 32
           }
         });
         if (photo) {
