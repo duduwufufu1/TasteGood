@@ -46,7 +46,7 @@ Page({
       const record = res.data || {};
       const owner = record.userId || record.openid || record._openid || "";
       if (owner !== user.openid) {
-        wx.showToast({ title: "鏃犳潈缂栬緫璇ヨ褰?, icon: "none" });
+        wx.showToast({ title: "閺冪姵娼堢紓鏍帆鐠囥儴顔囪ぐ?, icon: "none" });
         setTimeout(() => wx.navigateBack(), 900);
         return;
       }
@@ -71,17 +71,17 @@ Page({
     } catch (e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "璇峰厛鍒版垜鐨勯〉鐧诲綍", icon: "none" });
+        wx.showToast({ title: "鐠囧嘲鍘涢崚鐗堝灉閻ㄥ嫰銆夐惂璇茬秿", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "璁板綍鍔犺浇澶辫触", icon: "none" });
+      wx.showToast({ title: "鐠佹澘缍嶉崝鐘烘祰婢惰精瑙?, icon: "none" });
       this.initDefaultLocation();
     }
   },
 
 
-  // 浠庡湴鍧€鏂囨湰涓彁鍙栫渷浠藉拰鍩庡競淇℃伅锛岃繑鍥?{ province?, city? } 鎴?null
+  // 娴犲骸婀撮崸鈧弬鍥ㄦ拱娑擃厽褰侀崣鏍阜娴犺棄鎷伴崺搴＄娣団剝浼呴敍宀冪箲閸?{ province?, city? } 閹?null
   getRegionFromText(text) {
     const value = String(text || "");
     if (!value) return null;
@@ -122,12 +122,12 @@ Page({
    this.setData({
      pickLat: latitude,
      pickLng: longitude,
-     address: "宸查€夋嫨浣嶇疆 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
+     address: "瀹告煡鈧瀚ㄦ担宥囩枂 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
      province: nearest?.province || this.data.province,
      city: nearest?.city || this.data.city,
      pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
    });
-   wx.showToast({ title: "浣嶇疆宸查€夊畾", icon: "none" });
+   wx.showToast({ title: "娴ｅ秶鐤嗗鏌モ偓澶婄暰", icon: "none" });
    this.reverseGeocode(latitude, longitude);
  },
 
@@ -149,7 +149,7 @@ Page({
           pickLng: longitude,
           pickScale: 15,
           name: this.data.name || res.name || "",
-          address: res.address || res.name || ("宸查€夋嫨浣嶇疆 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
+          address: res.address || res.name || ("瀹告煡鈧瀚ㄦ担宥囩枂 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
           pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
         });
         if (!this.applyRegionFromText(res.address || "")) {
@@ -158,7 +158,7 @@ Page({
       },
       fail: (err) => {
         console.warn(err);
-        wx.showToast({ title: "鏈€夋嫨浣嶇疆", icon: "none" });
+        wx.showToast({ title: "閺堫亪鈧瀚ㄦ担宥囩枂", icon: "none" });
       }
     });
   },
@@ -172,8 +172,8 @@ Page({
 
   handleAddCustomTag() {
     const tag = this.data.customTag.trim().replace(/^#/, "");
-    if (!tag) { wx.showToast({ title: "璇疯緭鍏ユ爣绛?, icon: "none" }); return; }
-    if (tag.length > 8) { wx.showToast({ title: "鏍囩鏈€澶?涓瓧", icon: "none" }); return; }
+    if (!tag) { wx.showToast({ title: "鐠囩柉绶崗銉︾垼缁?, icon: "none" }); return; }
+    if (tag.length > 8) { wx.showToast({ title: "閺嶅洨顒烽張鈧径?娑擃亜鐡?, icon: "none" }); return; }
     if (this.data.selectedTags.includes(tag)) {
       this.setData({ customTag: "" });
       return;
@@ -214,8 +214,8 @@ Page({
 
   async handleSubmit() {
     const { id, isEdit, name, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
-    if (!name) { wx.showToast({ title: "璇疯緭鍏ュ簵閾哄悕绉?, icon: "none" }); return; }
-    if (rating === 0) { wx.showToast({ title: "璇疯瘎鍒?, icon: "none" }); return; }
+    if (!name) { wx.showToast({ title: "鐠囩柉绶崗銉ョ暗闁惧搫鎮曠粔?, icon: "none" }); return; }
+    if (rating === 0) { wx.showToast({ title: "鐠囩柉鐦庨崚?, icon: "none" }); return; }
 
     this.setData({ submitting: true });
 
@@ -257,16 +257,16 @@ Page({
         });
       }
 
-      wx.showToast({ title: isEdit ? "淇敼鎴愬姛" : "淇濆瓨鎴愬姛" });
+      wx.showToast({ title: isEdit ? "娣囶喗鏁奸幋鎰" : "娣囨繂鐡ㄩ幋鎰" });
       setTimeout(() => wx.navigateBack(), 1500);
     } catch(e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "璇峰厛鍒版垜鐨勯〉鐧诲綍", icon: "none" });
+        wx.showToast({ title: "鐠囧嘲鍘涢崚鐗堝灉閻ㄥ嫰銆夐惂璇茬秿", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "淇濆瓨澶辫触", icon: "none" });
+      wx.showToast({ title: "娣囨繂鐡ㄦ径杈Е", icon: "none" });
     } finally {
       this.setData({ submitting: false });
     }

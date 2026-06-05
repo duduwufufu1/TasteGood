@@ -22,46 +22,46 @@ function isRealWeChatProfile(profile) {
   if (!profile) return false;
   const nickName = String(profile.nickName || "").trim();
   const avatarUrl = String(profile.avatarUrl || "").trim();
-  return !!nickName && nickName !== "寰俊鐢ㄦ埛" && !!avatarUrl;
+  return !!nickName && nickName !== "瀵邦喕淇婇悽銊﹀煕" && !!avatarUrl;
 }
 
 const ATLAS_TEMPLATE = [
-  {city:"娌堥槼", province:"杈藉畞", shortName:"娌堥槼", left:546, top:46, width:82, height:60, radius:"34rpx 24rpx 28rpx 24rpx", rotate:5, skew:0},
-  {city:"澶ц繛", province:"杈藉畞", shortName:"澶ц繛", left:558, top:112, width:74, height:54, radius:"24rpx 36rpx 22rpx 30rpx", rotate:-4, skew:0},
-  {city:"鍖椾含", province:"鍖椾含", shortName:"鍖椾含", left:456, top:102, width:72, height:58, radius:"34rpx 26rpx 20rpx 28rpx", rotate:-2, skew:-4},
-  {city:"澶╂触", province:"澶╂触", shortName:"澶╂触", left:524, top:150, width:70, height:52, radius:"22rpx 30rpx 28rpx 20rpx", rotate:6, skew:0},
-  {city:"鐭冲搴?, province:"娌冲寳", shortName:"鐭冲搴?, left:420, top:166, width:104, height:58, radius:"26rpx 20rpx 34rpx 24rpx", rotate:2, skew:-3},
-  {city:"娴庡崡", province:"灞变笢", shortName:"娴庡崡", left:498, top:218, width:84, height:58, radius:"26rpx 32rpx 22rpx 28rpx", rotate:-2, skew:0},
-  {city:"闈掑矝", province:"灞变笢", shortName:"闈掑矝", left:576, top:238, width:76, height:54, radius:"22rpx 34rpx 24rpx 30rpx", rotate:4, skew:0},
-  {city:"閮戝窞", province:"娌冲崡", shortName:"閮戝窞", left:394, top:250, width:92, height:62, radius:"26rpx 22rpx 32rpx 24rpx", rotate:-3, skew:0},
-  {city:"瑗垮畨", province:"闄曡タ", shortName:"瑗垮畨", left:298, top:258, width:92, height:62, radius:"28rpx 20rpx 30rpx 26rpx", rotate:4, skew:-5},
-  {city:"鍚堣偉", province:"瀹夊窘", shortName:"鍚堣偉", left:488, top:306, width:78, height:56, radius:"24rpx 20rpx 28rpx 32rpx", rotate:3, skew:0},
-  {city:"鍗椾含", province:"姹熻嫃", shortName:"鍗椾含", left:566, top:300, width:76, height:54, radius:"24rpx 30rpx 22rpx 26rpx", rotate:-3, skew:0},
-  {city:"鏃犻敗", province:"姹熻嫃", shortName:"鏃犻敗", left:620, top:352, width:62, height:46, radius:"18rpx 28rpx 20rpx 22rpx", rotate:6, skew:0},
-  {city:"鑻忓窞", province:"姹熻嫃", shortName:"鑻忓窞", left:574, top:362, width:64, height:48, radius:"22rpx 18rpx 26rpx 20rpx", rotate:-5, skew:0},
-  {city:"涓婃捣", province:"涓婃捣", shortName:"涓婃捣", left:638, top:400, width:66, height:52, radius:"20rpx 30rpx 22rpx 24rpx", rotate:4, skew:0},
-  {city:"姝︽眽", province:"婀栧寳", shortName:"姝︽眽", left:394, top:332, width:92, height:64, radius:"30rpx 22rpx 26rpx 32rpx", rotate:2, skew:0},
-  {city:"鍗楁槍", province:"姹熻タ", shortName:"鍗楁槍", left:490, top:394, width:82, height:58, radius:"24rpx 20rpx 34rpx 24rpx", rotate:-4, skew:0},
-  {city:"鏉窞", province:"娴欐睙", shortName:"鏉窞", left:574, top:422, width:82, height:58, radius:"26rpx 32rpx 22rpx 30rpx", rotate:3, skew:0},
-  {city:"瀹佹尝", province:"娴欐睙", shortName:"瀹佹尝", left:640, top:468, width:68, height:50, radius:"20rpx 30rpx 20rpx 26rpx", rotate:-3, skew:0},
-  {city:"娓╁窞", province:"娴欐睙", shortName:"娓╁窞", left:584, top:502, width:76, height:52, radius:"24rpx 20rpx 32rpx 22rpx", rotate:5, skew:0},
-  {city:"闀挎矙", province:"婀栧崡", shortName:"闀挎矙", left:384, top:408, width:86, height:62, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
-  {city:"鏍床", province:"婀栧崡", shortName:"鏍床", left:454, top:462, width:76, height:52, radius:"22rpx 30rpx 20rpx 26rpx", rotate:5, skew:0},
-  {city:"閲嶅簡", province:"閲嶅簡", shortName:"閲嶅簡", left:286, top:392, width:86, height:62, radius:"28rpx 22rpx 34rpx 24rpx", rotate:3, skew:0},
-  {city:"鎴愰兘", province:"鍥涘窛", shortName:"鎴愰兘", left:198, top:356, width:94, height:66, radius:"34rpx 22rpx 28rpx 30rpx", rotate:-4, skew:0},
-  {city:"妗傛灄", province:"骞胯タ", shortName:"妗傛灄", left:300, top:478, width:80, height:56, radius:"24rpx 30rpx 22rpx 28rpx", rotate:-3, skew:0},
-  {city:"鍗楀畞", province:"骞胯タ", shortName:"鍗楀畞", left:244, top:532, width:86, height:60, radius:"30rpx 22rpx 26rpx 34rpx", rotate:4, skew:0},
-  {city:"鏄嗘槑", province:"浜戝崡", shortName:"鏄嗘槑", left:146, top:502, width:88, height:62, radius:"34rpx 24rpx 28rpx 24rpx", rotate:-5, skew:0},
-  {city:"澶х悊", province:"浜戝崡", shortName:"澶х悊", left:70, top:480, width:76, height:54, radius:"30rpx 20rpx 26rpx 24rpx", rotate:4, skew:0},
-  {city:"绂忓窞", province:"绂忓缓", shortName:"绂忓窞", left:528, top:514, width:80, height:56, radius:"24rpx 30rpx 28rpx 22rpx", rotate:-4, skew:0},
-  {city:"鍘﹂棬", province:"绂忓缓", shortName:"鍘﹂棬", left:516, top:572, width:76, height:52, radius:"22rpx 28rpx 22rpx 30rpx", rotate:4, skew:0},
-  {city:"骞垮窞", province:"骞夸笢", shortName:"骞垮窞", left:400, top:552, width:84, height:60, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
-  {city:"浣涘北", province:"骞夸笢", shortName:"浣涘北", left:330, top:574, width:74, height:52, radius:"24rpx 20rpx 30rpx 24rpx", rotate:5, skew:0},
-  {city:"涓滆帪", province:"骞夸笢", shortName:"涓滆帪", left:480, top:594, width:74, height:52, radius:"20rpx 28rpx 24rpx 30rpx", rotate:-3, skew:0},
-  {city:"娣卞湷", province:"骞夸笢", shortName:"娣卞湷", left:422, top:626, width:78, height:54, radius:"26rpx 22rpx 30rpx 24rpx", rotate:4, skew:0},
-  {city:"鐝犳捣", province:"骞夸笢", shortName:"鐝犳捣", left:346, top:632, width:72, height:50, radius:"22rpx 28rpx 20rpx 26rpx", rotate:-4, skew:0},
-  {city:"娴峰彛", province:"娴峰崡", shortName:"娴峰彛", left:324, top:700, width:72, height:50, radius:"28rpx 20rpx 28rpx 22rpx", rotate:4, skew:0},
-  {city:"涓変簹", province:"娴峰崡", shortName:"涓変簹", left:406, top:714, width:72, height:50, radius:"22rpx 30rpx 24rpx 20rpx", rotate:-4, skew:0}
+  {city:"濞屽牓妲?, province:"鏉堣棄鐣?, shortName:"濞屽牓妲?, left:546, top:46, width:82, height:60, radius:"34rpx 24rpx 28rpx 24rpx", rotate:5, skew:0},
+  {city:"婢堆嗙箾", province:"鏉堣棄鐣?, shortName:"婢堆嗙箾", left:558, top:112, width:74, height:54, radius:"24rpx 36rpx 22rpx 30rpx", rotate:-4, skew:0},
+  {city:"閸栨ぞ鍚?, province:"閸栨ぞ鍚?, shortName:"閸栨ぞ鍚?, left:456, top:102, width:72, height:58, radius:"34rpx 26rpx 20rpx 28rpx", rotate:-2, skew:-4},
+  {city:"婢垛晜瑙?, province:"婢垛晜瑙?, shortName:"婢垛晜瑙?, left:524, top:150, width:70, height:52, radius:"22rpx 30rpx 28rpx 20rpx", rotate:6, skew:0},
+  {city:"閻啿顔嶆惔?, province:"濞屽啿瀵?, shortName:"閻啿顔嶆惔?, left:420, top:166, width:104, height:58, radius:"26rpx 20rpx 34rpx 24rpx", rotate:2, skew:-3},
+  {city:"濞村骸宕?, province:"鐏炲彉绗?, shortName:"濞村骸宕?, left:498, top:218, width:84, height:58, radius:"26rpx 32rpx 22rpx 28rpx", rotate:-2, skew:0},
+  {city:"闂堟帒鐭?, province:"鐏炲彉绗?, shortName:"闂堟帒鐭?, left:576, top:238, width:76, height:54, radius:"22rpx 34rpx 24rpx 30rpx", rotate:4, skew:0},
+  {city:"闁垵绐?, province:"濞屽啿宕?, shortName:"闁垵绐?, left:394, top:250, width:92, height:62, radius:"26rpx 22rpx 32rpx 24rpx", rotate:-3, skew:0},
+  {city:"鐟楀灝鐣?, province:"闂勬洝銈?, shortName:"鐟楀灝鐣?, left:298, top:258, width:92, height:62, radius:"28rpx 20rpx 30rpx 26rpx", rotate:4, skew:-5},
+  {city:"閸氬牐鍋?, province:"鐎瑰绐?, shortName:"閸氬牐鍋?, left:488, top:306, width:78, height:56, radius:"24rpx 20rpx 28rpx 32rpx", rotate:3, skew:0},
+  {city:"閸楁ぞ鍚?, province:"濮圭喕瀚?, shortName:"閸楁ぞ鍚?, left:566, top:300, width:76, height:54, radius:"24rpx 30rpx 22rpx 26rpx", rotate:-3, skew:0},
+  {city:"閺冪娀鏁?, province:"濮圭喕瀚?, shortName:"閺冪娀鏁?, left:620, top:352, width:62, height:46, radius:"18rpx 28rpx 20rpx 22rpx", rotate:6, skew:0},
+  {city:"閼诲繐绐?, province:"濮圭喕瀚?, shortName:"閼诲繐绐?, left:574, top:362, width:64, height:48, radius:"22rpx 18rpx 26rpx 20rpx", rotate:-5, skew:0},
+  {city:"娑撳﹥鎹?, province:"娑撳﹥鎹?, shortName:"娑撳﹥鎹?, left:638, top:400, width:66, height:52, radius:"20rpx 30rpx 22rpx 24rpx", rotate:4, skew:0},
+  {city:"濮濓附鐪?, province:"濠€鏍у", shortName:"濮濓附鐪?, left:394, top:332, width:92, height:64, radius:"30rpx 22rpx 26rpx 32rpx", rotate:2, skew:0},
+  {city:"閸楁妲?, province:"濮圭喕銈?, shortName:"閸楁妲?, left:490, top:394, width:82, height:58, radius:"24rpx 20rpx 34rpx 24rpx", rotate:-4, skew:0},
+  {city:"閺夘厼绐?, province:"濞存瑦鐫?, shortName:"閺夘厼绐?, left:574, top:422, width:82, height:58, radius:"26rpx 32rpx 22rpx 30rpx", rotate:3, skew:0},
+  {city:"鐎逛焦灏?, province:"濞存瑦鐫?, shortName:"鐎逛焦灏?, left:640, top:468, width:68, height:50, radius:"20rpx 30rpx 20rpx 26rpx", rotate:-3, skew:0},
+  {city:"濞撯晛绐?, province:"濞存瑦鐫?, shortName:"濞撯晛绐?, left:584, top:502, width:76, height:52, radius:"24rpx 20rpx 32rpx 22rpx", rotate:5, skew:0},
+  {city:"闂€鎸庣煓", province:"濠€鏍у础", shortName:"闂€鎸庣煓", left:384, top:408, width:86, height:62, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
+  {city:"閺嶎亝搴?, province:"濠€鏍у础", shortName:"閺嶎亝搴?, left:454, top:462, width:76, height:52, radius:"22rpx 30rpx 20rpx 26rpx", rotate:5, skew:0},
+  {city:"闁插秴绨?, province:"闁插秴绨?, shortName:"闁插秴绨?, left:286, top:392, width:86, height:62, radius:"28rpx 22rpx 34rpx 24rpx", rotate:3, skew:0},
+  {city:"閹存劙鍏?, province:"閸ユ稑绐?, shortName:"閹存劙鍏?, left:198, top:356, width:94, height:66, radius:"34rpx 22rpx 28rpx 30rpx", rotate:-4, skew:0},
+  {city:"濡楀倹鐏?, province:"楠炶儻銈?, shortName:"濡楀倹鐏?, left:300, top:478, width:80, height:56, radius:"24rpx 30rpx 22rpx 28rpx", rotate:-3, skew:0},
+  {city:"閸楁鐣?, province:"楠炶儻銈?, shortName:"閸楁鐣?, left:244, top:532, width:86, height:60, radius:"30rpx 22rpx 26rpx 34rpx", rotate:4, skew:0},
+  {city:"閺勫棙妲?, province:"娴滄垵宕?, shortName:"閺勫棙妲?, left:146, top:502, width:88, height:62, radius:"34rpx 24rpx 28rpx 24rpx", rotate:-5, skew:0},
+  {city:"婢堆呮倞", province:"娴滄垵宕?, shortName:"婢堆呮倞", left:70, top:480, width:76, height:54, radius:"30rpx 20rpx 26rpx 24rpx", rotate:4, skew:0},
+  {city:"缁傚繐绐?, province:"缁傚繐缂?, shortName:"缁傚繐绐?, left:528, top:514, width:80, height:56, radius:"24rpx 30rpx 28rpx 22rpx", rotate:-4, skew:0},
+  {city:"閸橈箓妫?, province:"缁傚繐缂?, shortName:"閸橈箓妫?, left:516, top:572, width:76, height:52, radius:"22rpx 28rpx 22rpx 30rpx", rotate:4, skew:0},
+  {city:"楠炲灝绐?, province:"楠炲じ绗?, shortName:"楠炲灝绐?, left:400, top:552, width:84, height:60, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
+  {city:"娴ｆ稑鍖?, province:"楠炲じ绗?, shortName:"娴ｆ稑鍖?, left:330, top:574, width:74, height:52, radius:"24rpx 20rpx 30rpx 24rpx", rotate:5, skew:0},
+  {city:"娑撴粏甯?, province:"楠炲じ绗?, shortName:"娑撴粏甯?, left:480, top:594, width:74, height:52, radius:"20rpx 28rpx 24rpx 30rpx", rotate:-3, skew:0},
+  {city:"濞ｅ崬婀?, province:"楠炲じ绗?, shortName:"濞ｅ崬婀?, left:422, top:626, width:78, height:54, radius:"26rpx 22rpx 30rpx 24rpx", rotate:4, skew:0},
+  {city:"閻濈姵鎹?, province:"楠炲じ绗?, shortName:"閻濈姵鎹?, left:346, top:632, width:72, height:50, radius:"22rpx 28rpx 20rpx 26rpx", rotate:-4, skew:0},
+  {city:"濞村嘲褰?, province:"濞村嘲宕?, shortName:"濞村嘲褰?, left:324, top:700, width:72, height:50, radius:"28rpx 20rpx 28rpx 22rpx", rotate:4, skew:0},
+  {city:"娑撳绨?, province:"濞村嘲宕?, shortName:"娑撳绨?, left:406, top:714, width:72, height:50, radius:"22rpx 30rpx 24rpx 20rpx", rotate:-4, skew:0}
 ];
 
 Page({
@@ -72,9 +72,9 @@ Page({
     showLoginPanel: false,
     pendingAvatarUrl: "",
     pendingNickName: "",
-    profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-    profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-    profilePanelSubmitText: "纭鐧诲綍",
+    profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+    profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+    profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
     mapCities: [],
     useVectorMap: HAS_VECTOR_MAP,
     activeCityCount: 0,
@@ -106,9 +106,9 @@ Page({
           showLoginPanel: false,
           pendingAvatarUrl: "",
           pendingNickName: "",
-          profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-          profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-          profilePanelSubmitText: "纭鐧诲綍",
+          profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+          profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+          profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
           mapCities: [],
           activeCityCount: 0,
           mappedRecordCount: 0,
@@ -188,14 +188,14 @@ Page({
     }
   },
 
-  login() {
+  handleLogin() {
     if (this.data.loginLoading) return;
     if (!wx.getUserProfile) {
-      wx.showToast({ title: "褰撳墠鍩虹搴撲笉鏀寔鎺堟潈", icon: "none" });
+      wx.showToast({ title: "瑜版挸澧犻崺铏诡攨鎼存挷绗夐弨顖涘瘮閹哄牊娼?, icon: "none" });
       return;
     }
     wx.getUserProfile({
-      desc: "鐢ㄤ簬瀹屽杽璧勬枡",
+      desc: "閻劋绨€瑰苯鏉界挧鍕灐",
       success: (res) => {
         const profile = res.userInfo || {};
         console.log("[profile] get profile success", profile);
@@ -208,7 +208,7 @@ Page({
       fail: (error) => {
         console.error("[profile] get profile failed", error);
         wx.showToast({
-          title: error && error.errMsg && error.errMsg.indexOf("deny") !== -1 ? "宸插彇娑堟巿鏉? : "鎺堟潈澶辫触",
+          title: error && error.errMsg && error.errMsg.indexOf("deny") !== -1 ? "瀹告彃褰囧☉鍫熷房閺? : "閹哄牊娼堟径杈Е",
           icon: "none"
         });
       }
@@ -219,23 +219,23 @@ Page({
     this.setData({
       showLoginPanel: true,
       pendingAvatarUrl: profile && profile.avatarUrl ? profile.avatarUrl : "",
-      pendingNickName: profile && profile.nickName && profile.nickName !== "寰俊鐢ㄦ埛" ? profile.nickName : "",
-      profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-      profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-      profilePanelSubmitText: "纭鐧诲綍"
+      pendingNickName: profile && profile.nickName && profile.nickName !== "瀵邦喕淇婇悽銊﹀煕" ? profile.nickName : "",
+      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+      profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
     });
-    wx.showToast({ title: "璇烽€夋嫨澶村儚鏄电О", icon: "none" });
+    wx.showToast({ title: "鐠囩兘鈧瀚ㄦ径鏉戝剼閺勭數袨", icon: "none" });
   },
 
-  editProfile() {
+  handleEditProfile() {
     const user = this.data.user || {};
     this.setData({
       showLoginPanel: true,
       pendingAvatarUrl: user.avatarUrl || "",
-      pendingNickName: user.nickName && user.nickName !== "寰俊鐢ㄦ埛" ? user.nickName : "",
-      profilePanelTitle: "淇敼璧勬枡",
-      profilePanelDesc: "鏇存柊澶村儚鍜屾樀绉板悗浼氫繚瀛樺埌褰撳墠璐﹀彿",
-      profilePanelSubmitText: "淇濆瓨璧勬枡"
+      pendingNickName: user.nickName && user.nickName !== "瀵邦喕淇婇悽銊﹀煕" ? user.nickName : "",
+      profilePanelTitle: "娣囶喗鏁肩挧鍕灐",
+      profilePanelDesc: "閺囧瓨鏌婃径鏉戝剼閸滃本妯€缁夋澘鎮楁导姘箽鐎涙ê鍩岃ぐ鎾冲鐠愶箑褰?,
+      profilePanelSubmitText: "娣囨繂鐡ㄧ挧鍕灐"
     });
   },
 
@@ -245,9 +245,9 @@ Page({
       showLoginPanel: false,
       pendingAvatarUrl: "",
       pendingNickName: "",
-      profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-      profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-      profilePanelSubmitText: "纭鐧诲綍"
+      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+      profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
     }, () => {
       if (HAS_VECTOR_MAP) {
         this.drawVectorMap();
@@ -260,11 +260,11 @@ Page({
     const nickName = String(this.data.pendingNickName || "").trim();
     const avatarUrl = this.data.pendingAvatarUrl;
     if (!avatarUrl) {
-      wx.showToast({ title: "璇峰厛閫夋嫨澶村儚", icon: "none" });
+      wx.showToast({ title: "鐠囧嘲鍘涢柅澶嬪婢舵潙鍎?, icon: "none" });
       return;
     }
     if (!nickName) {
-      wx.showToast({ title: "璇峰～鍐欐樀绉?, icon: "none" });
+      wx.showToast({ title: "鐠囧嘲锝為崘娆愭█缁?, icon: "none" });
       return;
     }
     await this.finishLogin({ nickName, avatarUrl });
@@ -295,16 +295,16 @@ Page({
         showLoginPanel: false,
         pendingAvatarUrl: "",
         pendingNickName: "",
-        profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-        profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-        profilePanelSubmitText: "纭鐧诲綍"
+        profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+        profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+        profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
       });
-      wx.showToast({ title: wasLoggedIn ? "淇濆瓨鎴愬姛" : "鐧诲綍鎴愬姛" });
+      wx.showToast({ title: wasLoggedIn ? "娣囨繂鐡ㄩ幋鎰" : "閻ц缍嶉幋鎰" });
       this.loadStats();
     } catch (error) {
       console.error("[profile] login failed", error);
       wx.showToast({
-        title: "鐧诲綍澶辫触",
+        title: "閻ц缍嶆径杈Е",
         icon: "none"
       });
     } finally {
@@ -312,7 +312,7 @@ Page({
     }
   },
 
-  logout() {
+  handleLogout() {
     auth.clearUser();
     this.cityTasteMap = {};
     this.atlasMapCache = null;
@@ -322,9 +322,9 @@ Page({
       showLoginPanel: false,
       pendingAvatarUrl: "",
       pendingNickName: "",
-      profilePanelTitle: "瀹屽杽寰俊璧勬枡",
-      profilePanelDesc: "褰撳墠寰俊鐗堟湰鏈繑鍥炲ご鍍忔樀绉帮紝璇烽€夋嫨鍚庡畬鎴愮櫥褰?,
-      profilePanelSubmitText: "纭鐧诲綍",
+      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
+      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
+      profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
       mapCities: [],
       activeCityCount: 0,
       mappedRecordCount: 0,
@@ -657,10 +657,10 @@ Page({
     if (!city) return;
     const count = this.cityTasteMap && this.cityTasteMap[city.name] ? this.cityTasteMap[city.name].count : 0;
     if (!count) {
-      wx.showToast({ title: city.name + "杩樻病璁板綍", icon: "none" });
+      wx.showToast({ title: city.name + "鏉╂ɑ鐥呯拋鏉跨秿", icon: "none" });
       return;
     }
-    wx.showToast({ title: city.name + " " + count + " 鏉?, icon: "none" });
+    wx.showToast({ title: city.name + " " + count + " 閺?, icon: "none" });
   },
 
   zoomAtlasIn() {
@@ -688,7 +688,7 @@ Page({
     this.scheduleCrispAtlasRender();
   },
 
-  resetAtlasViewport() {
+  handleResetAtlasViewport() {
     this.atlasViewport = { zoom: 1, panX: 0, panY: 0 };
     this.queueAtlasRender();
     this.scheduleCrispAtlasRender();
@@ -753,10 +753,10 @@ Page({
     const city = e.currentTarget.dataset.city;
     const count = Number(e.currentTarget.dataset.count || 0);
     if (!count) {
-      wx.showToast({ title: city + "杩樻病璁板綍", icon: "none" });
+      wx.showToast({ title: city + "鏉╂ɑ鐥呯拋鏉跨秿", icon: "none" });
       return;
     }
-    wx.showToast({ title: city + " " + count + " 鏉?, icon: "none" });
+    wx.showToast({ title: city + " " + count + " 閺?, icon: "none" });
   },
 
   handlePreviewPhoto(e) {
