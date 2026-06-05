@@ -428,7 +428,7 @@ Page({
       this.atlasSize = { width, height };
       this.atlasRect = { left: canvasInfo.left || 0, top: canvasInfo.top || 0 };
       this.canvasMapBox = this.getCanvasMapBox(width, height);
-      this.atlasViewport = this.atlasViewport || { zoom: 1.5, panX: -60, panY: -40 };
+      this.atlasViewport = this.atlasViewport || { zoom: 1.6, panX: -50, panY: -30 };
       this.buildAtlasMapCache();
       this.renderVectorMap();
     });
