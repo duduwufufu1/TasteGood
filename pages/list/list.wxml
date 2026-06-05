@@ -10,6 +10,9 @@
     <picker mode="selector" range="{{tagList}}" bindchange="onTagChange">
       <text class="filter-btn">{{currentTagName || '全部标签'}} ▼</text>
     </picker>
+    <picker mode="selector" range="{{ratingList}}" bindchange="onRatingChange">
+      <text class="filter-btn">{{currentRating ? '≥' + currentRating + '星' : '全部星级'}} ▼</text>
+    </picker>
     <text class="filter-btn sort" bindtap="handleToggleSort">{{sortAsc?'最早':'最近'}}</text>
   </view>
   <scroll-view scroll-y class="record-list" bindscrolltolower="handleLoadMore">
@@ -30,4 +33,3 @@
     <view wx:if="{{loading}}" class="loading">加载中…</view>
   </scroll-view>
 </view>
-

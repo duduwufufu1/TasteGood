@@ -1,8 +1,8 @@
 .page{min-height:100vh;background:#eaf0ec;padding-bottom:24rpx}
-.list-hero{padding:38rpx 28rpx 24rpx;background:#fffaf0;border-bottom:1rpx solid rgba(18,35,31,0.08)}
-.eyebrow{display:block;font-size:20rpx;color:#6f8d67;font-weight:800;letter-spacing:1px;margin-bottom:8rpx}
-.hero-title{font-size:46rpx;font-weight:900;color:#12231f}
-.filter-bar{display:flex;padding:18rpx 24rpx;background:#eaf0ec;gap:14rpx;border-bottom:1rpx solid rgba(18,35,31,0.08)}
+.list-hero{padding:42rpx 32rpx 24rpx;background:#102b28;color:#f7f0de;border-bottom:1rpx solid rgba(255,255,255,0.16);box-shadow:0 18rpx 44rpx rgba(16,43,40,0.22);text-align:center}
+.list-hero .eyebrow{display:block;font-size:19rpx;color:#92c8b4;font-weight:900;letter-spacing:1px;margin-bottom:10rpx}
+.list-hero .hero-title{font-size:46rpx;font-weight:900}
+.filter-bar{display:flex;padding:18rpx 24rpx;background:#eaf0ec;gap:14rpx;border-bottom:1rpx solid rgba(18,35,31,0.08);flex-wrap:wrap}
 .filter-btn{display:block;font-size:25rpx;color:#314b45;padding:12rpx 18rpx;border:1rpx solid #61726e44;border-radius:10rpx;background:#fffaf0;max-width:220rpx;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .filter-btn.sort{color:#fff;border-color:#c84632;background:#c84632}
 .record-list{height:calc(100vh - 190rpx);padding:10rpx 24rpx 0}

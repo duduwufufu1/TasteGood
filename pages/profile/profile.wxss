@@ -31,7 +31,7 @@ page {
 .section-title{font-size:31rpx;font-weight:900;line-height:1.15;color:var(--p-text)}
 .atlas-summary{flex-shrink:0;color:var(--p-text-accent);font-size:23rpx;font-weight:900}
 .atlas-board{padding:16rpx;background:var(--p-accent-mid);border-radius:var(--radius-sm);border:1rpx solid rgba(36,95,115,0.12)}
-.china-atlas{position:relative;width:100%;height:790rpx;overflow:hidden;border-radius:8rpx;background:linear-gradient(160deg,#fdf7e7 0%,var(--p-accent-light) 52%,#dce9ee 100%);box-shadow:inset 0 0 0 1rpx var(--p-border)}
+.china-atlas{position:relative;width:100%;height:920rpx;overflow:hidden;border-radius:8rpx;background:linear-gradient(160deg,#fdf7e7 0%,var(--p-accent-light) 52%,#dce9ee 100%);box-shadow:inset 0 0 0 1rpx var(--p-border)}
 .atlas-canvas{position:absolute;left:0;top:0;width:100%;height:100%}
 .atlas-tools{position:absolute;right:16rpx;top:16rpx;display:flex;flex-direction:column;gap:10rpx;z-index:8}
 .atlas-tool{width:54rpx;height:54rpx;line-height:54rpx;text-align:center;border-radius:50%;background:rgba(16,43,40,0.9);color:#fff9eb;font-size:30rpx;font-weight:900;box-shadow:0 10rpx 20rpx rgba(16,43,40,0.18)}
@@ -54,7 +54,12 @@ page {
 .heat-legend{display:flex;align-items:center;gap:10rpx;min-width:0;flex:1}
 .heat-bar{height:18rpx;max-width:260rpx;flex:1;border-radius:999rpx;background:linear-gradient(90deg,#edf2e3 0%,#f2c879 25%,#df7542 55%,#b83e4f 78%,#5b1f3b 100%);border:1rpx solid rgba(18,35,31,0.1)}
 .word-cloud{position:relative;height:382rpx;overflow:hidden;border-radius:var(--radius-sm);background:radial-gradient(circle at 48% 46%,#fffdf6 0%,var(--p-accent-light) 54%,var(--p-accent-mid) 100%);border:1rpx solid rgba(18,35,31,0.07)}
-.word{position:absolute;display:block;font-weight:900;white-space:nowrap;line-height:1;text-shadow:0 8rpx 18rpx rgba(18,35,31,0.12)}
+.word{position:absolute;display:block;font-weight:900;white-space:nowrap;line-height:1;text-shadow:0 8rpx 18rpx rgba(18,35,31,0.12);animation:word-float 4s ease-in-out infinite alternate}
+.word:nth-child(2n){animation-delay:-1s;animation-duration:5s}
+.word:nth-child(3n){animation-delay:-2s;animation-duration:3.5s}
+.word:nth-child(5n){animation-delay:-0.5s;animation-duration:4.5s}
+
+@keyframes word-float{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(-12rpx) rotate(2deg)}}
 .photo-wall{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10rpx}
 .wall-img{width:100%;height:158rpx;border-radius:8rpx;background:var(--p-accent-mid)}
 .recent-section{padding-bottom:12rpx}

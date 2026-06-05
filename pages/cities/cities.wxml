@@ -1,8 +1,8 @@
 <view class="page city-page">
   <view class="city-hero">
     <text class="eyebrow">FOOD ATLAS</text>
-    <view class="hero-title">我的味觉版图</view>
-    <text class="hero-copy">每座城市，收好一枚味觉印章</text>
+    <view class="hero-title hero-centered">我的味觉版图</view>
+    <text class="hero-subtitle">每座城市，收好一枚味觉印章</text>
     <view class="hero-stats">
       <view class="stat-item">
         <text class="stat-num">{{cities.length}}</text>
@@ -11,10 +11,6 @@
       <view class="stat-item">
         <text class="stat-num">{{totalRecords}}</text>
         <text class="stat-label">记录</text>
-      </view>
-      <view class="stat-item">
-        <text class="stat-num">{{tastedCities}}</text>
-        <text class="stat-label">已尝</text>
       </view>
     </view>
   </view>
@@ -25,7 +21,7 @@
   <view class="city-grid">
     <view wx:for="{{cities}}" wx:key="city" class="city-card" bindtap="handleGoToCity" data-city="{{item.city}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}">
       <view class="stamp-ring">
-        <text class="city-initial">{{item.city.slice(0,1)}}</text>
+        <text class="city-initial">{{item.abbr || item.city.slice(0,2)}}</text>
       </view>
       <view class="city-name">{{item.city}}</view>
       <view class="city-count">{{item.count}} 家店铺</view>
