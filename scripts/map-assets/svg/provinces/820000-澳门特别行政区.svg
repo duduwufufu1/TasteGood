@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 780" role="img">
+  <title>澳门特别行政区市级地图</title>
+  <style>
+    .region{fill:#edf2e3;stroke:#16342f;stroke-width:0.7;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+    .region:hover{fill:#c84632}
+  </style>
+  <rect width="100%" height="100%" fill="#fdf7e7"/>
+  <path class="region" id="adcode-820000" data-name="澳门" d="M352.2 764L678.1 585.9L494.8 142.6L380.8 16L246.3 35.8L221.9 289.1L352.2 514.7ZM564 95.2L494.8 95.2L494.8 142.6Z"/>
+</svg>

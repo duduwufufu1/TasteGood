@@ -1,0 +1,146 @@
+<view class="page">
+  <view class="profile-hero">
+    <view class="hero-copy">
+      <text class="eyebrow">FOOD ATLAS</text>
+      <view class="hero-title">我的味觉版图</view>
+      <text class="hero-subtitle">吃得越多，地图上的热度越深</text>
+    </view>
+    <view class="hero-badge">
+      <text class="badge-num">{{activeCityCount}}</text>
+      <text class="badge-label">城</text>
+    </view>
+  </view>
+
+  <view class="login-card">
+    <view class="login-user">
+      <image wx:if="{{isLoggedIn && user.avatarUrl}}" class="login-avatar" src="{{user.avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="login-avatar avatar-fallback">味</view>
+      <view class="login-copy">
+        <view class="login-name">{{isLoggedIn ? user.nickName : '未登录'}}</view>
+        <view class="login-desc">{{isLoggedIn ? '只展示你的美食记录' : '登录后按微信用户分离记录'}}</view>
+      </view>
+    </view>
+    <button wx:if="{{!isLoggedIn}}" class="login-btn" loading="{{loginLoading}}" bindtap="login">微信登录</button>
+    <view wx:else class="profile-actions">
+      <text class="edit-profile-btn" bindtap="editProfile">修改资料</text>
+      <text class="logout-btn" bindtap="logout">退出</text>
+    </view>
+  </view>
+
+  <view wx:if="{{showLoginPanel}}" class="login-mask" catchtap="closeLoginPanel">
+    <view class="login-panel" catchtap="noop">
+      <view class="panel-title">{{profilePanelTitle}}</view>
+      <view class="panel-desc">{{profilePanelDesc}}</view>
+      <button class="panel-avatar avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{pendingAvatarUrl}}" class="panel-avatar-img" src="{{pendingAvatarUrl}}" mode="aspectFill" />
+        <text wx:else>头像</text>
+      </button>
+      <input
+        class="panel-nickname"
+        type="nickname"
+        placeholder="点击选择微信昵称"
+        value="{{pendingNickName}}"
+        bindinput="onNickNameInput"
+      />
+      <view class="panel-actions">
+        <button class="panel-btn secondary" bindtap="closeLoginPanel">取消</button>
+        <button class="panel-btn primary" loading="{{loginLoading}}" bindtap="confirmLogin">{{profilePanelSubmitText}}</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="section atlas-section">
+    <view class="section-head">
+      <view>
+        <text class="section-kicker">HEAT MAP</text>
+        <view class="section-title">美食足迹</view>
+      </view>
+      <view class="atlas-summary">{{mappedRecordCount}} 条记录</view>
+    </view>
+
+    <view class="atlas-board">
+      <view class="china-atlas">
+        <canvas
+          wx:if="{{useVectorMap && !showLoginPanel}}"
+          type="2d"
+          id="tasteAtlasCanvas"
+          class="atlas-canvas"
+          bindtouchstart="onAtlasTouchStart"
+          catchtouchmove="onAtlasTouchMove"
+          bindtouchend="onAtlasTouchEnd"
+          bindtouchcancel="onAtlasTouchEnd"
+        ></canvas>
+        <view wx:if="{{useVectorMap && !showLoginPanel}}" class="atlas-tools">
+          <view class="atlas-tool" bindtap="resetAtlasViewport">↺</view>
+        </view>
+
+        <block wx:if="{{!useVectorMap}}">
+          <view
+            wx:for="{{mapCities}}"
+            wx:key="city"
+            class="city-block {{item.statusClass}} {{item.heatClass}}"
+            style="left:{{item.left}}rpx;top:{{item.top}}rpx;width:{{item.width}}rpx;height:{{item.height}}rpx;border-radius:{{item.radius}};transform:rotate({{item.rotate}}deg) skewX({{item.skew}}deg);"
+            bindtap="showCityTaste"
+            data-city="{{item.city}}"
+            data-count="{{item.count}}"
+          >
+            <text class="city-name">{{item.shortName}}</text>
+          </view>
+        </block>
+
+        <view class="atlas-empty" wx:if="{{!hasMapRecords}}">还没有点亮城市</view>
+      </view>
+
+      <view class="atlas-legend">
+        <view class="heat-legend">
+          <text>低</text>
+          <view class="heat-bar"></view>
+          <text>高</text>
+        </view>
+        <view class="legend-item"><text class="legend-swatch muted"></text><text>未记录</text></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{wordCloud.length}}">
+    <view class="section-head">
+      <view>
+        <text class="section-kicker">WORDS</text>
+        <view class="section-title">评价词云</view>
+      </view>
+    </view>
+    <view class="word-cloud">
+      <text wx:for="{{wordCloud}}" wx:key="text" class="word" style="left:{{item.left}}rpx;top:{{item.top}}rpx;font-size:{{item.size}}rpx;color:{{item.color}};transform:rotate({{item.rotate}}deg)">{{item.text}}</text>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{photoWall.length}}">
+    <view class="section-head">
+      <view>
+        <text class="section-kicker">PHOTOS</text>
+        <view class="section-title">照片墙</view>
+      </view>
+    </view>
+    <view class="photo-wall">
+      <image wx:for="{{photoWall}}" wx:key="src" class="wall-img" src="{{item.src}}" mode="aspectFill" bindtap="previewPhoto" data-src="{{item.src}}" />
+    </view>
+  </view>
+
+  <view class="section recent-section">
+    <view class="section-head">
+      <view>
+        <text class="section-kicker">RECENT</text>
+        <view class="section-title">最近记录</view>
+      </view>
+    </view>
+    <view wx:for="{{recentRecords}}" wx:key="_id" class="recent-item" bindtap="goDetail" data-id="{{item._id}}">
+      <image wx:if="{{item.images && item.images[0]}}" class="recent-img" src="{{item.images[0]}}" mode="aspectFill" />
+      <view wx:else class="recent-img recent-fallback">味</view>
+      <view class="recent-info">
+        <view class="recent-name">{{item.name}}</view>
+        <view class="recent-meta">{{item.city}} · {{item.rating}}星</view>
+      </view>
+    </view>
+    <view wx:if="{{!recentRecords.length}}" class="recent-empty">还没有美食记录</view>
+  </view>
+</view>

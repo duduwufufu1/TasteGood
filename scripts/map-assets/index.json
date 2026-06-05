@@ -1,0 +1,13 @@
+{
+  "source": "https://geo.datav.aliyun.com/areas_v3/bound",
+  "generatedAt": "2026-06-04T04:44:48.307Z",
+  "provinceCount": 34,
+  "sourceCityFeatureCount": 370,
+  "canvasCityCount": 370,
+  "files": {
+    "chinaProvincesSvg": "svg/china-provinces.svg",
+    "chinaCitiesSvg": "svg/china-cities.svg",
+    "provinceSvgDir": "svg/provinces",
+    "miniProgramData": "../../utils/china-map-data.js"
+  }
+}

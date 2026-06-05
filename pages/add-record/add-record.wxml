@@ -1,0 +1,47 @@
+<view class="page">
+  <view class="form-hero">
+    <text class="eyebrow">{{isEdit?'EDIT TASTE':'NEW TASTE'}}</text>
+    <view class="hero-title">{{isEdit?'编辑记录':'添加记录'}}</view>
+  </view>
+  <view class="form-section map-section">
+    <view class="section-title">选择位置</view>
+    <view class="location-search">
+      <button class="location-btn wide" bindtap="searchLocation">打开地图搜索位置</button>
+    </view>
+    <map class="picker-map" latitude="{{pickLat}}" longitude="{{pickLng}}" scale="{{pickScale}}" markers="{{pickMarkers}}" bindtap="onMapTap" show-location="{{false}}"></map>
+    <view class="address-text">{{address || '点击地图选择位置'}}</view>
+  </view>
+  <view class="form-section">
+    <view class="section-title">店铺名称</view>
+    <input class="form-input" placeholder="输入店铺名称" value="{{name}}" bindinput="onNameInput" confirm-type="done" />
+  </view>
+  <view class="form-section">
+    <view class="section-title">评分</view>
+    <view class="rating-picker">
+      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="star {{rating>=item?'active':''}}" bindtap="setRating" data-rating="{{item}}">★</text>
+    </view>
+  </view>
+  <view class="form-section moments-section">
+    <view class="section-title">图文评价</view>
+    <textarea class="form-textarea" placeholder="写下你的美食感受..." value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
+    <view class="char-count">{{comment.length}}/500</view>
+    <view class="photo-grid">
+      <view wx:for="{{photos}}" wx:for-index="i" wx:key="*this" class="photo-item">
+        <image class="photo-img" src="{{item}}" mode="aspectFill" />
+        <text class="photo-del" bindtap="removePhoto" data-index="{{i}}">×</text>
+      </view>
+      <view wx:if="{{photos.length<9}}" class="photo-add" bindtap="addPhoto">+</view>
+    </view>
+  </view>
+  <view class="form-section">
+    <view class="section-title">标签</view>
+    <view class="custom-tag-row">
+      <input class="custom-tag-input" placeholder="自定义标签，如 宝藏店" value="{{customTag}}" bindinput="onCustomTagInput" confirm-type="done" bindconfirm="addCustomTag" />
+      <button class="custom-tag-btn" bindtap="addCustomTag">添加</button>
+    </view>
+    <view class="tag-list">
+      <text wx:for="{{displayTags}}" wx:key="key" class="tag {{item.active?'active':''}}" bindtap="toggleTag" data-key="{{item.key}}">{{item.name}}</text>
+    </view>
+  </view>
+  <button class="submit-btn" bindtap="submit" loading="{{submitting}}">{{isEdit?'保存修改':'保存记录'}}</button>
+</view>

@@ -1,0 +1,11 @@
+{
+	"ios": {
+		"name": "TasteGooood"
+	},
+	"android": {
+		"name": "TasteGooood"
+	},
+	"common": {
+		"name": "TasteGooood"
+	}
+}

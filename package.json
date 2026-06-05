@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "maps:generate": "node scripts/generate-china-svg-maps.js"
+  },
+  "dependencies": {
+    "@colbymchenry/codegraph": "^0.9.9"
+  }
+}

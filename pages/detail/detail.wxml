@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="photo-swiper">
+    <swiper indicator-dots="{{images.length>1}}" autoplay="{{false}}" circular>
+      <swiper-item wx:for="{{images}}" wx:key="*this"><image class="swiper-img" src="{{item}}" mode="aspectFill" /></swiper-item>
+    </swiper>
+    <view wx:if="{{!images.length}}" class="no-photo">暂无照片</view>
+  </view>
+  <view class="info-card">
+    <view class="shop-name">{{name}}</view>
+    <view class="rating-line">
+      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="star-d {{rating>=item?'active':''}}">★</text>
+    </view>
+    <view class="address">{{address}}</view>
+    <view class="tags" wx:if="{{tags.length}}"><text wx:for="{{tags}}" wx:key="*this" class="tag-d">{{item}}</text></view>
+  </view>
+  <view wx:if="{{comment}}" class="comment-card">
+    <view class="comment-title">具体评价</view>
+    <view class="comment-text">{{comment}}</view>
+    <view class="comment-time">{{time}}</view>
+  </view>
+  <view class="action-bar">
+    <button class="act-btn" bindtap="goEdit">编辑</button>
+    <button class="act-btn del" bindtap="delete">删除</button>
+    <button class="act-btn nav" bindtap="navigate">导航</button>
+  </view>
+</view>

@@ -1,0 +1,72 @@
+{
+  "description": "TasteGood - 个人美食地图日记",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionTemplateRoot": "cloudfunctions/template/",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": true,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "filterFilesWithoutDependencies": false,
+    "ignoreUploadUnusedFiles": false,
+    "ignoreDevUnusedFiles": false
+  },
+  "appid": "wxacb02b3f03e80998",
+  "projectname": "TasteGood",
+  "libVersion": "3.7.0",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "",
+          "pathName": "pages/index/index",
+          "query": ""
+        }
+      ]
+    }
+  },
+  "compileType": "miniprogram",
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "simulatorPluginLibVersion": {
+    "wxext14566970e7e9f62": "2.27.3"
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "scripts/map-assets"
+      }
+    ],
+    "include": []
+  },
+  "projectArchitecture": "multiPlatform"
+}

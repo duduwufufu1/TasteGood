@@ -1,0 +1,57 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/cities/cities",
+    "pages/add-record/add-record",
+    "pages/detail/detail",
+    "pages/list/list",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "TasteGood",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5"
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在地图中搜索并选择店铺位置"
+    }
+  },
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#7e6a56",
+    "selectedColor": "#d8512f",
+    "backgroundColor": "#fffaf2",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "地图",
+        "iconPath": "images/map.png",
+        "selectedIconPath": "images/map-active.png"
+      },
+      {
+        "pagePath": "pages/cities/cities",
+        "text": "城市",
+        "iconPath": "images/city.png",
+        "selectedIconPath": "images/city-active.png"
+      },
+      {
+        "pagePath": "pages/list/list",
+        "text": "列表",
+        "iconPath": "images/list.png",
+        "selectedIconPath": "images/list-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
+    ]
+  }
+}
