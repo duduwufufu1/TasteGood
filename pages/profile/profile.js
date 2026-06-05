@@ -262,19 +262,26 @@ Page({
     this._wobbleStarted = true;
     const words = this.data.wordCloud;
     if (!words.length) return;
-    const wobble = [
-      { transform: 'rotate(0deg) translateY(0) translateX(0)' },
-      { transform: 'rotate(5deg) translateY(-28rpx) translateX(12rpx)' },
-      { transform: 'rotate(-4deg) translateY(18rpx) translateX(-16rpx)' },
-      { transform: 'rotate(3deg) translateY(-10rpx) translateX(8rpx)' },
-      { transform: 'rotate(-2deg) translateY(22rpx) translateX(-6rpx)' },
-      { transform: 'rotate(0deg) translateY(0) translateX(0)' }
-    ];
+    // 重力动画：词加速下落 → 触底弹跳 → 慢速回弹 → 循环
     words.forEach((w, i) => {
+      const driftX = (i % 5 - 2) * 12;
+      const fallDir = i % 2 === 0 ? 1 : -1;
+      const fallDist = 120 + (i % 3) * 40;
+      const gravity = [
+        { offset: 0,     transform: `translateX(${driftX * 0.2}rpx) translateY(0) rotate(0deg)`, easing: 'ease-in' },
+        { offset: 0.25,  transform: `translateX(${driftX * 0.5}rpx) translateY(${fallDist * 0.5}rpx) rotate(${3 * fallDir}deg)` },
+        { offset: 0.4,   transform: `translateX(${driftX * 0.8}rpx) translateY(${fallDist * 0.85}rpx) rotate(${5 * fallDir}deg)` },
+        { offset: 0.5,   transform: `translateX(${driftX * 0.9}rpx) translateY(${fallDist}rpx) rotate(${4 * fallDir}deg)` },
+        { offset: 0.58,  transform: `translateX(${driftX * 0.7}rpx) translateY(${fallDist * 0.85}rpx) rotate(${-2 * fallDir}deg)`, easing: 'ease-out' },
+        { offset: 0.65,  transform: `translateX(${driftX * 0.8}rpx) translateY(${fallDist * 0.92}rpx) rotate(${1 * fallDir}deg)` },
+        { offset: 0.72,  transform: `translateX(${driftX * 0.75}rpx) translateY(${fallDist * 0.88}rpx) rotate(${0.5 * fallDir}deg)` },
+        { offset: 0.85,  transform: `translateX(${driftX * 0.6}rpx) translateY(${fallDist * 0.5}rpx) rotate(${2 * fallDir}deg)`, easing: 'ease-out' },
+        { offset: 1,     transform: `translateX(0) translateY(0) rotate(0deg)` }
+      ];
       try {
-        this.animate(`#word-${i}`, wobble, {
-          duration: 4000 + (i % 7) * 600,
-          delay: i * 180,
+        this.animate(`#word-${i}`, gravity, {
+          duration: 5000 + (i % 5) * 800,
+          delay: i * 200,
           iterations: Infinity,
           easing: 'ease-in-out'
         });
