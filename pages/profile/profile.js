@@ -235,75 +235,10 @@ Page({
         photoWall,
         recentRecords: records.slice(0, 5)
       });
-      this.triggerWordCloudAnimation();
-      this.startWordGravity();
       if (HAS_VECTOR_MAP) { this.drawVectorMap(); }
     } catch (error) {
       console.error("[profile] load stats failed", error);
     }
-  },
-
-  triggerWordCloudAnimation() {
-    const words = this.data.wordCloud;
-    if (!words.length) return;
-    words.forEach((w, i) => {
-      setTimeout(() => {
-        const key = `wordCloud[${i}].hidden`;
-        this.setData({ [key]: false });
-      }, w.delay || i * 100);
-    });
-  },
-
-  onPageScroll() {
-    this.startWordGravity();
-  },
-
-  startWordGravity() {
-    if (this._gravityStarted) return;
-    this._gravityStarted = true;
-    const words = this.data.wordCloud;
-    if (!words.length) { this._gravityStarted = false; return; }
-
-    // 初始化物理状态
-    this._gravity = words.map(() => ({
-      y: -(Math.random() * 100 + 20),
-      vy: 0,
-      drift: (Math.random() - 0.5) * 3
-    }));
-
-    const G = 0.6;         // 重力加速度
-    const BOUNCE = 0.35;   // 弹力系数
-    const MAX_Y = 260;      // 最大下落距离(rpx)
-
-    this._gravityTimer = setInterval(() => {
-      const g = this._gravity;
-      if (!g) return;
-      const updates = {};
-      let anyMoving = false;
-
-      g.forEach((p, i) => {
-        p.vy += G;
-        p.y += p.vy;
-        p.y += Math.sin(Date.now() / 2000 + i) * 0.3; // 微风飘动
-
-        // 触底弹跳
-        if (p.y > MAX_Y) {
-          p.y = MAX_Y;
-          p.vy = -p.vy * BOUNCE;
-          // 静止阈值
-          if (Math.abs(p.vy) < 0.5) {
-            p.vy = -(Math.random() * 3 + 1);
-          }
-        }
-        // 顶部回弹（不要飞出框）
-        if (p.y < -50) { p.y = -50; p.vy = 0; }
-
-        if (Math.abs(p.vy) > 0.1 || Math.abs(p.y) > 0.5) anyMoving = true;
-        updates[`wordCloud[${i}].gy`] = Math.round(p.y);
-      });
-
-      this.setData(updates);
-    }, 40); // ~25fps
   },
 
   login() {
