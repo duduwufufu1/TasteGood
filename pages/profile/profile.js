@@ -241,7 +241,7 @@ Page({
     }
   },
 
-  login() {
+  handleLogin() {
     if (this.data.loginLoading) return;
     if (!wx.getUserProfile) {
       wx.showToast({ title: "当前基础库不支持授权", icon: "none" });
@@ -280,7 +280,7 @@ Page({
     wx.showToast({ title: "请选择头像昵称", icon: "none" });
   },
 
-  editProfile() {
+  handleEditProfile() {
     const user = this.data.user || {};
     this.setData({
       showLoginPanel: true,
@@ -367,7 +367,7 @@ Page({
     }
   },
 
-  logout() {
+  handleLogout() {
     auth.clearUser();
     this.cityTasteMap = {};
     this.atlasMapCache = null;
