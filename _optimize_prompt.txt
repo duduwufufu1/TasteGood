@@ -1,0 +1,35 @@
+请对 TasteGood 微信小程序进行前端优化，严格按照 AGENTS.md (项目级) 和 ~/.codex/AGENTS.md (全局 taste) 的规范执行。
+
+优化方向（逐个执行，每完成一个就 git commit）：
+
+1. CSS 变量提取
+   - 在 app.wxss 中定义 --primary、--bg、--text、--accent、--radius、--shadow 等 CSS 变量
+   - 移除各页面 wxss 中硬编码的重复颜色值，统一引用 CSS 变量
+   - 微信小程序支持 CSS 变量
+
+2. WXML 模板抽离
+   - 将 profile 页面的登录面板提取为独立组件 components/login-panel/
+   - 将 record-card 组件优化：支持更简洁的 API，减少冗余判断
+   - 将 add-record 页面的评分星星提取为组件优化
+
+3. JS 逻辑精简
+   - index.js (615行): 将 canvas/photo 处理代码抽到 utils/photo-helper.js
+   - profile.js (29.8KB): 将数据处理逻辑拆分到 utils/profile-helper.js
+   - add-record.js (10KB): 简化表单逻辑，减少 setData 调用频次
+
+4. WXSS 优化
+   - 合并重复的圆角、阴影、弹性布局等工具类到 app.wxss
+   - 移除未使用的样式
+   - 使用 calc() 替代部分 magic number
+
+5. 性能优化
+   - 图片懒加载: 在 list.wxml 的 image 标签上加 lazy-load
+   - 减少 setData 数据量: 合并多次 setData 调用
+   - wx:key 规范检查
+
+6. 代码一致性
+   - 检查所有 Page/Component 的事件处理函数命名是否规范 (handleXxx)
+   - 检查所有 this.setData 调用是否批量
+   - 确认 data 属性初始化完整
+
+不要破坏现有功能。每完成一个优化点就 git commit。最后 git log 展示所有变更。

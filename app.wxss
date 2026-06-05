@@ -1,7 +1,29 @@
-page {
+﻿page {
+  /* === CSS 变量（暖色主题） === */
+  --primary: #d8512f;
+  --primary-dark: #b33a28;
+  --primary-shadow: rgba(216, 81, 47, 0.22);
+  --bg: #f7f1e7;
+  --card-bg: #fffaf2;
+  --text: #251f1a;
+  --text-dark: #2f281f;
+  --text-secondary: #8b6a4d;
+  --text-muted: #9b7553;
+  --border: rgba(75, 54, 34, 0.1);
+  --border-warm: #d8b58d;
+  --border-light: #e4cbae;
+  --shadow-sm: rgba(76, 54, 32, 0.07);
+  --shadow-md: rgba(76, 54, 32, 0.08);
+  --shadow-lg: rgba(76, 54, 32, 0.12);
+  --accent: #a84e2b;
+  --accent-light: #f1dfc9;
+  --accent-bg: #fff4e5;
+  --radius-sm: 10rpx;
+  --radius: 12rpx;
+  --radius-lg: 14rpx;
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  background-color: #f7f1e7;
-  color: #251f1a;
+  background-color: var(--bg);
+  color: var(--text);
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -13,18 +35,22 @@ view, text, input, textarea, button {
 
 .container { padding: 24rpx; }
 .card {
-  background: #fffaf2;
-  border-radius: 16rpx;
+  background: var(--card-bg);
+  border-radius: var(--radius);
   padding: 28rpx;
   margin-bottom: 20rpx;
-  border: 1rpx solid rgba(67, 49, 33, 0.1);
-  box-shadow: 0 10rpx 28rpx rgba(76, 54, 32, 0.08);
+  border: 1rpx solid var(--border);
+  box-shadow: 0 10rpx 28rpx var(--shadow-md);
 }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 .page-title {
   font-size: 44rpx;
   font-weight: 800;
   padding: 36rpx 28rpx 18rpx;
-  color: #251f1a;
+  color: var(--text);
   letter-spacing: 0;
 }
+
+/* === 通用工具类 === */
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.text-ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
