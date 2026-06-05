@@ -1,4 +1,4 @@
-<view class="page">
+﻿<view class="page">
   <view class="form-hero">
     <text class="eyebrow">{{isEdit?'EDIT TASTE':'NEW TASTE'}}</text>
     <view class="hero-title">{{isEdit?'编辑记录':'添加记录'}}</view>
@@ -17,9 +17,7 @@
   </view>
   <view class="form-section">
     <view class="section-title">评分</view>
-    <view class="rating-picker">
-      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="star {{rating>=item?'active':''}}" bindtap="setRating" data-rating="{{item}}">★</text>
-    </view>
+    <star-rating rating="{{rating}}" size="a" bind:change="onRatingChange" />
   </view>
   <view class="form-section moments-section">
     <view class="section-title">图文评价</view>

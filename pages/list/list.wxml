@@ -1,4 +1,4 @@
-<view class="page">
+﻿<view class="page">
   <view class="list-hero">
     <text class="eyebrow">TASTING LOG</text>
     <view class="hero-title">美食记录</view>
@@ -18,9 +18,7 @@
       <view wx:else class="item-img no-img">味</view>
       <view class="item-info">
         <view class="item-name">{{item.name}}</view>
-        <view class="item-rating">
-          <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this" class="star-l {{item.rating>=star?'active':''}}">★</text>
-        </view>
+        <star-rating rating="{{item.rating}}" size="l" />
         <view class="item-address">{{item.city}} · {{item.address}}</view>
       </view>
     </view>

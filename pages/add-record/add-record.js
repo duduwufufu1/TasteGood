@@ -139,7 +139,7 @@ Page({
   onNameInput(e) { this.setData({ name: e.detail.value }); },
   onCommentInput(e) { this.setData({ comment: e.detail.value }); },
   onCustomTagInput(e) { this.setData({ customTag: e.detail.value }); },
-  setRating(e) { this.setData({ rating: e.currentTarget.dataset.rating }); },
+ onRatingChange(e) { this.setData({ rating: e.detail.rating }); },
 
   searchLocation() {
     wx.chooseLocation({

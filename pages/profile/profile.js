@@ -309,8 +309,6 @@ Page({
     });
   },
 
-  noop() {},
-
   async confirmLogin() {
     if (this.data.loginLoading) return;
     const nickName = String(this.data.pendingNickName || "").trim();

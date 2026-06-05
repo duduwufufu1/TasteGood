@@ -1,0 +1,15 @@
+﻿<view wx:if="{{visible}}" class="login-mask" bindtap="handleClose">
+  <view class="login-panel" catchtap="noop">
+    <view class="panel-title">{{title}}</view>
+    <view class="panel-desc">{{desc}}</view>
+    <button class="panel-avatar avatar-picker" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+      <image wx:if="{{avatarUrl}}" class="panel-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+      <text wx:else>头像</text>
+    </button>
+    <input class="panel-nickname" type="nickname" placeholder="点击选择微信昵称" value="{{nickName}}" bindinput="handleNickNameInput" />
+    <view class="panel-actions">
+      <button class="panel-btn secondary" bindtap="handleClose">取消</button>
+      <button class="panel-btn primary" loading="{{loading}}" bindtap="handleConfirm">{{submitText}}</button>
+    </view>
+  </view>
+</view>

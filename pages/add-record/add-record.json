@@ -1,4 +1,5 @@
-{
-  "navigationBarTitleText": "添加记录",
-  "usingComponents": {}
+﻿{
+  "usingComponents": {
+    "star-rating": "/components/star-rating/star-rating"
+  }
 }

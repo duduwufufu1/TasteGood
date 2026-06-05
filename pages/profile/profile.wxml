@@ -1,4 +1,4 @@
-<view class="page">
+﻿<view class="page">
   <view class="profile-hero">
     <view class="hero-copy">
       <text class="eyebrow">FOOD ATLAS</text>
@@ -27,27 +27,19 @@
     </view>
   </view>
 
-  <view wx:if="{{showLoginPanel}}" class="login-mask" catchtap="closeLoginPanel">
-    <view class="login-panel" catchtap="noop">
-      <view class="panel-title">{{profilePanelTitle}}</view>
-      <view class="panel-desc">{{profilePanelDesc}}</view>
-      <button class="panel-avatar avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-        <image wx:if="{{pendingAvatarUrl}}" class="panel-avatar-img" src="{{pendingAvatarUrl}}" mode="aspectFill" />
-        <text wx:else>头像</text>
-      </button>
-      <input
-        class="panel-nickname"
-        type="nickname"
-        placeholder="点击选择微信昵称"
-        value="{{pendingNickName}}"
-        bindinput="onNickNameInput"
-      />
-      <view class="panel-actions">
-        <button class="panel-btn secondary" bindtap="closeLoginPanel">取消</button>
-        <button class="panel-btn primary" loading="{{loginLoading}}" bindtap="confirmLogin">{{profilePanelSubmitText}}</button>
-      </view>
-    </view>
-  </view>
+  <login-panel
+    visible="{{showLoginPanel}}"
+    title="{{profilePanelTitle}}"
+    desc="{{profilePanelDesc}}"
+    submitText="{{profilePanelSubmitText}}"
+    avatarUrl="{{pendingAvatarUrl}}"
+    nickName="{{pendingNickName}}"
+    loading="{{loginLoading}}"
+    bind:close="closeLoginPanel"
+    bind:chooseavatar="onChooseAvatar"
+    bind:nicknameinput="onNickNameInput"
+    bind:confirm="confirmLogin"
+  />
 
   <view class="section atlas-section">
     <view class="section-head">

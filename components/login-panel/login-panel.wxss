@@ -1,0 +1,88 @@
+﻿/* 沿用 profile.wxss 中的样式，稍后在 profile.json 中引用 */
+.login-mask {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 50;
+  background: rgba(16, 35, 31, 0.46);
+  display: flex;
+  align-items: flex-end;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+.login-panel {
+  width: 100%;
+  padding: 32rpx 28rpx 26rpx;
+  border-radius: 16rpx;
+  background: var(--p-card-bg);
+  box-shadow: 0 26rpx 80rpx rgba(16, 35, 31, 0.28);
+  box-sizing: border-box;
+}
+.panel-title {
+  font-size: 34rpx;
+  font-weight: 900;
+  color: var(--p-text);
+  line-height: 1.15;
+}
+.panel-desc {
+  margin-top: 8rpx;
+  color: var(--p-text-secondary);
+  font-size: 24rpx;
+  line-height: 1.4;
+}
+.panel-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 28rpx auto 22rpx;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p-accent-light);
+  color: var(--p-primary);
+  font-size: 27rpx;
+  font-weight: 900;
+  overflow: hidden;
+  border: none;
+}
+.panel-avatar::after { border: none; }
+.panel-avatar-img {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  display: block;
+}
+.panel-nickname {
+  height: 82rpx;
+  line-height: 82rpx;
+  padding: 0 24rpx;
+  border-radius: var(--radius-sm);
+  background: #f3eadb;
+  color: var(--p-text);
+  font-size: 29rpx;
+  font-weight: 900;
+}
+.panel-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+.panel-btn {
+  flex: 1;
+  margin: 0;
+  height: 74rpx;
+  line-height: 74rpx;
+  border-radius: 999rpx;
+  font-size: 25rpx;
+  font-weight: 900;
+  border: none;
+}
+.panel-btn::after { border: none; }
+.panel-btn.secondary {
+  background: var(--p-accent-light);
+  color: var(--p-text-accent);
+}
+.panel-btn.primary {
+  background: var(--p-text-dark);
+  color: #fff9eb;
+}

@@ -1,4 +1,4 @@
-<view class="page">
+﻿<view class="page">
   <view class="photo-swiper">
     <swiper indicator-dots="{{images.length>1}}" autoplay="{{false}}" circular>
       <swiper-item wx:for="{{images}}" wx:key="*this"><image class="swiper-img" src="{{item}}" mode="aspectFill" /></swiper-item>
@@ -7,9 +7,7 @@
   </view>
   <view class="info-card">
     <view class="shop-name">{{name}}</view>
-    <view class="rating-line">
-      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="star-d {{rating>=item?'active':''}}">★</text>
-    </view>
+    <star-rating rating="{{rating}}" size="d" />
     <view class="address">{{address}}</view>
     <view class="tags" wx:if="{{tags.length}}"><text wx:for="{{tags}}" wx:key="*this" class="tag-d">{{item}}</text></view>
   </view>

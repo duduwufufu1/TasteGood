@@ -1,0 +1,8 @@
+﻿/* size: d(etail) 34rpx | l(ist) 24rpx | a(dd-record) 52rpx */
+.star-rating { display: flex; gap: 18rpx; }
+.star-rating--d .star-rating__star { font-size: 34rpx; color: #d4c0aa; margin-right: 4rpx; }
+.star-rating--l { gap: 0; }
+.star-rating--l .star-rating__star { font-size: 24rpx; color: #d4c0aa; }
+.star-rating--a { gap: 18rpx; }
+.star-rating--a .star-rating__star { font-size: 52rpx; color: #d4c0aa; line-height: 1; }
+.star-rating__star--active { color: var(--primary) !important; }
