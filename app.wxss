@@ -1,4 +1,4 @@
-﻿page {
+page {
   /* === CSS 变量（暖色主题） === */
   --primary: #d8512f;
   --primary-dark: #b33a28;
