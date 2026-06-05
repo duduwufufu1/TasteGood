@@ -254,39 +254,55 @@ Page({
   },
 
   onPageScroll() {
-    this.startWordWobble();
+    this.startWordGravity();
   },
 
-  startWordWobble() {
-    if (this._wobbleStarted) return;
-    this._wobbleStarted = true;
+  startWordGravity() {
+    if (this._gravityStarted) return;
+    this._gravityStarted = true;
     const words = this.data.wordCloud;
-    if (!words.length) return;
-    // 重力动画：词加速下落 → 触底弹跳 → 慢速回弹 → 循环
-    words.forEach((w, i) => {
-      const driftX = (i % 5 - 2) * 12;
-      const fallDir = i % 2 === 0 ? 1 : -1;
-      const fallDist = 120 + (i % 3) * 40;
-      const gravity = [
-        { offset: 0,     transform: `translateX(${driftX * 0.2}rpx) translateY(0) rotate(0deg)`, easing: 'ease-in' },
-        { offset: 0.25,  transform: `translateX(${driftX * 0.5}rpx) translateY(${fallDist * 0.5}rpx) rotate(${3 * fallDir}deg)` },
-        { offset: 0.4,   transform: `translateX(${driftX * 0.8}rpx) translateY(${fallDist * 0.85}rpx) rotate(${5 * fallDir}deg)` },
-        { offset: 0.5,   transform: `translateX(${driftX * 0.9}rpx) translateY(${fallDist}rpx) rotate(${4 * fallDir}deg)` },
-        { offset: 0.58,  transform: `translateX(${driftX * 0.7}rpx) translateY(${fallDist * 0.85}rpx) rotate(${-2 * fallDir}deg)`, easing: 'ease-out' },
-        { offset: 0.65,  transform: `translateX(${driftX * 0.8}rpx) translateY(${fallDist * 0.92}rpx) rotate(${1 * fallDir}deg)` },
-        { offset: 0.72,  transform: `translateX(${driftX * 0.75}rpx) translateY(${fallDist * 0.88}rpx) rotate(${0.5 * fallDir}deg)` },
-        { offset: 0.85,  transform: `translateX(${driftX * 0.6}rpx) translateY(${fallDist * 0.5}rpx) rotate(${2 * fallDir}deg)`, easing: 'ease-out' },
-        { offset: 1,     transform: `translateX(0) translateY(0) rotate(0deg)` }
-      ];
-      try {
-        this.animate(`#word-${i}`, gravity, {
-          duration: 5000 + (i % 5) * 800,
-          delay: i * 200,
-          iterations: Infinity,
-          easing: 'ease-in-out'
-        });
-      } catch(e) {}
-    });
+    if (!words.length) { this._gravityStarted = false; return; }
+
+    // 初始化物理状态
+    this._gravity = words.map(() => ({
+      y: -(Math.random() * 100 + 20),
+      vy: 0,
+      drift: (Math.random() - 0.5) * 3
+    }));
+
+    const G = 0.6;         // 重力加速度
+    const BOUNCE = 0.35;   // 弹力系数
+    const MAX_Y = 260;      // 最大下落距离(rpx)
+
+    this._gravityTimer = setInterval(() => {
+      const g = this._gravity;
+      if (!g) return;
+      const updates = {};
+      let anyMoving = false;
+
+      g.forEach((p, i) => {
+        p.vy += G;
+        p.y += p.vy;
+        p.y += Math.sin(Date.now() / 2000 + i) * 0.3; // 微风飘动
+
+        // 触底弹跳
+        if (p.y > MAX_Y) {
+          p.y = MAX_Y;
+          p.vy = -p.vy * BOUNCE;
+          // 静止阈值
+          if (Math.abs(p.vy) < 0.5) {
+            p.vy = -(Math.random() * 3 + 1);
+          }
+        }
+        // 顶部回弹（不要飞出框）
+        if (p.y < -50) { p.y = -50; p.vy = 0; }
+
+        if (Math.abs(p.vy) > 0.1 || Math.abs(p.y) > 0.5) anyMoving = true;
+        updates[`wordCloud[${i}].gy`] = Math.round(p.y);
+      });
+
+      this.setData(updates);
+    }, 40); // ~25fps
   },
 
   login() {
