@@ -35,12 +35,6 @@
         "selectedIconPath": "images/city-active.png"
       },
       {
-        "pagePath": "pages/index/index",
-        "text": "地图",
-        "iconPath": "images/map.png",
-        "selectedIconPath": "images/map-active.png"
-      },
-      {
         "pagePath": "pages/list/list",
         "text": "列表",
         "iconPath": "images/list.png",

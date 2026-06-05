@@ -37,7 +37,7 @@ Page({
     const { city, lat, lng } = e.currentTarget.dataset;
     app.globalData.selectCity = city;
     app.globalData.selectCenter = { lat: Number(lat), lng: Number(lng) };
-    wx.switchTab({ url: "/pages/index/index" });
+    wx.navigateTo({ url: "/pages/index/index" });
   },
   handleGoAddRecord() { wx.navigateTo({ url: "/pages/add-record/add-record" }); }
 });

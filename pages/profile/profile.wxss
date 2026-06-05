@@ -12,15 +12,7 @@ page {
   --p-accent-light: #edf5ee;
   --p-accent-mid: #d9e5df;
 }
-.page{min-height:100vh;background:var(--p-bg);padding:0 22rpx 34rpx;color:var(--p-text);font-family:"Songti SC","STSong",serif}
-.profile-hero{display:flex;align-items:center;justify-content:space-between;margin:0 -22rpx 22rpx;padding:42rpx 32rpx 34rpx;background:var(--p-text-dark);color:#f7f0de;border-bottom:1rpx solid rgba(255,255,255,0.16);box-shadow:0 18rpx 44rpx rgba(16,43,40,0.22)}
-.hero-copy{min-width:0;flex:1}
-.eyebrow{display:block;margin-bottom:12rpx;color:#92c8b4;font-size:19rpx;font-weight:900;letter-spacing:0}
-.hero-title{font-size:48rpx;font-weight:900;line-height:1.08;letter-spacing:0}
-.hero-subtitle{display:block;margin-top:12rpx;color:#d7e4d8;font-size:24rpx;line-height:1.45}
-.hero-badge{width:112rpx;height:112rpx;margin-left:24rpx;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--p-primary);color:#fff9eb;box-shadow:0 14rpx 32rpx rgba(200,70,50,0.34)}
-.badge-num{font-size:40rpx;font-weight:900;line-height:1}
-.badge-label{font-size:21rpx;font-weight:800;margin-top:4rpx}
+.page{min-height:100vh;background:var(--p-bg);padding:28rpx 22rpx 34rpx;color:var(--p-text);font-family:"Songti SC","STSong",serif}
 .login-card{margin:0 0 24rpx;padding:20rpx 22rpx;background:var(--p-card-bg);border:1rpx solid var(--p-border);border-radius:12rpx;box-shadow:0 12rpx 28rpx var(--p-border);display:flex;align-items:center;justify-content:space-between;gap:18rpx}
 .login-user{display:flex;align-items:center;min-width:0;flex:1}
 .login-avatar{width:82rpx;height:82rpx;border-radius:50%;margin-right:18rpx;flex-shrink:0;background:var(--p-accent-mid)}
