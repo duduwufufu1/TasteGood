@@ -263,17 +263,18 @@ Page({
     const words = this.data.wordCloud;
     if (!words.length) return;
     const wobble = [
-      { transform: 'rotate(0deg) translateY(0)' },
-      { transform: 'rotate(2deg) translateY(-8rpx)' },
-      { transform: 'rotate(-1.5deg) translateY(4rpx)' },
-      { transform: 'rotate(0.8deg) translateY(-2rpx)' },
-      { transform: 'rotate(0deg) translateY(0)' }
+      { transform: 'rotate(0deg) translateY(0) translateX(0)' },
+      { transform: 'rotate(5deg) translateY(-28rpx) translateX(12rpx)' },
+      { transform: 'rotate(-4deg) translateY(18rpx) translateX(-16rpx)' },
+      { transform: 'rotate(3deg) translateY(-10rpx) translateX(8rpx)' },
+      { transform: 'rotate(-2deg) translateY(22rpx) translateX(-6rpx)' },
+      { transform: 'rotate(0deg) translateY(0) translateX(0)' }
     ];
     words.forEach((w, i) => {
       try {
         this.animate(`#word-${i}`, wobble, {
-          duration: 3000 + (i % 5) * 400,
-          delay: i * 120,
+          duration: 4000 + (i % 7) * 600,
+          delay: i * 180,
           iterations: Infinity,
           easing: 'ease-in-out'
         });

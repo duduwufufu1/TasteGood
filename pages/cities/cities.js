@@ -26,7 +26,10 @@ Page({
         }
         cityMap[city].count++;
         if (cityMap[city].photos.length < 3 && r.images && r.images[0]) {
-          cityMap[city].photos.push(r.images[0]);
+          const photo = r.images[0];
+          if (!cityMap[city].photos.includes(photo)) {
+            cityMap[city].photos.push(photo);
+          }
         }
       }
       // 将云文件 ID 下载为本地临时路径，供 image 组件显示
