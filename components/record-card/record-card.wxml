@@ -1,0 +1,9 @@
+<view class="record-card" bindtap="handleTap">
+  <image wx:if="{{photo}}" class="card-img" src="{{photo}}" mode="aspectFill" />
+  <view wx:else class="card-img card-img--no">味</view>
+  <view class="card-info">
+    <view class="card-name">{{name}}</view>
+    <star-rating rating="{{rating}}" size="l" />
+    <view class="card-address">{{city}}{{city && address ? ' · ' : ''}}{{address}}</view>
+  </view>
+</view>

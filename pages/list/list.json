@@ -1,5 +1,6 @@
 ﻿{
   "usingComponents": {
-    "star-rating": "/components/star-rating/star-rating"
+    "star-rating": "/components/star-rating/star-rating",
+    "record-card": "/components/record-card/record-card"
   }
 }

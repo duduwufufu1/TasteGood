@@ -13,15 +13,16 @@
     <text class="filter-btn sort" bindtap="toggleSort">{{sortAsc?'最早':'最近'}}</text>
   </view>
   <scroll-view scroll-y class="record-list" bindscrolltolower="loadMore">
-    <view wx:for="{{records}}" wx:key="_id" class="record-item" bindtap="goDetail" data-id="{{item._id}}">
-      <image wx:if="{{item.images && item.images[0]}}" class="item-img" src="{{item.images[0]}}" mode="aspectFill" />
-      <view wx:else class="item-img no-img">味</view>
-      <view class="item-info">
-        <view class="item-name">{{item.name}}</view>
-        <star-rating rating="{{item.rating}}" size="l" />
-        <view class="item-address">{{item.city}} · {{item.address}}</view>
-      </view>
-    </view>
+    <record-card
+      wx:for="{{records}}" wx:key="_id"
+      record-id="{{item._id}}"
+      name="{{item.name}}"
+      rating="{{item.rating}}"
+      city="{{item.city}}"
+      address="{{item.address}}"
+      photo="{{item.images[0]}}"
+      bind:tap="goDetail"
+    />
     <view wx:if="{{!loading && !records.length}}" class="empty-list">
       <text class="empty-title">还没有记录</text>
       <text class="empty-copy">去地图上添加第一家店</text>

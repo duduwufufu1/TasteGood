@@ -1,19 +1,10 @@
 const db = wx.cloud.database();
 const recordRegion = require("../../utils/record-region");
-const chinaMap = require("../../utils/china-map-data");
-const auth = require("../../utils/auth");
-const userRecords = require("../../utils/user-records");
+ const chinaMap = require("../../utils/china-map-data");
+ const auth = require("../../utils/auth");
+ const userRecords = require("../../utils/user-records");
+ const { buildCityMap, buildWordCloud, buildPhotoWall } = require("../../utils/profile-helper");
 
-const WORDS = ["好吃","推荐","必吃","惊喜","舒服","新鲜","香","辣","甜","咸","酸","脆","嫩","鲜","浓郁","清爽","满足","治愈","精致","实惠","性价比","环境","服务","排队","朋友","家人","下次","踩雷","一般","失望"];
-const CLOUD_POSITIONS = [
-  {left:210,top:132,rotate:0},{left:86,top:92,rotate:-8},{left:356,top:92,rotate:8},
-  {left:142,top:204,rotate:6},{left:334,top:202,rotate:-7},{left:46,top:174,rotate:12},
-  {left:464,top:166,rotate:-12},{left:236,top:56,rotate:7},{left:246,top:268,rotate:-6},
-  {left:38,top:46,rotate:0},{left:476,top:48,rotate:0},{left:82,top:276,rotate:-10},
-  {left:444,top:280,rotate:10},{left:188,top:12,rotate:-6},{left:360,top:20,rotate:6},
-  {left:18,top:230,rotate:7},{left:534,top:226,rotate:-7},{left:300,top:318,rotate:0}
-];
-const CLOUD_COLORS = ["#c84632","#203c3a","#245f73","#93623b","#6f8d67","#a63d57"];
 const HAS_VECTOR_MAP = chinaMap && chinaMap.cities && chinaMap.cities.length > 0;
 const MIN_ATLAS_ZOOM = 0.85;
 const MAX_ATLAS_ZOOM = 8;
@@ -72,23 +63,6 @@ const ATLAS_TEMPLATE = [
   {city:"海口", province:"海南", shortName:"海口", left:324, top:700, width:72, height:50, radius:"28rpx 20rpx 28rpx 22rpx", rotate:4, skew:0},
   {city:"三亚", province:"海南", shortName:"三亚", left:406, top:714, width:72, height:50, radius:"22rpx 30rpx 24rpx 20rpx", rotate:-4, skew:0}
 ];
-
-function buildCityMap(records) {
-  const map = {};
-  records.forEach((record) => {
-    const info = recordRegion.inferRecordRegion(record);
-    const city = info.city;
-    if (!map[city]) {
-      map[city] = {
-        city,
-        province: info.province,
-        count: 0
-      };
-    }
-    map[city].count += 1;
-  });
-  return map;
-}
 
 Page({
   data: {
@@ -187,37 +161,9 @@ Page({
         });
       }
 
-      const wordCount = {};
-      records.forEach((record) => {
-        const text = record.comment || "";
-        WORDS.forEach((word) => {
-          if (text.indexOf(word) !== -1) {
-            wordCount[word] = (wordCount[word] || 0) + 1;
-          }
-        });
-      });
-      const wordCloud = Object.keys(wordCount).sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 18).map((text, index) => {
-        const pos = CLOUD_POSITIONS[index] || CLOUD_POSITIONS[CLOUD_POSITIONS.length - 1];
-        const size = index === 0 ? 52 : (index < 3 ? 44 : (index < 7 ? 36 : (index < 12 ? 30 : 24)));
-        return {
-          text,
-          count: wordCount[text],
-          size,
-          left: pos.left,
-          top: pos.top,
-          rotate: pos.rotate,
-          color: CLOUD_COLORS[index % CLOUD_COLORS.length]
-        };
-      });
+      const wordCloud = buildWordCloud(records, 18);
 
-      const photoWall = [];
-      records.forEach((record) => {
-        (record.images || []).forEach((src) => {
-          if (photoWall.length < 12) {
-            photoWall.push({ src, recordId: record._id });
-          }
-        });
-      });
+      const photoWall = buildPhotoWall(records, 12);
 
       this.cityTasteMap = cityMap;
       this.maxHeatCount = Math.max(1, maxHeatCount);

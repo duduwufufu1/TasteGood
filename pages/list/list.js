@@ -1,14 +1,14 @@
-const { COLLECTION } = require("../../utils/constants");
+﻿const { COLLECTION } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
 const db = wx.cloud.database();
 const TAG_NAME_MAP = {
-  breakfast:"早餐", lunch:"午餐", dinner:"晚餐", dessert:"甜品", drink:"饮品",
-  snack:"小吃", hotpot:"火锅", bbq:"烧烤", musttry:"必吃", avoid:"踩雷"
+  breakfast:"鏃╅", lunch:"鍗堥", dinner:"鏅氶", dessert:"鐢滃搧", drink:"楗搧",
+  snack:"灏忓悆", hotpot:"鐏攨", bbq:"鐑х儰", musttry:"蹇呭悆", avoid:"韪╅浄"
 };
 Page({
-  data: { records: [], currentCity: "", currentTag: "", currentTagName: "", cityList: ["全部城市"],
-    tagList: ["全部标签","早餐","午餐","晚餐","甜品","饮品","小吃","火锅","烧烤","必吃","踩雷"],
+  data: { records: [], currentCity: "", currentTag: "", currentTagName: "", cityList: ["鍏ㄩ儴鍩庡競"],
+    tagList: ["鍏ㄩ儴鏍囩","鏃╅","鍗堥","鏅氶","鐢滃搧","楗搧","灏忓悆","鐏攨","鐑х儰","蹇呭悆","韪╅浄"],
     tagKeyList: [""],
     sortAsc: false, loading: false, pageSize: 20, loadedAll: false, querySkip: 0
   },
@@ -23,8 +23,8 @@ Page({
       }));
       const presetKeys = ["breakfast","lunch","dinner","dessert","drink","snack","hotpot","bbq","musttry","avoid"];
       this.setData({
-        cityList: ["全部城市", ...cities],
-        tagList: ["全部标签", ...presetKeys.map(k=>TAG_NAME_MAP[k]), ...customTags],
+        cityList: ["鍏ㄩ儴鍩庡競", ...cities],
+        tagList: ["鍏ㄩ儴鏍囩", ...presetKeys.map(k=>TAG_NAME_MAP[k]), ...customTags],
         tagKeyList: ["", ...presetKeys, ...customTags]
       });
     } catch(e) {}
@@ -67,7 +67,7 @@ Page({
   loadMore() { this.loadRecords(); },
   onCityChange(e) {
     const c = this.data.cityList[e.detail.value];
-    this.setData({ currentCity: c==="全部城市"?"":c, records: [], loadedAll: false, querySkip: 0 });
+    this.setData({ currentCity: c==="鍏ㄩ儴鍩庡競"?"":c, records: [], loadedAll: false, querySkip: 0 });
     this.loadRecords();
   },
   onTagChange(e) {
@@ -78,5 +78,5 @@ Page({
     this.loadRecords();
   },
   toggleSort() { this.setData({ sortAsc: !this.data.sortAsc, records: [], loadedAll: false, querySkip: 0 }); this.loadRecords(); },
-  goDetail(e) { wx.navigateTo({ url: "/pages/detail/detail?id="+e.currentTarget.dataset.id }); }
+  goDetail(e) { wx.navigateTo({ url: "/pages/detail/detail?id=" + e.detail.id }); }
 });
