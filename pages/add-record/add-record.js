@@ -46,7 +46,7 @@ Page({
       const record = res.data || {};
       const owner = record.userId || record.openid || record._openid || "";
       if (owner !== user.openid) {
-        wx.showToast({ title: "閺冪姵娼堢紓鏍帆鐠囥儴顔囪ぐ?, icon: "none" });
+        wx.showToast({ title: "无权编辑该记录", icon: "none" });
         setTimeout(() => wx.navigateBack(), 900);
         return;
       }
@@ -71,32 +71,40 @@ Page({
     } catch (e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "鐠囧嘲鍘涢崚鐗堝灉閻ㄥ嫰銆夐惂璇茬秿", icon: "none" });
+        wx.showToast({ title: "请先到我的页登录", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "鐠佹澘缍嶉崝鐘烘祰婢惰精瑙?, icon: "none" });
+      wx.showToast({ title: "记录加载失败", icon: "none" });
       this.initDefaultLocation();
     }
   },
 
+  // 从 REGIONS 数据确定省份和城市
+  determineRegion(lat, lng) {
+    const nearest = recordRegion.nearestRegion(lat, lng);
+    this.setData({
+      province: nearest ? nearest.province : "",
+      city: nearest ? nearest.city : ""
+    });
+  },
 
-  // 娴犲骸婀撮崸鈧弬鍥ㄦ拱娑擃厽褰侀崣鏍阜娴犺棄鎷伴崺搴＄娣団剝浼呴敍宀冪箲閸?{ province?, city? } 閹?null
-  getRegionFromText(text) {
+  applyRegionFromText(text) {
     const value = String(text || "");
-    if (!value) return null;
+    if (!value) return false;
     const province = recordRegion.normalizeProvinceNameFromAddressStart(value);
     const city = recordRegion.normalizeCityNameFromAddressStart(value, province || this.data.province);
-    const result = {};
-    if (province) result.province = province;
-    if (city) result.city = city;
-    if (!result.province && city) {
+    const data = {};
+    if (province) data.province = province;
+    if (city) data.city = city;
+    if (!data.province && city) {
       const cityInfo = recordRegion.getCityEntry(city);
-      if (cityInfo) result.province = cityInfo.province;
+      if (cityInfo) data.province = cityInfo.province;
     }
-    if (!result.province && !result.city) return null;
-    return result;
- },
+    if (!data.province && !data.city) return false;
+    this.setData(data);
+    return !!data.city;
+  },
 
   reverseGeocode(lat, lng) {
     if (!TENCENT_MAP_KEY) return;
@@ -116,27 +124,24 @@ Page({
     });
   },
 
- handleMapTap(e) {
-   const { latitude, longitude } = e.detail;
-   const nearest = recordRegion.nearestRegion(latitude, longitude);
-   this.setData({
-     pickLat: latitude,
-     pickLng: longitude,
-     address: "瀹告煡鈧瀚ㄦ担宥囩枂 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
-     province: nearest?.province || this.data.province,
-     city: nearest?.city || this.data.city,
-     pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
-   });
-   wx.showToast({ title: "娴ｅ秶鐤嗗鏌モ偓澶婄暰", icon: "none" });
-   this.reverseGeocode(latitude, longitude);
- },
+  onMapTap(e) {
+    const { latitude, longitude } = e.detail;
+    this.setData({
+      pickLat: latitude, pickLng: longitude,
+      address: "已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
+      pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
+    });
+    wx.showToast({ title: "位置已选定", icon: "none" });
+    this.determineRegion(latitude, longitude);
+    this.reverseGeocode(latitude, longitude);
+  },
 
   onNameInput(e) { this.setData({ name: e.detail.value }); },
   onCommentInput(e) { this.setData({ comment: e.detail.value }); },
   onCustomTagInput(e) { this.setData({ customTag: e.detail.value }); },
- onRatingChange(e) { this.setData({ rating: e.detail.rating }); },
+  setRating(e) { this.setData({ rating: e.currentTarget.dataset.rating }); },
 
-  handleSearchLocation() {
+  searchLocation() {
     wx.chooseLocation({
       latitude: this.data.pickLat,
       longitude: this.data.pickLng,
@@ -149,7 +154,7 @@ Page({
           pickLng: longitude,
           pickScale: 15,
           name: this.data.name || res.name || "",
-          address: res.address || res.name || ("瀹告煡鈧瀚ㄦ担宥囩枂 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
+          address: res.address || res.name || ("已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4)),
           pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
         });
         if (!this.applyRegionFromText(res.address || "")) {
@@ -158,22 +163,22 @@ Page({
       },
       fail: (err) => {
         console.warn(err);
-        wx.showToast({ title: "閺堫亪鈧瀚ㄦ担宥囩枂", icon: "none" });
+        wx.showToast({ title: "未选择位置", icon: "none" });
       }
     });
   },
 
-  handleToggleTag(e) {
+  toggleTag(e) {
     const key = e.currentTarget.dataset.key;
     let sel = this.data.selectedTags;
     sel = sel.indexOf(key) !== -1 ? sel.filter(t => t !== key) : [...sel, key];
     this.setData({ selectedTags: sel }, () => this.refreshDisplayTags());
   },
 
-  handleAddCustomTag() {
+  addCustomTag() {
     const tag = this.data.customTag.trim().replace(/^#/, "");
-    if (!tag) { wx.showToast({ title: "鐠囩柉绶崗銉︾垼缁?, icon: "none" }); return; }
-    if (tag.length > 8) { wx.showToast({ title: "閺嶅洨顒烽張鈧径?娑擃亜鐡?, icon: "none" }); return; }
+    if (!tag) { wx.showToast({ title: "请输入标签", icon: "none" }); return; }
+    if (tag.length > 8) { wx.showToast({ title: "标签最多8个字", icon: "none" }); return; }
     if (this.data.selectedTags.includes(tag)) {
       this.setData({ customTag: "" });
       return;
@@ -196,7 +201,7 @@ Page({
     this.setData({ displayTags });
   },
 
-  handleAddPhoto() {
+  addPhoto() {
     wx.chooseImage({
       count: 9 - this.data.photos.length,
       sizeType: ["compressed"],
@@ -207,15 +212,15 @@ Page({
     });
   },
 
-  handleRemovePhoto(e) {
+  removePhoto(e) {
     const idx = e.currentTarget.dataset.index;
     this.setData({ photos: this.data.photos.filter((_, i) => i !== idx) });
   },
 
-  async handleSubmit() {
+  async submit() {
     const { id, isEdit, name, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
-    if (!name) { wx.showToast({ title: "鐠囩柉绶崗銉ョ暗闁惧搫鎮曠粔?, icon: "none" }); return; }
-    if (rating === 0) { wx.showToast({ title: "鐠囩柉鐦庨崚?, icon: "none" }); return; }
+    if (!name) { wx.showToast({ title: "请输入店铺名称", icon: "none" }); return; }
+    if (rating === 0) { wx.showToast({ title: "请评分", icon: "none" }); return; }
 
     this.setData({ submitting: true });
 
@@ -257,19 +262,18 @@ Page({
         });
       }
 
-      wx.showToast({ title: isEdit ? "娣囶喗鏁奸幋鎰" : "娣囨繂鐡ㄩ幋鎰" });
+      wx.showToast({ title: isEdit ? "修改成功" : "保存成功" });
       setTimeout(() => wx.navigateBack(), 1500);
     } catch(e) {
       console.error(e);
       if (e && (e.code === "LOGIN_REQUIRED" || e.message === "LOGIN_REQUIRED")) {
-        wx.showToast({ title: "鐠囧嘲鍘涢崚鐗堝灉閻ㄥ嫰銆夐惂璇茬秿", icon: "none" });
+        wx.showToast({ title: "请先到我的页登录", icon: "none" });
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
-      wx.showToast({ title: "娣囨繂鐡ㄦ径杈Е", icon: "none" });
+      wx.showToast({ title: "保存失败", icon: "none" });
     } finally {
       this.setData({ submitting: false });
     }
   }
 });
-

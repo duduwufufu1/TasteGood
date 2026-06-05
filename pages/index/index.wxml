@@ -14,31 +14,30 @@
       enable-overlooking="{{false}}"
       enable-rotate="{{false}}"
     ></map>
-    <view class="map-reset" bindtap="handleGoCountry">鈫</view>
+    <view class="map-reset" bindtap="goCountry">↺</view>
   </view>
 
   <view class="map-note">
     <view class="note-text">
-      <text class="note-title">{{level==='country'?'鍏ㄥ浗缇庨鍦板浘':(level==='province'?province:city)}}</text>
-      <text class="note-copy">{{level==='country'?'鐐瑰嚮鐪佷唤鏍囪锛岄€愮骇鏌ョ湅鍚冭繃鐨勫煄甯?:(level==='province'?'閫夋嫨鍩庡競鎴栫偣鍑绘爣璁版煡鐪嬭褰?:'鐐瑰嚮鏍囪鏌ョ湅搴楅摵璇︽儏')}}</text>
+      <text class="note-title">{{level==='country'?'全国美食地图':(level==='province'?province:city)}}</text>
+      <text class="note-copy">{{level==='country'?'点击省份标记，逐级查看吃过的城市':(level==='province'?'选择城市或点击标记查看记录':'点击标记查看店铺详情')}}</text>
     </view>
-    <text class="note-add" bindtap="handleGoAddRecord">+</text>
+    <text class="note-add" bindtap="goAddRecord">+</text>
   </view>
 
-  <view class="overlay {{showPicker?'show':''}}" bindtap="handleHidePicker">
+  <view class="overlay {{showPicker?'show':''}}" bindtap="hidePicker">
     <view class="panel" catchtap="">
       <view class="panel-hd">
-        <text class="panel-title">{{province}} 路 閫夋嫨鍩庡競</text>
-        <text class="panel-close" bindtap="handleHidePicker">鍏抽棴</text>
+        <text class="panel-title">{{province}} · 选择城市</text>
+        <text class="panel-close" bindtap="hidePicker">关闭</text>
       </view>
       <scroll-view class="panel-list" scroll-y>
-        <view wx:for="{{pickerItems}}" wx:key="name" class="panel-item" bindtap="handleSelectCity"
+        <view wx:for="{{pickerItems}}" wx:key="name" class="panel-item" bindtap="selectCity"
           data-name="{{item.name}}" data-lat="{{item.center.lat}}" data-lng="{{item.center.lng}}">
           <text class="pi-name">{{item.name}}</text>
-          <text class="pi-count">{{item.count||0}} 鏉¤褰</text>
+          <text class="pi-count">{{item.count||0}} 条记录</text>
         </view>
       </scroll-view>
     </view>
   </view>
 </view>
-

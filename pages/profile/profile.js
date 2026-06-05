@@ -1,10 +1,19 @@
 const db = wx.cloud.database();
 const recordRegion = require("../../utils/record-region");
- const chinaMap = require("../../utils/china-map-data");
- const auth = require("../../utils/auth");
- const userRecords = require("../../utils/user-records");
- const { buildCityMap, buildWordCloud, buildPhotoWall } = require("../../utils/profile-helper");
+const chinaMap = require("../../utils/china-map-data");
+const auth = require("../../utils/auth");
+const userRecords = require("../../utils/user-records");
 
+const WORDS = ["好吃","推荐","必吃","惊喜","舒服","新鲜","香","辣","甜","咸","酸","脆","嫩","鲜","浓郁","清爽","满足","治愈","精致","实惠","性价比","环境","服务","排队","朋友","家人","下次","踩雷","一般","失望"];
+const CLOUD_POSITIONS = [
+  {left:210,top:132,rotate:0},{left:86,top:92,rotate:-8},{left:356,top:92,rotate:8},
+  {left:142,top:204,rotate:6},{left:334,top:202,rotate:-7},{left:46,top:174,rotate:12},
+  {left:464,top:166,rotate:-12},{left:236,top:56,rotate:7},{left:246,top:268,rotate:-6},
+  {left:38,top:46,rotate:0},{left:476,top:48,rotate:0},{left:82,top:276,rotate:-10},
+  {left:444,top:280,rotate:10},{left:188,top:12,rotate:-6},{left:360,top:20,rotate:6},
+  {left:18,top:230,rotate:7},{left:534,top:226,rotate:-7},{left:300,top:318,rotate:0}
+];
+const CLOUD_COLORS = ["#c84632","#203c3a","#245f73","#93623b","#6f8d67","#a63d57"];
 const HAS_VECTOR_MAP = chinaMap && chinaMap.cities && chinaMap.cities.length > 0;
 const MIN_ATLAS_ZOOM = 0.85;
 const MAX_ATLAS_ZOOM = 8;
@@ -22,47 +31,64 @@ function isRealWeChatProfile(profile) {
   if (!profile) return false;
   const nickName = String(profile.nickName || "").trim();
   const avatarUrl = String(profile.avatarUrl || "").trim();
-  return !!nickName && nickName !== "瀵邦喕淇婇悽銊﹀煕" && !!avatarUrl;
+  return !!nickName && nickName !== "微信用户" && !!avatarUrl;
 }
 
 const ATLAS_TEMPLATE = [
-  {city:"濞屽牓妲?, province:"鏉堣棄鐣?, shortName:"濞屽牓妲?, left:546, top:46, width:82, height:60, radius:"34rpx 24rpx 28rpx 24rpx", rotate:5, skew:0},
-  {city:"婢堆嗙箾", province:"鏉堣棄鐣?, shortName:"婢堆嗙箾", left:558, top:112, width:74, height:54, radius:"24rpx 36rpx 22rpx 30rpx", rotate:-4, skew:0},
-  {city:"閸栨ぞ鍚?, province:"閸栨ぞ鍚?, shortName:"閸栨ぞ鍚?, left:456, top:102, width:72, height:58, radius:"34rpx 26rpx 20rpx 28rpx", rotate:-2, skew:-4},
-  {city:"婢垛晜瑙?, province:"婢垛晜瑙?, shortName:"婢垛晜瑙?, left:524, top:150, width:70, height:52, radius:"22rpx 30rpx 28rpx 20rpx", rotate:6, skew:0},
-  {city:"閻啿顔嶆惔?, province:"濞屽啿瀵?, shortName:"閻啿顔嶆惔?, left:420, top:166, width:104, height:58, radius:"26rpx 20rpx 34rpx 24rpx", rotate:2, skew:-3},
-  {city:"濞村骸宕?, province:"鐏炲彉绗?, shortName:"濞村骸宕?, left:498, top:218, width:84, height:58, radius:"26rpx 32rpx 22rpx 28rpx", rotate:-2, skew:0},
-  {city:"闂堟帒鐭?, province:"鐏炲彉绗?, shortName:"闂堟帒鐭?, left:576, top:238, width:76, height:54, radius:"22rpx 34rpx 24rpx 30rpx", rotate:4, skew:0},
-  {city:"闁垵绐?, province:"濞屽啿宕?, shortName:"闁垵绐?, left:394, top:250, width:92, height:62, radius:"26rpx 22rpx 32rpx 24rpx", rotate:-3, skew:0},
-  {city:"鐟楀灝鐣?, province:"闂勬洝銈?, shortName:"鐟楀灝鐣?, left:298, top:258, width:92, height:62, radius:"28rpx 20rpx 30rpx 26rpx", rotate:4, skew:-5},
-  {city:"閸氬牐鍋?, province:"鐎瑰绐?, shortName:"閸氬牐鍋?, left:488, top:306, width:78, height:56, radius:"24rpx 20rpx 28rpx 32rpx", rotate:3, skew:0},
-  {city:"閸楁ぞ鍚?, province:"濮圭喕瀚?, shortName:"閸楁ぞ鍚?, left:566, top:300, width:76, height:54, radius:"24rpx 30rpx 22rpx 26rpx", rotate:-3, skew:0},
-  {city:"閺冪娀鏁?, province:"濮圭喕瀚?, shortName:"閺冪娀鏁?, left:620, top:352, width:62, height:46, radius:"18rpx 28rpx 20rpx 22rpx", rotate:6, skew:0},
-  {city:"閼诲繐绐?, province:"濮圭喕瀚?, shortName:"閼诲繐绐?, left:574, top:362, width:64, height:48, radius:"22rpx 18rpx 26rpx 20rpx", rotate:-5, skew:0},
-  {city:"娑撳﹥鎹?, province:"娑撳﹥鎹?, shortName:"娑撳﹥鎹?, left:638, top:400, width:66, height:52, radius:"20rpx 30rpx 22rpx 24rpx", rotate:4, skew:0},
-  {city:"濮濓附鐪?, province:"濠€鏍у", shortName:"濮濓附鐪?, left:394, top:332, width:92, height:64, radius:"30rpx 22rpx 26rpx 32rpx", rotate:2, skew:0},
-  {city:"閸楁妲?, province:"濮圭喕銈?, shortName:"閸楁妲?, left:490, top:394, width:82, height:58, radius:"24rpx 20rpx 34rpx 24rpx", rotate:-4, skew:0},
-  {city:"閺夘厼绐?, province:"濞存瑦鐫?, shortName:"閺夘厼绐?, left:574, top:422, width:82, height:58, radius:"26rpx 32rpx 22rpx 30rpx", rotate:3, skew:0},
-  {city:"鐎逛焦灏?, province:"濞存瑦鐫?, shortName:"鐎逛焦灏?, left:640, top:468, width:68, height:50, radius:"20rpx 30rpx 20rpx 26rpx", rotate:-3, skew:0},
-  {city:"濞撯晛绐?, province:"濞存瑦鐫?, shortName:"濞撯晛绐?, left:584, top:502, width:76, height:52, radius:"24rpx 20rpx 32rpx 22rpx", rotate:5, skew:0},
-  {city:"闂€鎸庣煓", province:"濠€鏍у础", shortName:"闂€鎸庣煓", left:384, top:408, width:86, height:62, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
-  {city:"閺嶎亝搴?, province:"濠€鏍у础", shortName:"閺嶎亝搴?, left:454, top:462, width:76, height:52, radius:"22rpx 30rpx 20rpx 26rpx", rotate:5, skew:0},
-  {city:"闁插秴绨?, province:"闁插秴绨?, shortName:"闁插秴绨?, left:286, top:392, width:86, height:62, radius:"28rpx 22rpx 34rpx 24rpx", rotate:3, skew:0},
-  {city:"閹存劙鍏?, province:"閸ユ稑绐?, shortName:"閹存劙鍏?, left:198, top:356, width:94, height:66, radius:"34rpx 22rpx 28rpx 30rpx", rotate:-4, skew:0},
-  {city:"濡楀倹鐏?, province:"楠炶儻銈?, shortName:"濡楀倹鐏?, left:300, top:478, width:80, height:56, radius:"24rpx 30rpx 22rpx 28rpx", rotate:-3, skew:0},
-  {city:"閸楁鐣?, province:"楠炶儻銈?, shortName:"閸楁鐣?, left:244, top:532, width:86, height:60, radius:"30rpx 22rpx 26rpx 34rpx", rotate:4, skew:0},
-  {city:"閺勫棙妲?, province:"娴滄垵宕?, shortName:"閺勫棙妲?, left:146, top:502, width:88, height:62, radius:"34rpx 24rpx 28rpx 24rpx", rotate:-5, skew:0},
-  {city:"婢堆呮倞", province:"娴滄垵宕?, shortName:"婢堆呮倞", left:70, top:480, width:76, height:54, radius:"30rpx 20rpx 26rpx 24rpx", rotate:4, skew:0},
-  {city:"缁傚繐绐?, province:"缁傚繐缂?, shortName:"缁傚繐绐?, left:528, top:514, width:80, height:56, radius:"24rpx 30rpx 28rpx 22rpx", rotate:-4, skew:0},
-  {city:"閸橈箓妫?, province:"缁傚繐缂?, shortName:"閸橈箓妫?, left:516, top:572, width:76, height:52, radius:"22rpx 28rpx 22rpx 30rpx", rotate:4, skew:0},
-  {city:"楠炲灝绐?, province:"楠炲じ绗?, shortName:"楠炲灝绐?, left:400, top:552, width:84, height:60, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
-  {city:"娴ｆ稑鍖?, province:"楠炲じ绗?, shortName:"娴ｆ稑鍖?, left:330, top:574, width:74, height:52, radius:"24rpx 20rpx 30rpx 24rpx", rotate:5, skew:0},
-  {city:"娑撴粏甯?, province:"楠炲じ绗?, shortName:"娑撴粏甯?, left:480, top:594, width:74, height:52, radius:"20rpx 28rpx 24rpx 30rpx", rotate:-3, skew:0},
-  {city:"濞ｅ崬婀?, province:"楠炲じ绗?, shortName:"濞ｅ崬婀?, left:422, top:626, width:78, height:54, radius:"26rpx 22rpx 30rpx 24rpx", rotate:4, skew:0},
-  {city:"閻濈姵鎹?, province:"楠炲じ绗?, shortName:"閻濈姵鎹?, left:346, top:632, width:72, height:50, radius:"22rpx 28rpx 20rpx 26rpx", rotate:-4, skew:0},
-  {city:"濞村嘲褰?, province:"濞村嘲宕?, shortName:"濞村嘲褰?, left:324, top:700, width:72, height:50, radius:"28rpx 20rpx 28rpx 22rpx", rotate:4, skew:0},
-  {city:"娑撳绨?, province:"濞村嘲宕?, shortName:"娑撳绨?, left:406, top:714, width:72, height:50, radius:"22rpx 30rpx 24rpx 20rpx", rotate:-4, skew:0}
+  {city:"沈阳", province:"辽宁", shortName:"沈阳", left:546, top:46, width:82, height:60, radius:"34rpx 24rpx 28rpx 24rpx", rotate:5, skew:0},
+  {city:"大连", province:"辽宁", shortName:"大连", left:558, top:112, width:74, height:54, radius:"24rpx 36rpx 22rpx 30rpx", rotate:-4, skew:0},
+  {city:"北京", province:"北京", shortName:"北京", left:456, top:102, width:72, height:58, radius:"34rpx 26rpx 20rpx 28rpx", rotate:-2, skew:-4},
+  {city:"天津", province:"天津", shortName:"天津", left:524, top:150, width:70, height:52, radius:"22rpx 30rpx 28rpx 20rpx", rotate:6, skew:0},
+  {city:"石家庄", province:"河北", shortName:"石家庄", left:420, top:166, width:104, height:58, radius:"26rpx 20rpx 34rpx 24rpx", rotate:2, skew:-3},
+  {city:"济南", province:"山东", shortName:"济南", left:498, top:218, width:84, height:58, radius:"26rpx 32rpx 22rpx 28rpx", rotate:-2, skew:0},
+  {city:"青岛", province:"山东", shortName:"青岛", left:576, top:238, width:76, height:54, radius:"22rpx 34rpx 24rpx 30rpx", rotate:4, skew:0},
+  {city:"郑州", province:"河南", shortName:"郑州", left:394, top:250, width:92, height:62, radius:"26rpx 22rpx 32rpx 24rpx", rotate:-3, skew:0},
+  {city:"西安", province:"陕西", shortName:"西安", left:298, top:258, width:92, height:62, radius:"28rpx 20rpx 30rpx 26rpx", rotate:4, skew:-5},
+  {city:"合肥", province:"安徽", shortName:"合肥", left:488, top:306, width:78, height:56, radius:"24rpx 20rpx 28rpx 32rpx", rotate:3, skew:0},
+  {city:"南京", province:"江苏", shortName:"南京", left:566, top:300, width:76, height:54, radius:"24rpx 30rpx 22rpx 26rpx", rotate:-3, skew:0},
+  {city:"无锡", province:"江苏", shortName:"无锡", left:620, top:352, width:62, height:46, radius:"18rpx 28rpx 20rpx 22rpx", rotate:6, skew:0},
+  {city:"苏州", province:"江苏", shortName:"苏州", left:574, top:362, width:64, height:48, radius:"22rpx 18rpx 26rpx 20rpx", rotate:-5, skew:0},
+  {city:"上海", province:"上海", shortName:"上海", left:638, top:400, width:66, height:52, radius:"20rpx 30rpx 22rpx 24rpx", rotate:4, skew:0},
+  {city:"武汉", province:"湖北", shortName:"武汉", left:394, top:332, width:92, height:64, radius:"30rpx 22rpx 26rpx 32rpx", rotate:2, skew:0},
+  {city:"南昌", province:"江西", shortName:"南昌", left:490, top:394, width:82, height:58, radius:"24rpx 20rpx 34rpx 24rpx", rotate:-4, skew:0},
+  {city:"杭州", province:"浙江", shortName:"杭州", left:574, top:422, width:82, height:58, radius:"26rpx 32rpx 22rpx 30rpx", rotate:3, skew:0},
+  {city:"宁波", province:"浙江", shortName:"宁波", left:640, top:468, width:68, height:50, radius:"20rpx 30rpx 20rpx 26rpx", rotate:-3, skew:0},
+  {city:"温州", province:"浙江", shortName:"温州", left:584, top:502, width:76, height:52, radius:"24rpx 20rpx 32rpx 22rpx", rotate:5, skew:0},
+  {city:"长沙", province:"湖南", shortName:"长沙", left:384, top:408, width:86, height:62, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
+  {city:"株洲", province:"湖南", shortName:"株洲", left:454, top:462, width:76, height:52, radius:"22rpx 30rpx 20rpx 26rpx", rotate:5, skew:0},
+  {city:"重庆", province:"重庆", shortName:"重庆", left:286, top:392, width:86, height:62, radius:"28rpx 22rpx 34rpx 24rpx", rotate:3, skew:0},
+  {city:"成都", province:"四川", shortName:"成都", left:198, top:356, width:94, height:66, radius:"34rpx 22rpx 28rpx 30rpx", rotate:-4, skew:0},
+  {city:"桂林", province:"广西", shortName:"桂林", left:300, top:478, width:80, height:56, radius:"24rpx 30rpx 22rpx 28rpx", rotate:-3, skew:0},
+  {city:"南宁", province:"广西", shortName:"南宁", left:244, top:532, width:86, height:60, radius:"30rpx 22rpx 26rpx 34rpx", rotate:4, skew:0},
+  {city:"昆明", province:"云南", shortName:"昆明", left:146, top:502, width:88, height:62, radius:"34rpx 24rpx 28rpx 24rpx", rotate:-5, skew:0},
+  {city:"大理", province:"云南", shortName:"大理", left:70, top:480, width:76, height:54, radius:"30rpx 20rpx 26rpx 24rpx", rotate:4, skew:0},
+  {city:"福州", province:"福建", shortName:"福州", left:528, top:514, width:80, height:56, radius:"24rpx 30rpx 28rpx 22rpx", rotate:-4, skew:0},
+  {city:"厦门", province:"福建", shortName:"厦门", left:516, top:572, width:76, height:52, radius:"22rpx 28rpx 22rpx 30rpx", rotate:4, skew:0},
+  {city:"广州", province:"广东", shortName:"广州", left:400, top:552, width:84, height:60, radius:"28rpx 22rpx 30rpx 26rpx", rotate:-2, skew:0},
+  {city:"佛山", province:"广东", shortName:"佛山", left:330, top:574, width:74, height:52, radius:"24rpx 20rpx 30rpx 24rpx", rotate:5, skew:0},
+  {city:"东莞", province:"广东", shortName:"东莞", left:480, top:594, width:74, height:52, radius:"20rpx 28rpx 24rpx 30rpx", rotate:-3, skew:0},
+  {city:"深圳", province:"广东", shortName:"深圳", left:422, top:626, width:78, height:54, radius:"26rpx 22rpx 30rpx 24rpx", rotate:4, skew:0},
+  {city:"珠海", province:"广东", shortName:"珠海", left:346, top:632, width:72, height:50, radius:"22rpx 28rpx 20rpx 26rpx", rotate:-4, skew:0},
+  {city:"海口", province:"海南", shortName:"海口", left:324, top:700, width:72, height:50, radius:"28rpx 20rpx 28rpx 22rpx", rotate:4, skew:0},
+  {city:"三亚", province:"海南", shortName:"三亚", left:406, top:714, width:72, height:50, radius:"22rpx 30rpx 24rpx 20rpx", rotate:-4, skew:0}
 ];
+
+function buildCityMap(records) {
+  const map = {};
+  records.forEach((record) => {
+    const info = recordRegion.inferRecordRegion(record);
+    const city = info.city;
+    if (!map[city]) {
+      map[city] = {
+        city,
+        province: info.province,
+        count: 0
+      };
+    }
+    map[city].count += 1;
+  });
+  return map;
+}
 
 Page({
   data: {
@@ -72,9 +98,9 @@ Page({
     showLoginPanel: false,
     pendingAvatarUrl: "",
     pendingNickName: "",
-    profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-    profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-    profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
+    profilePanelTitle: "完善微信资料",
+    profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+    profilePanelSubmitText: "确认登录",
     mapCities: [],
     useVectorMap: HAS_VECTOR_MAP,
     activeCityCount: 0,
@@ -106,9 +132,9 @@ Page({
           showLoginPanel: false,
           pendingAvatarUrl: "",
           pendingNickName: "",
-          profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-          profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-          profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
+          profilePanelTitle: "完善微信资料",
+          profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+          profilePanelSubmitText: "确认登录",
           mapCities: [],
           activeCityCount: 0,
           mappedRecordCount: 0,
@@ -161,9 +187,37 @@ Page({
         });
       }
 
-      const wordCloud = buildWordCloud(records, 18);
+      const wordCount = {};
+      records.forEach((record) => {
+        const text = record.comment || "";
+        WORDS.forEach((word) => {
+          if (text.indexOf(word) !== -1) {
+            wordCount[word] = (wordCount[word] || 0) + 1;
+          }
+        });
+      });
+      const wordCloud = Object.keys(wordCount).sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 18).map((text, index) => {
+        const pos = CLOUD_POSITIONS[index] || CLOUD_POSITIONS[CLOUD_POSITIONS.length - 1];
+        const size = index === 0 ? 52 : (index < 3 ? 44 : (index < 7 ? 36 : (index < 12 ? 30 : 24)));
+        return {
+          text,
+          count: wordCount[text],
+          size,
+          left: pos.left,
+          top: pos.top,
+          rotate: pos.rotate,
+          color: CLOUD_COLORS[index % CLOUD_COLORS.length]
+        };
+      });
 
-      const photoWall = buildPhotoWall(records, 12);
+      const photoWall = [];
+      records.forEach((record) => {
+        (record.images || []).forEach((src) => {
+          if (photoWall.length < 12) {
+            photoWall.push({ src, recordId: record._id });
+          }
+        });
+      });
 
       this.cityTasteMap = cityMap;
       this.maxHeatCount = Math.max(1, maxHeatCount);
@@ -188,14 +242,14 @@ Page({
     }
   },
 
-  handleLogin() {
+  login() {
     if (this.data.loginLoading) return;
     if (!wx.getUserProfile) {
-      wx.showToast({ title: "瑜版挸澧犻崺铏诡攨鎼存挷绗夐弨顖涘瘮閹哄牊娼?, icon: "none" });
+      wx.showToast({ title: "当前基础库不支持授权", icon: "none" });
       return;
     }
     wx.getUserProfile({
-      desc: "閻劋绨€瑰苯鏉界挧鍕灐",
+      desc: "用于完善资料",
       success: (res) => {
         const profile = res.userInfo || {};
         console.log("[profile] get profile success", profile);
@@ -208,7 +262,7 @@ Page({
       fail: (error) => {
         console.error("[profile] get profile failed", error);
         wx.showToast({
-          title: error && error.errMsg && error.errMsg.indexOf("deny") !== -1 ? "瀹告彃褰囧☉鍫熷房閺? : "閹哄牊娼堟径杈Е",
+          title: error && error.errMsg && error.errMsg.indexOf("deny") !== -1 ? "已取消授权" : "授权失败",
           icon: "none"
         });
       }
@@ -219,23 +273,23 @@ Page({
     this.setData({
       showLoginPanel: true,
       pendingAvatarUrl: profile && profile.avatarUrl ? profile.avatarUrl : "",
-      pendingNickName: profile && profile.nickName && profile.nickName !== "瀵邦喕淇婇悽銊﹀煕" ? profile.nickName : "",
-      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-      profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
+      pendingNickName: profile && profile.nickName && profile.nickName !== "微信用户" ? profile.nickName : "",
+      profilePanelTitle: "完善微信资料",
+      profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+      profilePanelSubmitText: "确认登录"
     });
-    wx.showToast({ title: "鐠囩兘鈧瀚ㄦ径鏉戝剼閺勭數袨", icon: "none" });
+    wx.showToast({ title: "请选择头像昵称", icon: "none" });
   },
 
-  handleEditProfile() {
+  editProfile() {
     const user = this.data.user || {};
     this.setData({
       showLoginPanel: true,
       pendingAvatarUrl: user.avatarUrl || "",
-      pendingNickName: user.nickName && user.nickName !== "瀵邦喕淇婇悽銊﹀煕" ? user.nickName : "",
-      profilePanelTitle: "娣囶喗鏁肩挧鍕灐",
-      profilePanelDesc: "閺囧瓨鏌婃径鏉戝剼閸滃本妯€缁夋澘鎮楁导姘箽鐎涙ê鍩岃ぐ鎾冲鐠愶箑褰?,
-      profilePanelSubmitText: "娣囨繂鐡ㄧ挧鍕灐"
+      pendingNickName: user.nickName && user.nickName !== "微信用户" ? user.nickName : "",
+      profilePanelTitle: "修改资料",
+      profilePanelDesc: "更新头像和昵称后会保存到当前账号",
+      profilePanelSubmitText: "保存资料"
     });
   },
 
@@ -245,9 +299,9 @@ Page({
       showLoginPanel: false,
       pendingAvatarUrl: "",
       pendingNickName: "",
-      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-      profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
+      profilePanelTitle: "完善微信资料",
+      profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+      profilePanelSubmitText: "确认登录"
     }, () => {
       if (HAS_VECTOR_MAP) {
         this.drawVectorMap();
@@ -255,16 +309,18 @@ Page({
     });
   },
 
+  noop() {},
+
   async confirmLogin() {
     if (this.data.loginLoading) return;
     const nickName = String(this.data.pendingNickName || "").trim();
     const avatarUrl = this.data.pendingAvatarUrl;
     if (!avatarUrl) {
-      wx.showToast({ title: "鐠囧嘲鍘涢柅澶嬪婢舵潙鍎?, icon: "none" });
+      wx.showToast({ title: "请先选择头像", icon: "none" });
       return;
     }
     if (!nickName) {
-      wx.showToast({ title: "鐠囧嘲锝為崘娆愭█缁?, icon: "none" });
+      wx.showToast({ title: "请填写昵称", icon: "none" });
       return;
     }
     await this.finishLogin({ nickName, avatarUrl });
@@ -295,16 +351,16 @@ Page({
         showLoginPanel: false,
         pendingAvatarUrl: "",
         pendingNickName: "",
-        profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-        profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-        profilePanelSubmitText: "绾喛顓婚惂璇茬秿"
+        profilePanelTitle: "完善微信资料",
+        profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+        profilePanelSubmitText: "确认登录"
       });
-      wx.showToast({ title: wasLoggedIn ? "娣囨繂鐡ㄩ幋鎰" : "閻ц缍嶉幋鎰" });
+      wx.showToast({ title: wasLoggedIn ? "保存成功" : "登录成功" });
       this.loadStats();
     } catch (error) {
       console.error("[profile] login failed", error);
       wx.showToast({
-        title: "閻ц缍嶆径杈Е",
+        title: "登录失败",
         icon: "none"
       });
     } finally {
@@ -312,7 +368,7 @@ Page({
     }
   },
 
-  handleLogout() {
+  logout() {
     auth.clearUser();
     this.cityTasteMap = {};
     this.atlasMapCache = null;
@@ -322,9 +378,9 @@ Page({
       showLoginPanel: false,
       pendingAvatarUrl: "",
       pendingNickName: "",
-      profilePanelTitle: "鐎瑰苯鏉藉顔讳繆鐠у嫭鏋?,
-      profilePanelDesc: "瑜版挸澧犲顔讳繆閻楀牊婀伴張顏囩箲閸ョ偛銇旈崓蹇旀█缁夊府绱濈拠鐑解偓澶嬪閸氬骸鐣幋鎰瑜?,
-      profilePanelSubmitText: "绾喛顓婚惂璇茬秿",
+      profilePanelTitle: "完善微信资料",
+      profilePanelDesc: "当前微信版本未返回头像昵称，请选择后完成登录",
+      profilePanelSubmitText: "确认登录",
       mapCities: [],
       activeCityCount: 0,
       mappedRecordCount: 0,
@@ -657,10 +713,10 @@ Page({
     if (!city) return;
     const count = this.cityTasteMap && this.cityTasteMap[city.name] ? this.cityTasteMap[city.name].count : 0;
     if (!count) {
-      wx.showToast({ title: city.name + "鏉╂ɑ鐥呯拋鏉跨秿", icon: "none" });
+      wx.showToast({ title: city.name + "还没记录", icon: "none" });
       return;
     }
-    wx.showToast({ title: city.name + " " + count + " 閺?, icon: "none" });
+    wx.showToast({ title: city.name + " " + count + " 条", icon: "none" });
   },
 
   zoomAtlasIn() {
@@ -688,7 +744,7 @@ Page({
     this.scheduleCrispAtlasRender();
   },
 
-  handleResetAtlasViewport() {
+  resetAtlasViewport() {
     this.atlasViewport = { zoom: 1, panX: 0, panY: 0 };
     this.queueAtlasRender();
     this.scheduleCrispAtlasRender();
@@ -749,17 +805,17 @@ Page({
     return inside;
   },
 
-  handleShowCityTaste(e) {
+  showCityTaste(e) {
     const city = e.currentTarget.dataset.city;
     const count = Number(e.currentTarget.dataset.count || 0);
     if (!count) {
-      wx.showToast({ title: city + "鏉╂ɑ鐥呯拋鏉跨秿", icon: "none" });
+      wx.showToast({ title: city + "还没记录", icon: "none" });
       return;
     }
-    wx.showToast({ title: city + " " + count + " 閺?, icon: "none" });
+    wx.showToast({ title: city + " " + count + " 条", icon: "none" });
   },
 
-  handlePreviewPhoto(e) {
+  previewPhoto(e) {
     const src = e.currentTarget.dataset.src;
     const urls = this.data.photoWall.map((item) => item.src);
     if (src) {
@@ -767,9 +823,7 @@ Page({
     }
   },
 
-  handleGoDetail(e) {
+  goDetail(e) {
     wx.navigateTo({ url: "/pages/detail/detail?id=" + e.currentTarget.dataset.id });
   }
 });
-
-
