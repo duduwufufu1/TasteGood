@@ -10,9 +10,9 @@
     <picker mode="selector" range="{{tagList}}" bindchange="onTagChange">
       <text class="filter-btn">{{currentTagName || '全部标签'}} ▼</text>
     </picker>
-    <text class="filter-btn sort" bindtap="toggleSort">{{sortAsc?'最早':'最近'}}</text>
+    <text class="filter-btn sort" bindtap="handleToggleSort">{{sortAsc?'最早':'最近'}}</text>
   </view>
-  <scroll-view scroll-y class="record-list" bindscrolltolower="loadMore">
+  <scroll-view scroll-y class="record-list" bindscrolltolower="handleLoadMore">
     <record-card
       wx:for="{{records}}" wx:key="_id"
       record-id="{{item._id}}"

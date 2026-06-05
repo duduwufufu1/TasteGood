@@ -46,15 +46,15 @@ Page({
       wx.showToast({ title: "加载失败", icon: "none" });
     }
   },
-  goEdit() { wx.navigateTo({ url: "/pages/add-record/add-record?id=" + this.data.id }); },
-  navigate() {
+  handleGoEdit() { wx.navigateTo({ url: "/pages/add-record/add-record?id=" + this.data.id }); },
+  handleNavigate() {
     wx.openLocation({
       latitude: parseFloat(this.data.lat),
       longitude: parseFloat(this.data.lng),
       name: this.data.name
     });
   },
-  delete() {
+  handleDelete() {
     wx.showModal({
       title: "确认删除",
       content: "确定要删除这条记录吗？",

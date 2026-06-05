@@ -80,31 +80,23 @@ Page({
     }
   },
 
-  // 从 REGIONS 数据确定省份和城市
-  determineRegion(lat, lng) {
-    const nearest = recordRegion.nearestRegion(lat, lng);
-    this.setData({
-      province: nearest ? nearest.province : "",
-      city: nearest ? nearest.city : ""
-    });
-  },
 
-  applyRegionFromText(text) {
+  // 从地址文本中提取省份和城市信息，返回 { province?, city? } 或 null
+  getRegionFromText(text) {
     const value = String(text || "");
-    if (!value) return false;
+    if (!value) return null;
     const province = recordRegion.normalizeProvinceNameFromAddressStart(value);
     const city = recordRegion.normalizeCityNameFromAddressStart(value, province || this.data.province);
-    const data = {};
-    if (province) data.province = province;
-    if (city) data.city = city;
-    if (!data.province && city) {
+    const result = {};
+    if (province) result.province = province;
+    if (city) result.city = city;
+    if (!result.province && city) {
       const cityInfo = recordRegion.getCityEntry(city);
-      if (cityInfo) data.province = cityInfo.province;
+      if (cityInfo) result.province = cityInfo.province;
     }
-    if (!data.province && !data.city) return false;
-    this.setData(data);
-    return !!data.city;
-  },
+    if (!result.province && !result.city) return null;
+    return result;
+ },
 
   reverseGeocode(lat, lng) {
     if (!TENCENT_MAP_KEY) return;
@@ -124,17 +116,20 @@ Page({
     });
   },
 
-  onMapTap(e) {
-    const { latitude, longitude } = e.detail;
-    this.setData({
-      pickLat: latitude, pickLng: longitude,
-      address: "已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
-      pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
-    });
-    wx.showToast({ title: "位置已选定", icon: "none" });
-    this.determineRegion(latitude, longitude);
-    this.reverseGeocode(latitude, longitude);
-  },
+ onMapTap(e) {
+   const { latitude, longitude } = e.detail;
+   const nearest = recordRegion.nearestRegion(latitude, longitude);
+   this.setData({
+     pickLat: latitude,
+     pickLng: longitude,
+     address: "已选择位置 " + latitude.toFixed(4) + ", " + longitude.toFixed(4),
+     province: nearest?.province || this.data.province,
+     city: nearest?.city || this.data.city,
+     pickMarkers: [{ id: 0, latitude, longitude, iconPath: "/images/marker-pick.png", width: 44, height: 52 }]
+   });
+   wx.showToast({ title: "位置已选定", icon: "none" });
+   this.reverseGeocode(latitude, longitude);
+ },
 
   onNameInput(e) { this.setData({ name: e.detail.value }); },
   onCommentInput(e) { this.setData({ comment: e.detail.value }); },

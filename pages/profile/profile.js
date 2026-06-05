@@ -759,7 +759,7 @@ Page({
     wx.showToast({ title: city + " " + count + " 条", icon: "none" });
   },
 
-  previewPhoto(e) {
+  handlePreviewPhoto(e) {
     const src = e.currentTarget.dataset.src;
     const urls = this.data.photoWall.map((item) => item.src);
     if (src) {
@@ -767,7 +767,7 @@ Page({
     }
   },
 
-  goDetail(e) {
+  handleGoDetail(e) {
     wx.navigateTo({ url: "/pages/detail/detail?id=" + e.currentTarget.dataset.id });
   }
 });

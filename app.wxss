@@ -53,4 +53,23 @@ view, text, input, textarea, button {
 
 /* === 通用工具类 === */
 .flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-row-center { display: flex; align-items: center; }
 .text-ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-base {
+  background: var(--card-bg);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10rpx 26rpx var(--shadow-sm);
+}
+.empty-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  background: var(--card-bg);
+  border: 1rpx dashed var(--border-warm);
+  border-radius: var(--radius-lg);
+}
+

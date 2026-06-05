@@ -114,7 +114,7 @@
       </view>
     </view>
     <view class="photo-wall">
-      <image wx:for="{{photoWall}}" wx:key="src" class="wall-img" src="{{item.src}}" mode="aspectFill" bindtap="previewPhoto" data-src="{{item.src}}" />
+      <image wx:for="{{photoWall}}" wx:key="src" class="wall-img" src="{{item.src}}" mode="aspectFill" lazy-load bindtap="handlePreviewPhoto" data-src="{{item.src}}" />
     </view>
   </view>
 
@@ -125,7 +125,7 @@
         <view class="section-title">最近记录</view>
       </view>
     </view>
-    <view wx:for="{{recentRecords}}" wx:key="_id" class="recent-item" bindtap="goDetail" data-id="{{item._id}}">
+    <view wx:for="{{recentRecords}}" wx:key="_id" class="recent-item" bindtap="handleGoDetail" data-id="{{item._id}}">
       <image wx:if="{{item.images && item.images[0]}}" class="recent-img" src="{{item.images[0]}}" mode="aspectFill" />
       <view wx:else class="recent-img recent-fallback">味</view>
       <view class="recent-info">

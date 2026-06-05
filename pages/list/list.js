@@ -64,7 +64,7 @@ Page({
     } catch(e) { console.error(e); }
     finally { this.setData({ loading: false }); }
   },
-  loadMore() { this.loadRecords(); },
+  handleLoadMore() { this.loadRecords(); },
   onCityChange(e) {
     const c = this.data.cityList[e.detail.value];
     this.setData({ currentCity: c==="鍏ㄩ儴鍩庡競"?"":c, records: [], loadedAll: false, querySkip: 0 });
@@ -77,6 +77,6 @@ Page({
     this.setData({ currentTag: t, currentTagName: name, records: [], loadedAll: false, querySkip: 0 });
     this.loadRecords();
   },
-  toggleSort() { this.setData({ sortAsc: !this.data.sortAsc, records: [], loadedAll: false, querySkip: 0 }); this.loadRecords(); },
-  goDetail(e) { wx.navigateTo({ url: "/pages/detail/detail?id=" + e.detail.id }); }
+  handleToggleSort() { this.setData({ sortAsc: !this.data.sortAsc, records: [], loadedAll: false, querySkip: 0 }); this.loadRecords(); },
+  handleGoDetail(e) { wx.navigateTo({ url: "/pages/detail/detail?id=" + e.detail.id }); }
 });
