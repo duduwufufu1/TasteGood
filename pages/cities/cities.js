@@ -4,7 +4,7 @@ const region = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
 
 Page({
-  data: { cities: [] },
+  data: { cities: [], totalRecords: 0, tastedCities: 0 },
   onShow() { this.loadCities(); },
   async loadCities() {
     try {
@@ -25,7 +25,12 @@ Page({
         }
         cityMap[city].count++;
       });
-      this.setData({ cities: Object.values(cityMap).sort((a,b) => b.count - a.count) });
+      const cities = Object.values(cityMap).sort((a,b) => b.count - a.count);
+      this.setData({
+        cities,
+        totalRecords: records.length,
+        tastedCities: cities.length
+      });
     } catch(e) { console.error(e); }
   },
   handleGoToCity(e) {
@@ -36,4 +41,3 @@ Page({
   },
   handleGoAddRecord() { wx.navigateTo({ url: "/pages/add-record/add-record" }); }
 });
-
