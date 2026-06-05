@@ -206,7 +206,9 @@ Page({
           left: pos.left,
           top: pos.top,
           rotate: pos.rotate,
-          color: CLOUD_COLORS[index % CLOUD_COLORS.length]
+          color: CLOUD_COLORS[index % CLOUD_COLORS.length],
+          hidden: true,
+          delay: index * 100
         };
       });
 
@@ -232,14 +234,23 @@ Page({
         wordCloud,
         photoWall,
         recentRecords: records.slice(0, 5)
-      }, () => {
-        if (HAS_VECTOR_MAP) {
-          this.drawVectorMap();
-        }
       });
+      this.triggerWordCloudAnimation();
+      if (HAS_VECTOR_MAP) { this.drawVectorMap(); }
     } catch (error) {
       console.error("[profile] load stats failed", error);
     }
+  },
+
+  triggerWordCloudAnimation() {
+    const words = this.data.wordCloud;
+    if (!words.length) return;
+    words.forEach((w, i) => {
+      setTimeout(() => {
+        const key = `wordCloud[${i}].hidden`;
+        this.setData({ [key]: false });
+      }, w.delay || i * 100);
+    });
   },
 
   login() {
