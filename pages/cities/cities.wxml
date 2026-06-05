@@ -21,9 +21,6 @@
   <view class="city-grid">
     <view wx:for="{{cities}}" wx:key="city" class="city-card" bindtap="handleGoToCity" data-city="{{item.city}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}">
       <text class="city-initial">{{item.abbr || item.city.slice(0,2)}}</text>
-      <view class="city-photos" wx:if="{{item.photos.length}}">
-        <image wx:for="{{item.photos}}" wx:key="*this" class="city-photo" src="{{item}}" mode="aspectFill" lazy-load />
-      </view>
       <view class="city-photos" wx:if="{{item.photos.length > 0}}">
         <image wx:for="{{item.photos}}" wx:key="*this" wx:for-item="photo" src="{{photo}}" mode="aspectFill" lazy-load class="city-photo" />
       </view>
