@@ -143,7 +143,7 @@ Page({
           height: photos.length > 1 ? 68 : (photo ? 62 : 46),
           iconPath: DEFAULT_RECORD_MARKER,
           callout: {
-            content: r.name,
+            content: r.name + (r.address ? " · " + r.address : ""),
             color: "#2f281f",
             fontSize: 12,
             borderRadius: 8,
@@ -172,13 +172,13 @@ Page({
           height: photo ? 62 : 46,
           iconPath: DEFAULT_RECORD_MARKER,
           callout: {
-            content: r.name,
+            content: r.name + (r.address ? " · " + r.address : ""),
             color: "#2f281f",
             fontSize: 12,
             borderRadius: 8,
             bgColor: "#fffaf2",
             padding: 8,
-            display: "BYCLICK"
+            display: "ALWAYS"
           }
         });
         if (photo) {
