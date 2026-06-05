@@ -13,10 +13,10 @@ Page({
     lat: 0, lng: 0
   },
   onLoad(options) {
-    if (options.id) { this.setData({ id: options.id }); this.loadDetail(); }
+    if (options.id) { this.setData({ id: options.id }); }
   },
   onShow() {
-    if (this.data.id) this.loadDetail();
+    if (this.data.id && !this._loaded) { this._loaded = true; this.loadDetail(); }
   },
   async loadDetail() {
     try {
@@ -43,6 +43,8 @@ Page({
         setTimeout(() => wx.switchTab({ url: "/pages/profile/profile" }), 900);
         return;
       }
+      // 首次失败重试一次（冷启动/网络抖动）
+      if (!this._retried) { this._retried = true; setTimeout(() => this.loadDetail(), 500); return; }
       wx.showToast({ title: "加载失败", icon: "none" });
     }
   },
