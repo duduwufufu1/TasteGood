@@ -236,6 +236,7 @@ Page({
         recentRecords: records.slice(0, 5)
       });
       this.triggerWordCloudAnimation();
+      this.startWordGravity();
       if (HAS_VECTOR_MAP) { this.drawVectorMap(); }
     } catch (error) {
       console.error("[profile] load stats failed", error);
