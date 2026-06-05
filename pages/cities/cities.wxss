@@ -14,8 +14,10 @@
 .city-grid{padding:0 22rpx;display:grid;grid-template-columns:1fr 1fr;gap:16rpx}
 .city-card{min-height:210rpx;background:#fffaf0;border-radius:12rpx;padding:22rpx;border:1rpx solid rgba(18,35,31,0.08);box-shadow:0 12rpx 28rpx rgba(18,35,31,0.08);position:relative;overflow:hidden}
 .card-glow{position:absolute;right:-20rpx;top:-20rpx;width:90rpx;height:90rpx;border-radius:50%;background:radial-gradient(circle,rgba(200,70,50,0.10) 0%,transparent 70%)}
-.stamp-ring{width:80rpx;height:80rpx;border:3rpx solid #c84632;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16rpx;background:#edf5ee}
+.stamp-ring{width:80rpx;height:80rpx;border:3rpx solid #c84632;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12rpx;background:#edf5ee}
 .city-initial{font-size:26rpx;font-weight:900;color:#8f321d;max-width:68rpx;text-align:center;line-height:1.1}
+.city-photos{display:flex;gap:6rpx;margin-bottom:10rpx}
+.city-photo{width:68rpx;height:68rpx;border-radius:8rpx;background:#edf5ee;flex-shrink:0}
 .city-name{font-size:32rpx;font-weight:900;margin-bottom:6rpx;color:#12231f}
 .city-count{font-size:23rpx;color:#61726e;font-weight:600}
 .empty-state{display:flex;flex-direction:column;align-items:center;margin:60rpx 24rpx 0;padding:80rpx 40rpx;color:#61726e;font-size:28rpx;background:#fffaf0;border:1rpx dashed #102b2822;border-radius:14rpx}

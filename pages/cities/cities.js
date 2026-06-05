@@ -11,20 +11,24 @@ Page({
       const res = await userRecords.getAll();
       const records = res.data || [];
       const cityMap = {};
-      records.forEach(r => {
+      for (const r of records) {
         const info = region.inferRecordRegion(r);
         const city = info.city;
-        if (!city || city === region.UNKNOWN_CITY) return;
+        if (!city || city === region.UNKNOWN_CITY) continue;
         if (!cityMap[city]) {
           cityMap[city] = {
             city,
             count: 0,
             lat: info.center.lat,
-            lng: info.center.lng
+            lng: info.center.lng,
+            photos: []
           };
         }
         cityMap[city].count++;
-      });
+        if (cityMap[city].photos.length < 3 && r.images && r.images[0]) {
+          cityMap[city].photos.push(r.images[0]);
+        }
+      }
       const cities = Object.values(cityMap).sort((a,b) => b.count - a.count);
       this.setData({
         cities,
