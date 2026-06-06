@@ -1,8 +1,8 @@
 const { COLLECTION, TAGS } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
+const { TENCENT_MAP_KEY } = require("../../utils/config");
 const db = wx.cloud.database();
-const TENCENT_MAP_KEY = "IWHBZ-24MCH-MEADA-WHWGG-4UH2T-FCBZI";
 const TAG_NAME_MAP = {};
 TAGS.forEach(tag => { TAG_NAME_MAP[tag.key] = tag.name; });
 

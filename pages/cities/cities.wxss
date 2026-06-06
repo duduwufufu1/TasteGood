@@ -12,7 +12,7 @@
 .section-title{font-size:30rpx;font-weight:900;color:#12231f}
 .section-sub{font-size:22rpx;color:#61726e}
 .city-grid{padding:0 22rpx;display:grid;grid-template-columns:1fr 1fr;gap:16rpx}
-.city-card{min-height:210rpx;background:#fffaf0;border-radius:12rpx;padding:22rpx;border:1rpx solid rgba(18,35,31,0.08);box-shadow:0 12rpx 28rpx rgba(18,35,31,0.08);position:relative;overflow:hidden;text-align:center}
+.city-card{min-height:210rpx;background:#fffaf0;border-radius:12rpx;padding:22rpx;border:1rpx solid rgba(18,35,31,0.08);box-shadow:0 12rpx 28rpx rgba(18,35,31,0.08);position:relative;overflow:hidden;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .city-initial{display:block;font-size:28rpx;font-weight:900;color:#8f321d;margin-bottom:10rpx}
 .city-photos{display:flex;justify-content:center;gap:10rpx;margin-bottom:12rpx}
 .city-photo{width:96rpx;height:96rpx;border-radius:10rpx;background:#edf5ee;flex-shrink:0}
