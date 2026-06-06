@@ -22,7 +22,6 @@
       <text class="note-title">{{level==='country'?'全国美食地图':(level==='province'?province:city)}}</text>
       <text class="note-copy">{{level==='country'?'点击省份标记，逐级查看吃过的城市':(level==='province'?'选择城市或点击标记查看记录':'点击标记查看店铺详情')}}</text>
     </view>
-    <text class="note-add" bindtap="goAddRecord">+</text>
   </view>
 
   <view class="overlay {{showPicker?'show':''}}" bindtap="hidePicker">

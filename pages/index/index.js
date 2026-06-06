@@ -606,5 +606,4 @@ Page({
     }
   },
 
-  goAddRecord() { wx.navigateTo({ url: "/pages/add-record/add-record" }); }
 });

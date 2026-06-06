@@ -124,7 +124,7 @@ Page({
     });
   },
 
-  onMapTap(e) {
+  handleMapTap(e) {
     const { latitude, longitude } = e.detail;
     this.setData({
       pickLat: latitude, pickLng: longitude,
@@ -139,9 +139,9 @@ Page({
   onNameInput(e) { this.setData({ name: e.detail.value }); },
   onCommentInput(e) { this.setData({ comment: e.detail.value }); },
   onCustomTagInput(e) { this.setData({ customTag: e.detail.value }); },
-  setRating(e) { this.setData({ rating: e.currentTarget.dataset.rating }); },
+  onRatingChange(e) { this.setData({ rating: e.detail.rating }); },
 
-  searchLocation() {
+  handleSearchLocation() {
     wx.chooseLocation({
       latitude: this.data.pickLat,
       longitude: this.data.pickLng,
@@ -168,14 +168,14 @@ Page({
     });
   },
 
-  toggleTag(e) {
+  handleToggleTag(e) {
     const key = e.currentTarget.dataset.key;
     let sel = this.data.selectedTags;
     sel = sel.indexOf(key) !== -1 ? sel.filter(t => t !== key) : [...sel, key];
     this.setData({ selectedTags: sel }, () => this.refreshDisplayTags());
   },
 
-  addCustomTag() {
+  handleAddCustomTag() {
     const tag = this.data.customTag.trim().replace(/^#/, "");
     if (!tag) { wx.showToast({ title: "请输入标签", icon: "none" }); return; }
     if (tag.length > 8) { wx.showToast({ title: "标签最多8个字", icon: "none" }); return; }
@@ -201,7 +201,7 @@ Page({
     this.setData({ displayTags });
   },
 
-  addPhoto() {
+  handleAddPhoto() {
     wx.chooseImage({
       count: 9 - this.data.photos.length,
       sizeType: ["compressed"],
@@ -212,12 +212,12 @@ Page({
     });
   },
 
-  removePhoto(e) {
+  handleRemovePhoto(e) {
     const idx = e.currentTarget.dataset.index;
     this.setData({ photos: this.data.photos.filter((_, i) => i !== idx) });
   },
 
-  async submit() {
+  async handleSubmit() {
     const { id, isEdit, name, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
     if (!name) { wx.showToast({ title: "请输入店铺名称", icon: "none" }); return; }
     if (rating === 0) { wx.showToast({ title: "请评分", icon: "none" }); return; }

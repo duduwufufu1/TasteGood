@@ -221,6 +221,25 @@ Page({
         });
       });
 
+      // 下载 cloud:// 图片为本地临时路径，解决部分图片加载慢/不加载的问题
+      const isCloudId = (s) => s && s.indexOf("cloud://") === 0;
+      const downloadToTemp = async (fileID) => {
+        try {
+          const res = await wx.cloud.downloadFile({ fileID });
+          return res.tempFilePath;
+        } catch (e) {
+          return fileID;
+        }
+      };
+      const wallDownloadTasks = photoWall
+        .filter((p) => isCloudId(p.src))
+        .map(async (p) => { p.src = await downloadToTemp(p.src); });
+      const recentItems = records.slice(0, 5);
+      const recentDownloadTasks = recentItems
+        .filter((r) => r.images && r.images.length > 0 && isCloudId(r.images[0]))
+        .map(async (r) => { r.images[0] = await downloadToTemp(r.images[0]); });
+      await Promise.all([...wallDownloadTasks, ...recentDownloadTasks]);
+
       this.cityTasteMap = cityMap;
       this.maxHeatCount = Math.max(1, maxHeatCount);
       this.atlasMapCache = null;
@@ -814,7 +833,7 @@ Page({
     wx.showToast({ title: city + " " + count + " 条", icon: "none" });
   },
 
-  previewPhoto(e) {
+  handlePreviewPhoto(e) {
     const src = e.currentTarget.dataset.src;
     const urls = this.data.photoWall.map((item) => item.src);
     if (src) {
@@ -822,7 +841,7 @@ Page({
     }
   },
 
-  goDetail(e) {
+  handleGoDetail(e) {
     wx.navigateTo({ url: "/pages/detail/detail?id=" + e.currentTarget.dataset.id });
   }
 });

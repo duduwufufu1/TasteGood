@@ -22,3 +22,4 @@
 .empty-title{font-size:32rpx;font-weight:800;color:#12231f;margin-bottom:8rpx}
 .empty-copy{font-size:25rpx;color:#61726e}
 .start-btn{margin-top:32rpx;background:#c84632;color:#fff;border-radius:999rpx;padding:18rpx 48rpx;font-size:28rpx;box-shadow:0 12rpx 24rpx rgba(200,70,50,0.22)}
+.fab-add{position:fixed;right:32rpx;bottom:40rpx;width:100rpx;height:100rpx;border-radius:50%;background:#c84632;color:#fff;font-size:52rpx;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 12rpx 32rpx rgba(200,70,50,0.35);z-index:999;border:2rpx solid rgba(255,255,255,0.15)}

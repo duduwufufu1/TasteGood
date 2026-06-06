@@ -28,6 +28,7 @@
       <view class="city-count">{{item.count}} 家店铺</view>
     </view>
   </view>
+  <view class="fab-add" bindtap="handleGoAddRecord">+</view>
   <view wx:if="{{cities.length===0}}" class="empty-state">
     <text class="empty-title">还没有城市印章</text>
     <text class="empty-copy">去记录你品尝过的第一家店吧</text>
