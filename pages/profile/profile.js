@@ -1,5 +1,6 @@
 const db = wx.cloud.database();
 const recordRegion = require("../../utils/record-region");
+const recordPlace = require("../../utils/record-place");
 const chinaMap = require("../../utils/china-map-data");
 const auth = require("../../utils/auth");
 const userRecords = require("../../utils/user-records");
@@ -75,9 +76,11 @@ const ATLAS_TEMPLATE = [
 
 function buildCityMap(records) {
   const map = {};
-  records.forEach((record) => {
+  recordPlace.groupRecordsByPlace(records).forEach((group) => {
+    const record = group.record;
     const info = recordRegion.inferRecordRegion(record);
     const city = info.city;
+    if (!city || city === recordRegion.UNKNOWN_CITY) return;
     if (!map[city]) {
       map[city] = {
         city,

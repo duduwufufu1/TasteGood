@@ -1,6 +1,7 @@
 const REGIONS = require("../../utils/regions");
 const { COLLECTION } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
+const recordPlace = require("../../utils/record-place");
 const userRecords = require("../../utils/user-records");
 const app = getApp();
 const DEFAULT_PROVINCE_MARKER = "/images/marker-prov.png";
@@ -87,15 +88,17 @@ Page({
     if (level === "country") {
       // 全国：按省份聚合，显示该省上传图片集。
       const provMap = {};
-      allRecords.forEach(r => {
-        const info = recordRegion.inferRecordRegion(r);
+      this.getPlaceGroups(allRecords).forEach(group => {
+        const record = group.record;
+        const info = recordRegion.inferRecordRegion(record);
         if (info.province !== recordRegion.UNKNOWN_PROVINCE) {
           if (!provMap[info.province]) provMap[info.province] = { count: 0, photos: [] };
           provMap[info.province].count += 1;
-          const photo = this.getRecordPhoto(r);
-          if (photo && provMap[info.province].photos.length < 4) {
-            provMap[info.province].photos.push(photo);
-          }
+          this.getPlaceGroupPhotos(group).forEach((photo) => {
+            if (photo && provMap[info.province].photos.length < 4 && !provMap[info.province].photos.includes(photo)) {
+              provMap[info.province].photos.push(photo);
+            }
+          });
         }
       });
       for (const p of REGIONS.provinces) {
@@ -129,12 +132,13 @@ Page({
     } else if (level === "province") {
       // 省份：显示该省内每家店的实际上传图片。
       const normalizedProvince = recordRegion.normalizeProvinceName(province);
-      const provRecords = allRecords.filter(r => {
-        return recordRegion.inferRecordRegion(r).province === normalizedProvince;
+      const provRecords = this.getPlaceGroups(allRecords).filter(group => {
+        return recordRegion.inferRecordRegion(group.record).province === normalizedProvince;
       });
-      for (const r of provRecords) {
+      for (const group of provRecords) {
+        const r = group.record;
         const info = recordRegion.inferRecordRegion(r);
-        const photos = this.getRecordPhotos(r);
+        const photos = this.getPlaceGroupPhotos(group);
         const photo = photos[0] || "";
         const marker = addMarker("record", { recordId: r._id || "" }, {
           latitude: info.center.lat, longitude: info.center.lng,
@@ -165,10 +169,11 @@ Page({
     } else if (level === "city") {
       // 城市：显示该城市内所有具体记录的上传图片。
       const normalizedCity = recordRegion.normalizeCityName(city);
-      const cityRecords = allRecords.filter(r => recordRegion.inferRecordRegion(r).city === normalizedCity);
-      for (const r of cityRecords) {
+      const cityRecords = this.getPlaceGroups(allRecords).filter(group => recordRegion.inferRecordRegion(group.record).city === normalizedCity);
+      for (const group of cityRecords) {
+        const r = group.record;
         const info = recordRegion.inferRecordRegion(r);
-        const photo = this.getRecordPhoto(r);
+        const photo = this.getPlaceGroupPhotos(group)[0] || "";
         const marker = addMarker("record", { recordId: r._id || "" }, {
           latitude: info.center.lat, longitude: info.center.lng,
           title: r.name,
@@ -220,6 +225,14 @@ Page({
   getRecordPhotos(record) {
     const images = record && record.images ? record.images : [];
     return (images || []).filter(Boolean).slice(0, 4);
+  },
+
+  getPlaceGroups(records) {
+    return recordPlace.groupRecordsByPlace(records || []);
+  },
+
+  getPlaceGroupPhotos(group) {
+    return recordPlace.getMergedImages(group && group.records, 4);
   },
 
   async getProvinceRecordIconPath(photos, fallback) {
@@ -551,8 +564,8 @@ Page({
     // 统计每个城市的记录数
     const cityCount = {};
     const normalizedProvince = recordRegion.normalizeProvinceName(province);
-    allRecords.filter(r => recordRegion.inferRecordRegion(r).province === normalizedProvince).forEach(r => {
-      const city = recordRegion.inferRecordRegion(r).city;
+    this.getPlaceGroups(allRecords).filter(group => recordRegion.inferRecordRegion(group.record).province === normalizedProvince).forEach(group => {
+      const city = recordRegion.inferRecordRegion(group.record).city;
       if (city) cityCount[city] = (cityCount[city] || 0) + 1;
     });
     const items = prov.cities.map(c => ({

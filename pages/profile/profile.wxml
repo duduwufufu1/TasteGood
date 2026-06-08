@@ -35,7 +35,7 @@
         <text class="section-kicker">HEAT MAP</text>
         <view class="section-title">美食足迹</view>
       </view>
-      <view class="atlas-summary">{{mappedRecordCount}} 条记录</view>
+      <view class="atlas-summary">{{mappedRecordCount}} 家店铺</view>
     </view>
 
     <view class="atlas-board">

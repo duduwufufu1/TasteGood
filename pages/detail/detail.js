@@ -1,6 +1,6 @@
 const { COLLECTION } = require("../../utils/constants");
 const { formatDateTime } = require("../../utils/util");
-const recordRegion = require("../../utils/record-region");
+const recordPlace = require("../../utils/record-place");
 const userRecords = require("../../utils/user-records");
 const db = wx.cloud.database();
 const TAG_NAME_MAP = {
@@ -35,7 +35,7 @@ Page({
       }
       const allRes = await userRecords.getAll();
       const samePlaceRecords = this.getSamePlaceRecords(r, allRes.data || []);
-      const allImages = this.getMergedImages(samePlaceRecords);
+      const allImages = recordPlace.getMergedImages(samePlaceRecords);
       const samePlaceCount = samePlaceRecords.length;
       this.setData({
         name: r.name, address: r.address,
@@ -73,39 +73,10 @@ Page({
     const sourceRecords = (records || []).slice();
     const hasCurrent = sourceRecords.some(item => item && item._id === currentRecord._id);
     if (!hasCurrent) sourceRecords.push(currentRecord);
-    const currentAddress = this.normalizeText(currentRecord.address);
-    const currentName = this.normalizeText(currentRecord.name);
-    const currentCity = this.getRecordCity(currentRecord);
     return sourceRecords
-      .filter(item => this.isSamePlace(currentRecord, item, currentAddress, currentName, currentCity))
-      .sort((a, b) => this.getRecordTimeValue(a) - this.getRecordTimeValue(b))
+      .filter(item => recordPlace.isSamePlace(currentRecord, item))
+      .sort((a, b) => recordPlace.getRecordTimeValue(a) - recordPlace.getRecordTimeValue(b))
       .map((item, index) => this.toVisitRecord(item, index));
-  },
-  isSamePlace(currentRecord, record, currentAddress, currentName, currentCity) {
-    if (!record || !currentRecord) return false;
-    if (record._id === currentRecord._id) return true;
-    const address = this.normalizeText(record.address);
-    if (this.isReliableAddress(currentAddress) && this.isReliableAddress(address)) {
-      return currentAddress === address;
-    }
-    const name = this.normalizeText(record.name);
-    const city = this.getRecordCity(record);
-    return !!currentName && !!name && currentName === name && !!currentCity && currentCity === city;
-  },
-  isReliableAddress(address) {
-    if (!address) return false;
-    return address.indexOf("已选择位置") !== 0;
-  },
-  getRecordCity(record) {
-    const info = recordRegion.inferRecordRegion(record || {});
-    return info && info.city ? info.city : "";
-  },
-  normalizeText(value) {
-    return String(value || "").trim();
-  },
-  getRecordTimeValue(record) {
-    const time = record && record.createdAt ? new Date(record.createdAt).getTime() : 0;
-    return isFinite(time) ? time : 0;
   },
   toVisitRecord(record, index) {
     return {
@@ -122,18 +93,6 @@ Page({
       time: record.createdAt ? formatDateTime(record.createdAt) : "",
       visitIndex: index + 1
     };
-  },
-  getMergedImages(records) {
-    const seen = {};
-    const images = [];
-    (records || []).forEach(record => {
-      (record.images || []).forEach(src => {
-        if (!src || seen[src]) return;
-        seen[src] = true;
-        images.push(src);
-      });
-    });
-    return images;
   },
   handleGoEdit() { wx.navigateTo({ url: "/pages/add-record/add-record?id=" + this.data.id }); },
   handleNavigate() {
