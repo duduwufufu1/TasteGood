@@ -24,10 +24,15 @@
       city="{{item.city}}"
       address="{{item.address}}"
       photo="{{item.images[0]}}"
+      dish-name="{{item.dishName}}"
+      price="{{item.price}}"
+      review-title="{{item.reviewTitle}}"
+      visit-text="{{item.visitText}}"
+      visit-count="{{item.visitCount}}"
       bind:tap="handleGoDetail"
     />
     <view wx:if="{{!loading && !records.length}}" class="empty-list">
-      <text class="empty-title">还没有记录</text>
+      <text class="empty-title">还没有味觉足迹</text>
       <text class="empty-copy">去地图上添加第一家店</text>
     </view>
     <view wx:if="{{loading}}" class="loading">加载中…</view>

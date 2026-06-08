@@ -1,11 +1,73 @@
-const { COLLECTION } = require("../../utils/constants");
+const recordPlace = require("../../utils/record-place");
 const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
-const db = wx.cloud.database();
 const TAG_NAME_MAP = {
   breakfast:"早餐", lunch:"午餐", dinner:"晚餐", dessert:"甜品", drink:"饮品",
   snack:"小吃", hotpot:"火锅", bbq:"烧烤", musttry:"必吃", avoid:"踩雷"
 };
+
+function normalizeText(value) {
+  return String(value || "").trim();
+}
+
+function formatPrice(value) {
+  const text = normalizeText(value);
+  if (!text) return "";
+  if (/^[¥￥$]/.test(text) || /^人均/.test(text) || /^约/.test(text)) return text;
+  if (/^\d+(\.\d+)?$/.test(text)) return "¥" + text;
+  return text;
+}
+
+function enrichRecordRegion(record) {
+  const info = recordRegion.inferRecordRegion(record);
+  return Object.assign({}, record, { province: info.province, city: info.city });
+}
+
+function matchesFilter(record, city, tag, rating) {
+  if (city && record.city !== city) return false;
+  if (tag && !(record.tags || []).includes(tag)) return false;
+  if (rating && (!record.rating || record.rating < rating)) return false;
+  return true;
+}
+
+function sortByRecordTime(records, sortAsc) {
+  return records.slice().sort((a, b) => {
+    const diff = recordPlace.getRecordTimeValue(a) - recordPlace.getRecordTimeValue(b);
+    return sortAsc ? diff : -diff;
+  });
+}
+
+function buildPlaceGroups(records) {
+  const placeRecords = records.filter(item => recordPlace.getPlaceKey(item));
+  const orphanGroups = records
+    .filter(item => !recordPlace.getPlaceKey(item))
+    .map(record => ({
+      record,
+      records: [record],
+      images: record.images || [],
+      count: 1
+    }));
+  return recordPlace.groupRecordsByPlace(placeRecords).concat(orphanGroups);
+}
+
+function buildCardRecord(group) {
+  const record = group.record || {};
+  const images = record.images && record.images.length ? record.images : (group.images || []);
+  const visitCount = group.count || (group.records ? group.records.length : 1);
+  return {
+    _id: record._id,
+    name: record.name || "",
+    rating: record.rating || 0,
+    city: record.city || "",
+    address: record.address || "",
+    images,
+    dishName: normalizeText(record.dishName),
+    price: formatPrice(record.price),
+    reviewTitle: normalizeText(record.reviewTitle),
+    visitCount,
+    visitText: visitCount > 1 ? "已回访 " + visitCount + " 次" : "首次记录"
+  };
+}
 
 Page({
   data: {
@@ -40,32 +102,31 @@ Page({
     if (this.data.loadedAll || this.data.loading) return;
     this.setData({ loading: true });
     try {
-      const { currentCity: c, currentTag: t, currentRating: r, sortAsc: s, records, pageSize: p, querySkip: q } = this.data;
+      const { currentCity: c, currentTag: t, currentRating: r, sortAsc: s, records, pageSize: p } = this.data;
       const user = await userRecords.getCurrentUser().catch(error => {
         if (error.code === "LOGIN_REQUIRED" || error.message === "LOGIN_REQUIRED") return null;
         throw error;
       });
       if (!user) { this.setData({ records: [], loadedAll: true, querySkip: 0 }); return; }
 
-      const cond = { userId: user.openid };
-      if (t) cond.tags = t;
-      const order = s ? "asc" : "desc";
-      let fetched = 0, added = [], loadedAll = false;
-
-      while (added.length < p && !loadedAll) {
-        const res = await db.collection(COLLECTION.RECORDS).where(cond).orderBy("createdAt", order).skip(q + fetched).limit(p).get();
-        const raw = res.data || [];
-        fetched += raw.length;
-        loadedAll = raw.length < p;
-        const pageRecords = raw.map(item => {
-          const info = recordRegion.inferRecordRegion(item);
-          return Object.assign({}, item, { province: info.province, city: info.city });
+      const res = await userRecords.getAll();
+      const filtered = sortByRecordTime(
+        (res.data || []).map(enrichRecordRegion).filter(item => matchesFilter(item, c, t, r)),
+        s
+      );
+      const groupedRecords = buildPlaceGroups(filtered)
+        .sort((a, b) => {
+          const diff = recordPlace.getRecordTimeValue(a.record) - recordPlace.getRecordTimeValue(b.record);
+          return s ? diff : -diff;
         })
-        .filter(item => (!c || item.city === c))
-        .filter(item => !r || (item.rating && item.rating >= r));
-        added = added.concat(pageRecords);
-      }
-      this.setData({ records: records.concat(added.slice(0, p)), loadedAll, querySkip: q + fetched });
+        .map(buildCardRecord);
+      const nextRecords = groupedRecords.slice(records.length, records.length + p);
+      const displayedCount = records.length + nextRecords.length;
+      this.setData({
+        records: records.concat(nextRecords),
+        loadedAll: displayedCount >= groupedRecords.length,
+        querySkip: displayedCount
+      });
     } catch(e) { console.error(e); }
     finally { this.setData({ loading: false }); }
   },

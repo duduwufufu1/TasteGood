@@ -2,7 +2,7 @@
   <view class="city-hero">
     <text class="eyebrow">FOOD ATLAS</text>
     <view class="hero-title hero-centered">我的味觉版图</view>
-    <text class="hero-subtitle">每座城市，收好一枚味觉印章</text>
+    <text class="hero-subtitle">每座城市，收获一枚味觉印章</text>
     <view class="hero-stats">
       <view class="stat-item">
         <text class="stat-num">{{cities.length}}</text>

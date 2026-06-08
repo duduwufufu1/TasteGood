@@ -2,7 +2,16 @@
   <image wx:if="{{photo}}" class="card-img" src="{{photo}}" mode="aspectFill" />
   <view wx:else class="card-img card-img--no">味</view>
   <view class="card-info">
-    <view class="card-name">{{name}}</view>
+    <view class="card-head">
+      <view class="card-name">{{name}}</view>
+      <view wx:if="{{visitText}}" class="visit-pill {{visitCount > 1 ? 'visit-pill--hot' : ''}}">{{visitText}}</view>
+    </view>
+    <view wx:if="{{reviewTitle}}" class="review-title">{{reviewTitle}}</view>
+    <view wx:if="{{dishName || price}}" class="card-meta">
+      <text wx:if="{{dishName}}" class="meta-text">招牌：{{dishName}}</text>
+      <text wx:if="{{dishName && price}}" class="meta-dot">·</text>
+      <text wx:if="{{price}}" class="meta-text">{{price}}</text>
+    </view>
     <star-rating rating="{{rating}}" size="l" />
     <view class="card-address">{{city}}{{city && address ? ' · ' : ''}}{{address}}</view>
   </view>
