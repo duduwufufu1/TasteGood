@@ -6,6 +6,9 @@
 .no-photo{display:flex;align-items:center;justify-content:center;height:460rpx;color:#e6cfb6;font-size:30rpx;background:linear-gradient(135deg,var(--text-dark),#6b4a2d)}
 .info-card{background:var(--card-bg);padding:30rpx;margin:-46rpx 24rpx 20rpx;position:relative;z-index:2;border-radius:var(--radius-lg);border:1rpx solid var(--border);box-shadow:0 16rpx 34rpx var(--shadow-lg)}
 .shop-name{font-size:42rpx;font-weight:900;margin-bottom:12rpx;color:var(--text);line-height:1.18}
+.review-title{margin-bottom:14rpx;padding:16rpx 18rpx;background:var(--accent-light);border-left:6rpx solid var(--primary);border-radius:var(--radius-sm);color:var(--primary-dark);font-size:29rpx;font-weight:900;line-height:1.45}
+.record-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10rpx;margin-bottom:16rpx;color:#76583f;font-size:25rpx;font-weight:700;line-height:1.4}
+.meta-divider{color:#c49b73;font-weight:700}
 .star-rating{margin-bottom:14rpx}
 .address{font-size:26rpx;color:#7b5e43;margin-bottom:16rpx;line-height:1.45}
 .tags{display:flex;flex-wrap:wrap;gap:10rpx}.tag-d{padding:8rpx 16rpx;background:var(--accent-light);color:#8f321d;border-radius:var(--radius);font-size:22rpx;font-weight:700}

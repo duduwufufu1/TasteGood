@@ -768,6 +768,10 @@ Page({
     this.scheduleCrispAtlasRender();
   },
 
+  handleResetAtlasViewport() {
+    this.resetAtlasViewport();
+  },
+
   clampAtlasZoom(zoom) {
     return Math.max(MIN_ATLAS_ZOOM, Math.min(MAX_ATLAS_ZOOM, zoom));
   },
@@ -831,6 +835,10 @@ Page({
       return;
     }
     wx.showToast({ title: city + " " + count + " 条", icon: "none" });
+  },
+
+  handleShowCityTaste(e) {
+    this.showCityTaste(e);
   },
 
   handlePreviewPhoto(e) {

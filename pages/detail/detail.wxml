@@ -7,6 +7,12 @@
   </view>
   <view class="info-card">
     <view class="shop-name">{{name}}</view>
+    <view wx:if="{{reviewTitle}}" class="review-title">{{reviewTitle}}</view>
+    <view wx:if="{{dishName || price}}" class="record-meta">
+      <text wx:if="{{dishName}}">菜品：{{dishName}}</text>
+      <text wx:if="{{dishName && price}}" class="meta-divider">/</text>
+      <text wx:if="{{price}}">价格：{{price}}</text>
+    </view>
     <star-rating rating="{{rating}}" size="d" />
     <view class="address">{{address}}</view>
     <view class="tags" wx:if="{{tags.length}}"><text wx:for="{{tags}}" wx:key="*this" class="tag-d">{{item}}</text></view>

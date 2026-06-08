@@ -16,6 +16,12 @@
     <input class="form-input" placeholder="输入店铺名称" value="{{name}}" bindinput="onNameInput" confirm-type="done" />
   </view>
   <view class="form-section">
+    <view class="section-title">本次记录</view>
+    <input class="form-input optional-input" placeholder="输入本次吃到的菜品，如 牛肉面" value="{{dishName}}" bindinput="onDishNameInput" confirm-type="done" />
+    <input class="form-input optional-input" placeholder="输入价格，如 28 或 人均 50" value="{{price}}" bindinput="onPriceInput" confirm-type="done" />
+    <input class="form-input optional-input last" placeholder="一句话总结这次体验" value="{{reviewTitle}}" bindinput="onReviewTitleInput" confirm-type="done" />
+  </view>
+  <view class="form-section">
     <view class="section-title">评分</view>
     <star-rating rating="{{rating}}" size="a" bind:change="onRatingChange" />
   </view>
@@ -34,7 +40,7 @@
   <view class="form-section">
     <view class="section-title">标签</view>
     <view class="custom-tag-row">
-      <input class="custom-tag-input" placeholder="自定义标签，如 宝藏店" value="{{customTag}}" bindinput="onCustomTagInput" confirm-type="done" bindconfirm="addCustomTag" />
+      <input class="custom-tag-input" placeholder="自定义标签，如 宝藏店" value="{{customTag}}" bindinput="onCustomTagInput" confirm-type="done" bindconfirm="handleAddCustomTag" />
       <button class="custom-tag-btn" bindtap="handleAddCustomTag">添加</button>
     </view>
     <view class="tag-list">

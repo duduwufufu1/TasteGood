@@ -13,6 +13,7 @@ Page({
     pickLat: 39.9042, pickLng: 116.4074, pickScale: 12,
     pickMarkers: [],
     address: "", name: "", rating: 0,
+    dishName: "", price: "", reviewTitle: "",
     customTag: "",
     selectedTags: [], comment: "", photos: [],
     submitting: false,
@@ -57,6 +58,9 @@ Page({
       this.setData({
         name: record.name || "",
         address: record.address || "",
+        dishName: record.dishName || "",
+        price: record.price || "",
+        reviewTitle: record.reviewTitle || "",
         rating: Number(record.rating) || 0,
         comment: record.comment || "",
         selectedTags: record.tags || [],
@@ -137,6 +141,9 @@ Page({
   },
 
   onNameInput(e) { this.setData({ name: e.detail.value }); },
+  onDishNameInput(e) { this.setData({ dishName: e.detail.value }); },
+  onPriceInput(e) { this.setData({ price: e.detail.value }); },
+  onReviewTitleInput(e) { this.setData({ reviewTitle: e.detail.value }); },
   onCommentInput(e) { this.setData({ comment: e.detail.value }); },
   onCustomTagInput(e) { this.setData({ customTag: e.detail.value }); },
   onRatingChange(e) { this.setData({ rating: e.detail.rating }); },
@@ -218,7 +225,7 @@ Page({
   },
 
   async handleSubmit() {
-    const { id, isEdit, name, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
+    const { id, isEdit, name, dishName, price, reviewTitle, rating, comment, selectedTags, photos, pickLat, pickLng, address, province, city } = this.data;
     if (!name) { wx.showToast({ title: "请输入店铺名称", icon: "none" }); return; }
     if (rating === 0) { wx.showToast({ title: "请评分", icon: "none" }); return; }
 
@@ -247,6 +254,7 @@ Page({
 
       const data = {
         name, address,
+        dishName, price, reviewTitle,
         province: regionInfo.province,
         city: regionInfo.city,
         location: { lat: pickLat, lng: pickLng },

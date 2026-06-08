@@ -9,6 +9,7 @@ const TAG_NAME_MAP = {
 Page({
   data: {
     id: "", name: "", address: "", rating: 0,
+    dishName: "", price: "", reviewTitle: "",
     comment: "", images: [], tags: [], time: "",
     lat: 0, lng: 0
   },
@@ -31,6 +32,9 @@ Page({
       }
       this.setData({
         name: r.name, address: r.address,
+        dishName: r.dishName || "",
+        price: r.price || "",
+        reviewTitle: r.reviewTitle || "",
         rating: r.rating, comment: r.comment || "",
         images: r.images || [], tags: (r.tags || []).map(tag => TAG_NAME_MAP[tag] || tag),
         time: r.createdAt ? formatDateTime(r.createdAt) : "",
