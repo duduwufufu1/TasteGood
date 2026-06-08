@@ -40,13 +40,12 @@ Page({
         p.cities.some(c => c.name === normalizedCity)
       );
       this.markerBuildVersion = (this.markerBuildVersion || 0) + 1;
-      this.setData({
+      this.setMapLevel({
         level: "city", province: prov ? prov.name : "", city: normalizedCity,
         mapCenter: selCenter, mapScale: 12,
         markers: [],
         markerMeta: {}
-      });
-      this.loadRecords();
+      }, () => this.loadRecords());
       return;
     }
     this.loadRecords();

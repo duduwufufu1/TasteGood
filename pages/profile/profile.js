@@ -93,6 +93,27 @@ function buildCityMap(records) {
   return map;
 }
 
+function buildRecentRecordsWithVisit(records) {
+  const visitMap = {};
+  recordPlace.groupRecordsByPlace(records).forEach((group) => {
+    const sortedRecords = (group.records || []).slice().sort((a, b) => {
+      return recordPlace.getRecordTimeValue(a) - recordPlace.getRecordTimeValue(b);
+    });
+    sortedRecords.forEach((record, index) => {
+      if (record && record._id) {
+        visitMap[String(record._id)] = index + 1;
+      }
+    });
+  });
+  return records.slice(0, 5).map((record) => {
+    const visitIndex = record && record._id && visitMap[String(record._id)] ? visitMap[String(record._id)] : 1;
+    return Object.assign({}, record, {
+      visitIndex,
+      visitText: "第 " + visitIndex + " 次记录"
+    });
+  });
+}
+
 Page({
   data: {
     isLoggedIn: false,
@@ -225,6 +246,7 @@ Page({
       });
 
       // 下载 cloud:// 图片为本地临时路径，解决部分图片加载慢/不加载的问题
+      const recentRecords = buildRecentRecordsWithVisit(records);
       const isCloudId = (s) => s && s.indexOf("cloud://") === 0;
       const downloadToTemp = async (fileID) => {
         try {
@@ -237,8 +259,7 @@ Page({
       const wallDownloadTasks = photoWall
         .filter((p) => isCloudId(p.src))
         .map(async (p) => { p.src = await downloadToTemp(p.src); });
-      const recentItems = records.slice(0, 5);
-      const recentDownloadTasks = recentItems
+      const recentDownloadTasks = recentRecords
         .filter((r) => r.images && r.images.length > 0 && isCloudId(r.images[0]))
         .map(async (r) => { r.images[0] = await downloadToTemp(r.images[0]); });
       await Promise.all([...wallDownloadTasks, ...recentDownloadTasks]);
@@ -255,7 +276,7 @@ Page({
         hasMapRecords: activeCityCount > 0,
         wordCloud,
         photoWall,
-        recentRecords: records.slice(0, 5)
+        recentRecords
       });
       if (HAS_VECTOR_MAP) { this.drawVectorMap(); }
     } catch (error) {

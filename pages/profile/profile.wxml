@@ -124,7 +124,10 @@
       <image wx:if="{{item.images && item.images[0]}}" class="recent-img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
       <view wx:else class="recent-img recent-fallback">味</view>
       <view class="recent-info">
-        <view class="recent-name">{{item.name}}</view>
+        <view class="recent-title-row">
+          <view class="recent-name">{{item.name}}</view>
+          <view class="recent-visit-pill">{{item.visitText}}</view>
+        </view>
         <view class="recent-meta">{{item.city}} · {{item.rating}}星</view>
       </view>
     </view>
