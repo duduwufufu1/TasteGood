@@ -6,7 +6,10 @@
     <view wx:if="{{!images.length}}" class="no-photo">暂无照片</view>
   </view>
   <view class="info-card">
-    <view class="shop-name">{{name}}</view>
+    <view class="shop-head">
+      <view class="shop-name">{{name}}</view>
+      <view class="visit-badge">{{samePlaceCount}} 次记录</view>
+    </view>
     <view wx:if="{{reviewTitle}}" class="review-title">{{reviewTitle}}</view>
     <view wx:if="{{dishName || price}}" class="record-meta">
       <text wx:if="{{dishName}}">菜品：{{dishName}}</text>
@@ -15,13 +18,42 @@
     </view>
     <star-rating rating="{{rating}}" size="d" />
     <view class="address">{{address}}</view>
+    <view class="visit-tip">{{visitTip}}</view>
     <view class="tags" wx:if="{{tags.length}}"><text wx:for="{{tags}}" wx:key="*this" class="tag-d">{{item}}</text></view>
   </view>
-  <view wx:if="{{comment}}" class="comment-card">
-    <view class="comment-title">具体评价</view>
-    <view class="comment-text">{{comment}}</view>
-    <view class="comment-time">{{time}}</view>
+
+  <view class="visit-section">
+    <view class="section-head">
+      <view class="section-title">{{visitSectionTitle}}</view>
+      <view class="section-count">{{visitCountText}}</view>
+    </view>
+    <view class="visit-swiper-wrap">
+      <view class="stack-shadow stack-shadow-a"></view>
+      <view class="stack-shadow stack-shadow-b"></view>
+      <swiper class="visit-swiper" indicator-dots="{{samePlaceRecords.length > 1}}" autoplay="{{false}}" circular="{{samePlaceRecords.length > 1}}">
+        <swiper-item wx:for="{{samePlaceRecords}}" wx:key="_id">
+          <view class="visit-card">
+            <view class="visit-card-head">
+              <view class="visit-label">第 {{item.visitIndex}} 次</view>
+              <view class="visit-time">{{item.time}}</view>
+            </view>
+            <view wx:if="{{item.reviewTitle}}" class="visit-title">{{item.reviewTitle}}</view>
+            <view wx:if="{{item.dishName || item.price}}" class="visit-meta">
+              <text wx:if="{{item.dishName}}" class="meta-pill">菜品 {{item.dishName}}</text>
+              <text wx:if="{{item.price}}" class="meta-pill">价格 {{item.price}}</text>
+            </view>
+            <star-rating rating="{{item.rating}}" size="d" />
+            <view class="visit-tags" wx:if="{{item.tags.length}}">
+              <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="visit-tag">{{tag}}</text>
+            </view>
+            <view wx:if="{{item.comment}}" class="visit-comment">{{item.comment}}</view>
+            <view wx:if="{{!item.reviewTitle && !item.dishName && !item.price && !item.comment && !item.tags.length}}" class="visit-empty">这次只留下了评分</view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
   </view>
+
   <view class="action-bar">
     <button class="act-btn" bindtap="handleGoEdit">编辑</button>
     <button class="act-btn del" bindtap="handleDelete">删除</button>

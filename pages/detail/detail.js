@@ -1,5 +1,6 @@
 const { COLLECTION } = require("../../utils/constants");
 const { formatDateTime } = require("../../utils/util");
+const recordRegion = require("../../utils/record-region");
 const userRecords = require("../../utils/user-records");
 const db = wx.cloud.database();
 const TAG_NAME_MAP = {
@@ -11,6 +12,8 @@ Page({
     id: "", name: "", address: "", rating: 0,
     dishName: "", price: "", reviewTitle: "",
     comment: "", images: [], tags: [], time: "",
+    samePlaceRecords: [], samePlaceCount: 0,
+    visitSectionTitle: "本次记录", visitCountText: "0 visits", visitTip: "本次记录已收录",
     lat: 0, lng: 0
   },
   onLoad(options) {
@@ -30,14 +33,23 @@ Page({
         setTimeout(() => wx.navigateBack(), 900);
         return;
       }
+      const allRes = await userRecords.getAll();
+      const samePlaceRecords = this.getSamePlaceRecords(r, allRes.data || []);
+      const allImages = this.getMergedImages(samePlaceRecords);
+      const samePlaceCount = samePlaceRecords.length;
       this.setData({
         name: r.name, address: r.address,
         dishName: r.dishName || "",
         price: r.price || "",
         reviewTitle: r.reviewTitle || "",
         rating: r.rating, comment: r.comment || "",
-        images: r.images || [], tags: (r.tags || []).map(tag => TAG_NAME_MAP[tag] || tag),
+        images: allImages, tags: (r.tags || []).map(tag => TAG_NAME_MAP[tag] || tag),
         time: r.createdAt ? formatDateTime(r.createdAt) : "",
+        samePlaceRecords,
+        samePlaceCount,
+        visitSectionTitle: samePlaceCount > 1 ? "回访记录 · " + samePlaceCount + " 次" : "本次记录",
+        visitCountText: samePlaceCount + " visits",
+        visitTip: samePlaceCount > 1 ? "同一地点的回访记录已汇总展示" : "本次记录已收录",
         lat: r.location ? r.location.lat : 0,
         lng: r.location ? r.location.lng : 0
       });
@@ -56,6 +68,72 @@ Page({
       }
       wx.showToast({ title: "加载失败", icon: "none" });
     }
+  },
+  getSamePlaceRecords(currentRecord, records) {
+    const sourceRecords = (records || []).slice();
+    const hasCurrent = sourceRecords.some(item => item && item._id === currentRecord._id);
+    if (!hasCurrent) sourceRecords.push(currentRecord);
+    const currentAddress = this.normalizeText(currentRecord.address);
+    const currentName = this.normalizeText(currentRecord.name);
+    const currentCity = this.getRecordCity(currentRecord);
+    return sourceRecords
+      .filter(item => this.isSamePlace(currentRecord, item, currentAddress, currentName, currentCity))
+      .sort((a, b) => this.getRecordTimeValue(a) - this.getRecordTimeValue(b))
+      .map((item, index) => this.toVisitRecord(item, index));
+  },
+  isSamePlace(currentRecord, record, currentAddress, currentName, currentCity) {
+    if (!record || !currentRecord) return false;
+    if (record._id === currentRecord._id) return true;
+    const address = this.normalizeText(record.address);
+    if (this.isReliableAddress(currentAddress) && this.isReliableAddress(address)) {
+      return currentAddress === address;
+    }
+    const name = this.normalizeText(record.name);
+    const city = this.getRecordCity(record);
+    return !!currentName && !!name && currentName === name && !!currentCity && currentCity === city;
+  },
+  isReliableAddress(address) {
+    if (!address) return false;
+    return address.indexOf("已选择位置") !== 0;
+  },
+  getRecordCity(record) {
+    const info = recordRegion.inferRecordRegion(record || {});
+    return info && info.city ? info.city : "";
+  },
+  normalizeText(value) {
+    return String(value || "").trim();
+  },
+  getRecordTimeValue(record) {
+    const time = record && record.createdAt ? new Date(record.createdAt).getTime() : 0;
+    return isFinite(time) ? time : 0;
+  },
+  toVisitRecord(record, index) {
+    return {
+      _id: record._id || "",
+      name: record.name || "",
+      address: record.address || "",
+      rating: Number(record.rating) || 0,
+      dishName: record.dishName || "",
+      price: record.price || "",
+      reviewTitle: record.reviewTitle || "",
+      comment: record.comment || "",
+      tags: (record.tags || []).map(tag => TAG_NAME_MAP[tag] || tag),
+      images: record.images || [],
+      time: record.createdAt ? formatDateTime(record.createdAt) : "",
+      visitIndex: index + 1
+    };
+  },
+  getMergedImages(records) {
+    const seen = {};
+    const images = [];
+    (records || []).forEach(record => {
+      (record.images || []).forEach(src => {
+        if (!src || seen[src]) return;
+        seen[src] = true;
+        images.push(src);
+      });
+    });
+    return images;
   },
   handleGoEdit() { wx.navigateTo({ url: "/pages/add-record/add-record?id=" + this.data.id }); },
   handleNavigate() {
