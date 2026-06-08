@@ -1,11 +1,18 @@
 <view class="page">
-  <view class="login-card">
+  <view class="login-card {{isLoggedIn ? 'is-logged' : 'is-guide'}}">
     <view class="login-user">
-      <image wx:if="{{isLoggedIn && user.avatarUrl}}" class="login-avatar" src="{{user.avatarUrl}}" mode="aspectFill" lazy-load />
-      <view wx:else class="login-avatar avatar-fallback">味</view>
+      <view class="login-avatar-shell">
+        <image wx:if="{{isLoggedIn && user.avatarUrl}}" class="login-avatar" src="{{user.avatarUrl}}" mode="aspectFill" lazy-load />
+        <view wx:else class="login-avatar avatar-fallback">
+          <text class="avatar-mark">味</text>
+          <text class="avatar-dot dot-one"></text>
+          <text class="avatar-dot dot-two"></text>
+        </view>
+      </view>
       <view class="login-copy">
-        <view class="login-name">{{isLoggedIn ? user.nickName : '未登录'}}</view>
-        <view class="login-desc">{{isLoggedIn ? '只展示你的美食记录' : '登录后按微信用户分离记录'}}</view>
+        <view class="login-kicker" wx:if="{{!isLoggedIn}}">PRIVATE TASTE MAP</view>
+        <view class="login-name">{{isLoggedIn ? user.nickName : '开启你的美食地图'}}</view>
+        <view class="login-desc">{{isLoggedIn ? '只展示你的美食记录' : '登录后同步并只展示你的记录'}}</view>
       </view>
     </view>
     <button wx:if="{{!isLoggedIn}}" class="login-btn" loading="{{loginLoading}}" bindtap="handleLogin">微信登录</button>

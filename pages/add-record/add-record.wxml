@@ -3,51 +3,72 @@
     <text class="eyebrow">{{isEdit?'EDIT TASTE':'NEW TASTE'}}</text>
     <view class="hero-title">{{isEdit?'编辑记录':'添加记录'}}</view>
   </view>
-  <view class="form-section map-section">
-    <view class="section-title">选择位置</view>
-    <view class="location-search">
-      <button class="location-btn wide" bindtap="handleSearchLocation">打开地图搜索位置</button>
-    </view>
-    <map class="picker-map" latitude="{{pickLat}}" longitude="{{pickLng}}" scale="{{pickScale}}" markers="{{pickMarkers}}" bindtap="handleMapTap" show-location="{{false}}"></map>
-    <view class="address-text">{{address || '点击地图选择位置'}}</view>
-  </view>
-  <view class="form-section">
-    <view class="section-title">店铺名称</view>
-    <input class="form-input" placeholder="输入店铺名称" value="{{name}}" bindinput="onNameInput" confirm-type="done" />
-  </view>
-  <view class="form-section">
-    <view class="section-title">本次记录</view>
-    <input class="form-input optional-input" placeholder="输入本次吃到的菜品，如 牛肉面" value="{{dishName}}" bindinput="onDishNameInput" confirm-type="done" />
-    <input class="form-input optional-input" placeholder="输入价格，如 28 或 人均 50" value="{{price}}" bindinput="onPriceInput" confirm-type="done" />
-    <input class="form-input optional-input last" placeholder="一句话总结这次体验" value="{{reviewTitle}}" bindinput="onReviewTitleInput" confirm-type="done" />
-  </view>
-  <view class="form-section">
-    <view class="section-title">评分</view>
-    <star-rating rating="{{rating}}" size="a" bind:change="onRatingChange" />
-  </view>
-  <view class="form-section moments-section">
-    <view class="section-title">图文评价</view>
-    <textarea class="form-textarea" placeholder="写下你的美食感受..." value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
-    <view class="char-count">{{comment.length}}/500</view>
-    <view class="photo-grid">
-      <view wx:for="{{photos}}" wx:for-index="i" wx:key="*this" class="photo-item">
-        <image class="photo-img" src="{{item}}" mode="aspectFill" lazy-load />
-        <text class="photo-del" bindtap="handleRemovePhoto" data-index="{{i}}">×</text>
+  <block wx:if="{{!isLoggedIn}}">
+    <view class="login-guide">
+      <view class="guide-badge">
+        <text class="guide-mark">味</text>
+        <text class="guide-spark spark-one"></text>
+        <text class="guide-spark spark-two"></text>
       </view>
-      <view wx:if="{{photos.length<9}}" class="photo-add" bindtap="handleAddPhoto">+</view>
+      <view class="guide-copy">
+        <view class="guide-kicker">PRIVATE NOTEBOOK</view>
+        <view class="guide-title">先登录，再记录美味</view>
+        <view class="guide-desc">登录后会把每一次探店安全保存到你的私人美食地图。</view>
+      </view>
+      <view class="guide-tags">
+        <text class="guide-tag">私密保存</text>
+        <text class="guide-tag">同步足迹</text>
+      </view>
+      <button class="guide-btn" bindtap="handleGoLogin">去我的页登录</button>
     </view>
-  </view>
-  <view class="form-section">
-    <view class="section-title">标签</view>
-    <view class="custom-tag-row">
-      <input class="custom-tag-input" placeholder="自定义标签，如 宝藏店" value="{{customTag}}" bindinput="onCustomTagInput" confirm-type="done" bindconfirm="handleAddCustomTag" />
-      <button class="custom-tag-btn" bindtap="handleAddCustomTag">添加</button>
+  </block>
+  <block wx:else>
+    <view class="form-section map-section">
+      <view class="section-title">选择位置</view>
+      <view class="location-search">
+        <button class="location-btn wide" bindtap="handleSearchLocation">打开地图搜索位置</button>
+      </view>
+      <map class="picker-map" latitude="{{pickLat}}" longitude="{{pickLng}}" scale="{{pickScale}}" markers="{{pickMarkers}}" bindtap="handleMapTap" show-location="{{false}}"></map>
+      <view class="address-text">{{address || '点击地图选择位置'}}</view>
     </view>
-    <view class="tag-list">
-      <text wx:for="{{displayTags}}" wx:key="key" class="tag {{item.active?'active':''}}" bindtap="handleToggleTag" data-key="{{item.key}}">{{item.name}}</text>
+    <view class="form-section">
+      <view class="section-title">店铺名称</view>
+      <input class="form-input" placeholder="输入店铺名称" value="{{name}}" bindinput="onNameInput" confirm-type="done" />
     </view>
-  </view>
-  <button class="submit-btn" bindtap="handleSubmit" loading="{{submitting}}">{{isEdit?'保存修改':'保存记录'}}</button>
+    <view class="form-section">
+      <view class="section-title">本次记录</view>
+      <input class="form-input optional-input" placeholder="输入本次吃到的菜品，如 牛肉面" value="{{dishName}}" bindinput="onDishNameInput" confirm-type="done" />
+      <input class="form-input optional-input" placeholder="输入价格，如 28 或 人均 50" value="{{price}}" bindinput="onPriceInput" confirm-type="done" />
+      <input class="form-input optional-input last" placeholder="一句话总结这次体验" value="{{reviewTitle}}" bindinput="onReviewTitleInput" confirm-type="done" />
+    </view>
+    <view class="form-section">
+      <view class="section-title">评分</view>
+      <star-rating rating="{{rating}}" size="a" bind:change="onRatingChange" />
+    </view>
+    <view class="form-section moments-section">
+      <view class="section-title">图文评价</view>
+      <textarea class="form-textarea" placeholder="写下你的美食感受..." value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
+      <view class="char-count">{{comment.length}}/500</view>
+      <view class="photo-grid">
+        <view wx:for="{{photos}}" wx:for-index="i" wx:key="*this" class="photo-item">
+          <image class="photo-img" src="{{item}}" mode="aspectFill" lazy-load />
+          <text class="photo-del" bindtap="handleRemovePhoto" data-index="{{i}}">×</text>
+        </view>
+        <view wx:if="{{photos.length<9}}" class="photo-add" bindtap="handleAddPhoto">+</view>
+      </view>
+    </view>
+    <view class="form-section">
+      <view class="section-title">标签</view>
+      <view class="custom-tag-row">
+        <input class="custom-tag-input" placeholder="自定义标签，如 宝藏店" value="{{customTag}}" bindinput="onCustomTagInput" confirm-type="done" bindconfirm="handleAddCustomTag" />
+        <button class="custom-tag-btn" bindtap="handleAddCustomTag">添加</button>
+      </view>
+      <view class="tag-list">
+        <text wx:for="{{displayTags}}" wx:key="key" class="tag {{item.active?'active':''}}" bindtap="handleToggleTag" data-key="{{item.key}}">{{item.name}}</text>
+      </view>
+    </view>
+    <button class="submit-btn" bindtap="handleSubmit" loading="{{submitting}}">{{isEdit?'保存修改':'保存记录'}}</button>
+  </block>
 </view>
 
 

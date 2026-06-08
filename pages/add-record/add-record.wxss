@@ -2,6 +2,23 @@
 .form-hero{padding:38rpx 28rpx 24rpx;background:var(--text-dark);color:#fff}
 .eyebrow{display:block;font-size:20rpx;color:#eab071;font-weight:800;letter-spacing:0;margin-bottom:8rpx}
 .hero-title{font-size:46rpx;font-weight:900}
+.login-guide{position:relative;margin:26rpx 24rpx 0;padding:34rpx 30rpx 30rpx;background:linear-gradient(135deg,#fffaf0 0%,#fff0dc 56%,#edf5ee 100%);border:1rpx solid rgba(216,81,47,0.14);border-radius:22rpx;box-shadow:0 18rpx 42rpx rgba(104,73,42,0.13);overflow:hidden}
+.login-guide::before{content:"";position:absolute;left:26rpx;right:26rpx;top:0;height:7rpx;border-radius:0 0 999rpx 999rpx;background:linear-gradient(90deg,var(--primary) 0%,#eab071 48%,#6f8d67 100%)}
+.login-guide::after{content:"";position:absolute;right:-54rpx;top:24rpx;width:178rpx;height:178rpx;border-radius:50%;background:radial-gradient(circle,#fff7e6 0%,rgba(234,176,113,0.42) 54%,rgba(234,176,113,0) 70%);opacity:.9}
+.guide-badge{position:relative;width:112rpx;height:112rpx;margin-bottom:24rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 42% 38%,#ffe6aa 0%,#d8512f 54%,#91372c 100%);box-shadow:0 16rpx 32rpx rgba(216,81,47,0.26);z-index:1}
+.guide-badge::before{content:"";position:absolute;inset:10rpx;border-radius:50%;border:2rpx solid rgba(255,250,240,0.74)}
+.guide-mark{position:relative;color:#fff9eb;font-size:38rpx;font-weight:900;text-shadow:0 5rpx 12rpx rgba(79,42,24,0.24);z-index:2}
+.guide-spark{position:absolute;display:block;border-radius:50%;background:#ffe2a1;box-shadow:0 3rpx 10rpx rgba(79,42,24,0.16);z-index:3}
+.spark-one{right:20rpx;top:21rpx;width:13rpx;height:13rpx}
+.spark-two{left:24rpx;bottom:20rpx;width:9rpx;height:9rpx;background:#fff5dc}
+.guide-copy{position:relative;z-index:1}
+.guide-kicker{margin-bottom:10rpx;color:#a86b38;font-size:18rpx;font-weight:900;letter-spacing:0}
+.guide-title{color:var(--text-dark);font-size:39rpx;font-weight:900;line-height:1.18}
+.guide-desc{margin-top:14rpx;max-width:570rpx;color:#76583f;font-size:26rpx;line-height:1.55}
+.guide-tags{position:relative;display:flex;gap:12rpx;margin-top:22rpx;z-index:1}
+.guide-tag{padding:9rpx 18rpx;border-radius:999rpx;background:rgba(255,255,255,0.62);border:1rpx solid rgba(216,81,47,0.12);color:#93623b;font-size:22rpx;font-weight:800}
+.guide-btn{position:relative;margin:28rpx 0 0;width:100%;height:82rpx;line-height:82rpx;padding:0;border:none;border-radius:999rpx;background:linear-gradient(135deg,#d85a37 0%,var(--primary) 64%,#a63d32 100%);color:#fff9eb;font-size:28rpx;font-weight:900;box-shadow:0 16rpx 30rpx rgba(216,81,47,0.28);z-index:1}
+.guide-btn::after{border:none}
 .form-section{margin:22rpx 24rpx;padding:24rpx;background:var(--card-bg);border:1rpx solid var(--border);border-radius:var(--radius-lg);box-shadow:0 10rpx 26rpx var(--shadow-sm)}
 .map-section{padding:0;overflow:hidden}
 .section-title{font-size:27rpx;font-weight:800;color:#3a2c22;margin-bottom:18rpx;padding:0}

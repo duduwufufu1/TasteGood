@@ -1,5 +1,6 @@
 const { COLLECTION, TAGS } = require("../../utils/constants");
 const recordRegion = require("../../utils/record-region");
+const auth = require("../../utils/auth");
 const userRecords = require("../../utils/user-records");
 const { TENCENT_MAP_KEY } = require("../../utils/config");
 const db = wx.cloud.database();
@@ -10,6 +11,7 @@ Page({
   data: {
     id: "",
     isEdit: false,
+    isLoggedIn: false,
     pickLat: 39.9042, pickLng: 116.4074, pickScale: 12,
     pickMarkers: [],
     address: "", name: "", rating: 0,
@@ -23,12 +25,21 @@ Page({
   },
 
   onLoad(options) {
+    const cachedUser = auth.getCachedUser();
+    const isLoggedIn = !!(cachedUser && cachedUser.openid);
+    this.setData({ isLoggedIn });
+    if (!isLoggedIn) return;
+
     if (options && options.id) {
       this.setData({ id: options.id, isEdit: true });
       this.loadRecord();
       return;
     }
     this.initDefaultLocation();
+  },
+
+  handleGoLogin() {
+    wx.switchTab({ url: "/pages/profile/profile" });
   },
 
   initDefaultLocation() {
