@@ -1,12 +1,27 @@
 <view wx:if="{{visible}}" class="login-mask" bindtap="handleClose">
   <view class="login-panel" catchtap="noop">
-    <view class="panel-title">{{title}}</view>
-    <view class="panel-desc">{{desc}}</view>
-    <button class="panel-avatar avatar-picker" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
-      <image wx:if="{{avatarUrl}}" class="panel-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
-      <text wx:else>头像</text>
-    </button>
-    <input class="panel-nickname" type="nickname" placeholder="点击选择微信昵称" value="{{nickName}}" bindinput="handleNickNameInput" />
+    <view class="panel-head">
+      <view class="panel-kicker">WECHAT PROFILE</view>
+      <view class="panel-title">{{title}}</view>
+      <view class="panel-desc">{{desc}}</view>
+    </view>
+    <view class="profile-field avatar-field">
+      <view class="field-copy">
+        <text class="field-label">头像</text>
+        <text class="field-hint">用于区分你的私人记录</text>
+      </view>
+      <button class="panel-avatar avatar-picker" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+        <image wx:if="{{avatarUrl}}" class="panel-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+        <text wx:else>选择</text>
+      </button>
+    </view>
+    <view class="profile-field nickname-field">
+      <view class="field-copy">
+        <text class="field-label">昵称</text>
+        <text class="field-hint">可直接选择微信昵称，也可以手动输入</text>
+      </view>
+      <input class="panel-nickname" type="nickname" placeholder="点击选择微信昵称" value="{{nickName}}" bindinput="handleNickNameInput" />
+    </view>
     <view class="panel-actions">
       <button class="panel-btn secondary" bindtap="handleClose">取消</button>
       <button class="panel-btn primary" loading="{{loading}}" bindtap="handleConfirm">{{submitText}}</button>

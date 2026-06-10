@@ -1,5 +1,6 @@
 const recordPlace = require("../../utils/record-place");
 const recordRegion = require("../../utils/record-region");
+const auth = require("../../utils/auth");
 const userRecords = require("../../utils/user-records");
 const TAG_NAME_MAP = {
   breakfast:"早餐", lunch:"午餐", dinner:"晚餐", dessert:"甜品", drink:"饮品",
@@ -74,9 +75,12 @@ Page({
     records: [], currentCity: "", currentTag: "", currentTagName: "", currentRating: 0,
     cityList: ["全部城市"], tagList: ["全部标签","早餐","午餐","晚餐","甜品","饮品","小吃","火锅","烧烤","必吃","踩雷"],
     tagKeyList: [""], ratingList: ["全部星级","1星","2星","3星","4星","5星"],
-    sortAsc: false, loading: false, pageSize: 20, loadedAll: false, querySkip: 0
+    sortAsc: false, loading: false, pageSize: 20, loadedAll: false, querySkip: 0,
+    isLoggedIn: false
   },
   onShow() {
+    const cachedUser = auth.getCachedUser();
+    this.setData({ isLoggedIn: !!(cachedUser && cachedUser.openid) });
     this.loadCities();
     this.setData({ records: [], loadedAll: false, querySkip: 0 });
     this.loadRecords();
@@ -107,7 +111,11 @@ Page({
         if (error.code === "LOGIN_REQUIRED" || error.message === "LOGIN_REQUIRED") return null;
         throw error;
       });
-      if (!user) { this.setData({ records: [], loadedAll: true, querySkip: 0 }); return; }
+      if (!user) {
+        this.setData({ records: [], loadedAll: true, querySkip: 0, isLoggedIn: false });
+        return;
+      }
+      this.setData({ isLoggedIn: true });
 
       const res = await userRecords.getAll();
       const filtered = sortByRecordTime(
@@ -157,5 +165,11 @@ Page({
     this._navigating = true;
     wx.navigateTo({ url: "/pages/detail/detail?id=" + e.detail.id });
     setTimeout(() => { this._navigating = false; }, 500);
+  },
+  handleGoAddRecord() {
+    wx.navigateTo({ url: "/pages/add-record/add-record" });
+  },
+  handleGoProfile() {
+    wx.switchTab({ url: "/pages/profile/profile" });
   }
 });

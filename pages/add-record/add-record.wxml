@@ -15,9 +15,26 @@
         <view class="guide-title">先登录，再记录美味</view>
         <view class="guide-desc">登录后会把每一次探店安全保存到你的私人美食地图。</view>
       </view>
+      <view class="guide-flow">
+        <view class="flow-step">
+          <text class="flow-index">1</text>
+          <text class="flow-text">登录</text>
+        </view>
+        <view class="flow-line"></view>
+        <view class="flow-step">
+          <text class="flow-index">2</text>
+          <text class="flow-text">选位置</text>
+        </view>
+        <view class="flow-line"></view>
+        <view class="flow-step">
+          <text class="flow-index">3</text>
+          <text class="flow-text">记录味道</text>
+        </view>
+      </view>
       <view class="guide-tags">
         <text class="guide-tag">私密保存</text>
         <text class="guide-tag">同步足迹</text>
+        <text class="guide-tag">点亮城市</text>
       </view>
       <button class="guide-btn" bindtap="handleGoLogin">去我的页登录</button>
     </view>

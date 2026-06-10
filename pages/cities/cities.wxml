@@ -30,8 +30,28 @@
   </view>
   <view class="fab-add" bindtap="handleGoAddRecord">+</view>
   <view wx:if="{{cities.length===0}}" class="empty-state">
+    <view class="empty-badge">
+      <text class="empty-mark">城</text>
+      <text class="empty-ring ring-one"></text>
+      <text class="empty-ring ring-two"></text>
+    </view>
+    <view class="empty-kicker">CITY STAMPS</view>
     <text class="empty-title">还没有城市印章</text>
-    <text class="empty-copy">去记录你品尝过的第一家店吧</text>
-    <button class="start-btn" bindtap="handleGoAddRecord">开始记录</button>
+    <text class="empty-copy">先记录第一家店，之后会点亮城市、照片和店铺数。</text>
+    <view class="empty-progress">
+      <view class="progress-item">
+        <text class="progress-dot"></text>
+        <text>选一家店</text>
+      </view>
+      <view class="progress-item">
+        <text class="progress-dot warm"></text>
+        <text>写下味道</text>
+      </view>
+      <view class="progress-item">
+        <text class="progress-dot green"></text>
+        <text>点亮城市</text>
+      </view>
+    </view>
+    <button class="start-btn" bindtap="handleGoAddRecord">记录第一家店</button>
   </view>
 </view>

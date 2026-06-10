@@ -6,6 +6,15 @@
 .filter-btn{display:block;font-size:25rpx;color:#314b45;padding:12rpx 18rpx;border:1rpx solid #61726e44;border-radius:10rpx;background:#fffaf0;max-width:220rpx;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .filter-btn.sort{color:#fff;border-color:#c84632;background:#c84632}
 .record-list{height:calc(100vh - 190rpx);padding:10rpx 24rpx 0}
-.empty-list{display:flex;flex-direction:column;align-items:center;margin-top:90rpx;padding:70rpx 30rpx;color:#61726e;font-size:28rpx;background:#fffaf0;border:1rpx dashed #102b2822;border-radius:14rpx}
-.empty-title{font-size:32rpx;color:#12231f;font-weight:800;margin-bottom:8rpx}.empty-copy{font-size:25rpx;color:#61726e}
+.empty-list{position:relative;display:flex;flex-direction:column;align-items:center;margin:62rpx 0 24rpx;padding:46rpx 30rpx 34rpx;color:#61726e;font-size:28rpx;background:linear-gradient(145deg,#fffaf0 0%,#fff3df 58%,#edf5ee 100%);border:1rpx solid rgba(18,35,31,0.08);border-radius:18rpx;box-shadow:0 18rpx 42rpx rgba(18,35,31,0.1);overflow:hidden}
+.empty-list::before{content:"";position:absolute;left:26rpx;right:26rpx;top:0;height:7rpx;border-radius:0 0 999rpx 999rpx;background:linear-gradient(90deg,#c84632 0%,#e3a44f 50%,#6f8d67 100%)}
+.empty-icon{width:104rpx;height:104rpx;margin-bottom:20rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 42% 38%,#ffe4a8 0%,#c84632 54%,#7e332b 100%);box-shadow:0 14rpx 30rpx rgba(200,70,50,0.22)}
+.empty-icon-main{color:#fff9eb;font-size:38rpx;font-weight:900;text-shadow:0 4rpx 12rpx rgba(70,35,25,0.26)}
+.empty-kicker{margin-bottom:8rpx;color:#8f321d;font-size:18rpx;font-weight:900;letter-spacing:1px}
+.empty-title{font-size:33rpx;color:#12231f;font-weight:900;margin-bottom:10rpx}
+.empty-copy{max-width:540rpx;text-align:center;font-size:25rpx;color:#61726e;line-height:1.5}
+.empty-hints{display:flex;gap:10rpx;margin-top:24rpx;flex-wrap:wrap;justify-content:center}
+.empty-hints text{padding:9rpx 16rpx;border-radius:999rpx;background:rgba(255,255,255,0.66);border:1rpx solid rgba(18,35,31,0.06);color:#314b45;font-size:22rpx;font-weight:800}
+.empty-btn{margin-top:28rpx;background:#c84632;color:#fff;border-radius:999rpx;padding:17rpx 44rpx;font-size:27rpx;font-weight:900;box-shadow:0 12rpx 24rpx rgba(200,70,50,0.22)}
+.empty-btn.secondary{background:#102b28;color:#fff9eb;box-shadow:0 12rpx 24rpx rgba(16,43,40,0.2)}
 .loading{text-align:center;padding:30rpx;color:#61726e}

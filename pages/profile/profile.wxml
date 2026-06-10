@@ -13,6 +13,10 @@
         <view class="login-kicker" wx:if="{{!isLoggedIn}}">PRIVATE TASTE MAP</view>
         <view class="login-name">{{isLoggedIn ? user.nickName : '开启你的美食地图'}}</view>
         <view class="login-desc">{{isLoggedIn ? '只展示你的美食记录' : '登录后同步并只展示你的记录'}}</view>
+        <view wx:if="{{!isLoggedIn}}" class="login-benefits">
+          <text>私密保存</text>
+          <text>只看自己的记录</text>
+        </view>
       </view>
     </view>
     <button wx:if="{{!isLoggedIn}}" class="login-btn" loading="{{loginLoading}}" bindtap="handleLogin">微信登录</button>
@@ -75,7 +79,10 @@
           </view>
         </block>
 
-        <view class="atlas-empty" wx:if="{{!hasMapRecords}}">还没有点亮城市</view>
+        <view class="atlas-empty" wx:if="{{!hasMapRecords}}">
+          <text class="atlas-empty-title">还没有点亮城市</text>
+          <text class="atlas-empty-copy">记录第一家店后，城市热力会在这里慢慢亮起来。</text>
+        </view>
       </view>
 
       <view class="atlas-legend">
@@ -131,7 +138,16 @@
         <view class="recent-meta">{{item.city}} · {{item.rating}}星</view>
       </view>
     </view>
-    <view wx:if="{{!recentRecords.length}}" class="recent-empty">还没有美食记录</view>
+    <view wx:if="{{!recentRecords.length}}" class="recent-empty">
+      <view class="recent-empty-icon">味</view>
+      <view class="recent-empty-title">还没有美食记录</view>
+      <view class="recent-empty-copy">先保存一次探店，最近记录会按时间出现在这里。</view>
+      <view class="recent-empty-tags">
+        <text>店铺</text>
+        <text>评分</text>
+        <text>照片</text>
+      </view>
+    </view>
   </view>
 </view>
 

@@ -32,8 +32,19 @@
       bind:tap="handleGoDetail"
     />
     <view wx:if="{{!loading && !records.length}}" class="empty-list">
-      <text class="empty-title">还没有味觉足迹</text>
-      <text class="empty-copy">去地图上添加第一家店</text>
+      <view class="empty-icon">
+        <text class="empty-icon-main">{{isLoggedIn ? '味' : '私'}}</text>
+      </view>
+      <text class="empty-kicker">{{isLoggedIn ? 'FIRST TASTE' : 'PRIVATE LOG'}}</text>
+      <text class="empty-title">{{isLoggedIn ? '还没有味觉足迹' : '登录后查看你的味觉足迹'}}</text>
+      <text class="empty-copy">{{isLoggedIn ? '添加第一家店后，这里会按城市、标签和评分整理你的记录。' : '去“我的”页登录后，只会展示属于你的私密美食记录。'}}</text>
+      <view class="empty-hints">
+        <text>{{isLoggedIn ? '选位置' : '私密保存'}}</text>
+        <text>{{isLoggedIn ? '写评价' : '只看自己'}}</text>
+        <text>{{isLoggedIn ? '留照片' : '同步足迹'}}</text>
+      </view>
+      <button wx:if="{{isLoggedIn}}" class="empty-btn" bindtap="handleGoAddRecord">添加第一家店</button>
+      <button wx:else class="empty-btn secondary" bindtap="handleGoProfile">去我的页登录</button>
     </view>
     <view wx:if="{{loading}}" class="loading">加载中…</view>
   </scroll-view>
